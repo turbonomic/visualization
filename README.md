@@ -17,4 +17,9 @@ Each dashboard also includes:
 * Parameters and variables needed to implement
 * Author
 
+## Project Maintainers
+
+Current project maintainers are:
+
+@DiscoPosse 
 
