@@ -21,5 +21,7 @@ Each dashboard also includes:
 
 Current project maintainers are:
 
-@DiscoPosse 
+* @DiscoPosse 
+* @DavidOhsieAtTurbo
+
 
