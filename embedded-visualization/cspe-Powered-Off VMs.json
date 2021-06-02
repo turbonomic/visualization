@@ -1,0 +1,241 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 88,
+  "iteration": 1622221465373,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "distinctCount"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 2,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Number of Powered Off VMs",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last Powered On Date"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "Always been off"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Number of Powered Off days"
+            },
+            "properties": [
+              {
+                "id": "color"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 30
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 20,
+        "x": 4,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "VM Name"
+          }
+        ]
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH last_status as (\n  SELECT\n    DISTINCT ON (a.entity_oid) a.time,\n    a.entity_oid,\n    a.int_value\n  FROM\n    historical_entity_attrs a\n  WHERE\n    a.\"type\" = 'ENTITY_STATE'\n  ORDER BY a.entity_oid, a.time DESC\n),\nlast_powered_on as (\n  SELECT\n    DISTINCT ON (a.entity_oid) a.time,\n    a.entity_oid\n  FROM\n    historical_entity_attrs a\n  WHERE\n    a.\"type\" = 'ENTITY_STATE'\n    AND a.int_value::entity_state = 'POWERED_ON'\n  ORDER BY a.entity_oid, a.time DESC\n)\n\nSELECT\n  DISTINCT ON (e.name) e.name AS \"VM Name\",\n--  ls.int_value::entity_state AS \"Status\",\n  lpon.time AS \"Last Powered On Date\",\n  --lpon.time AS \"Last Powered On Date\",\n  COALESCE(DATE_PART('day', now()::timestamp - lpon.time::timestamp),999999) AS \"Number of Powered Off days\"\nFROM\n  entity e\nJOIN\n  last_status ls ON ls.entity_oid = e.oid\nLEFT JOIN\n  last_powered_on lpon ON lpon.entity_oid = e.oid\nWHERE\n  e.\"type\" = 'VIRTUAL_MACHINE'\n--  AND ls.int_value::entity_state = 'POWERED_OFF'\n--  AND lpoff.time IS NOT NULL\n -- AND ((lpoff.time > lpon.time) OR (lpon.time IS NULL))\n AND ls.int_value::entity_state = 'POWERED_OFF'\n AND ((COALESCE(DATE_PART('day', now()::timestamp - lpon.time::timestamp),999999) <> 999999) OR '${ALWAYS_OFF}' = 'Yes')\nORDER BY e.name, e.last_seen DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "VM Status",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "Yes",
+          "value": "Yes"
+        },
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Include Always Off VMs",
+        "multi": false,
+        "name": "ALWAYS_OFF",
+        "options": [
+          {
+            "selected": true,
+            "text": "Yes",
+            "value": "Yes"
+          },
+          {
+            "selected": false,
+            "text": "No",
+            "value": "No"
+          }
+        ],
+        "query": "Yes,No",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "",
+  "title": "Powered Off VMs",
+  "uid": "uNnmsrqMz",
+  "version": 2
+}

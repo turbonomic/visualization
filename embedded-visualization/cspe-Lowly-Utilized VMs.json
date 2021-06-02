@@ -1,0 +1,183 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 77,
+  "iteration": 1621371540674,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Utilization.*"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "noValue",
+                "value": "-"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Max vMem Utilization (%)"
+          }
+        ]
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  e.name as \"VM Name\",\n  max(mvcpu.utilization)*100 as \"Max vCPU Utilization (%)\",\n  max(mvmem.utilization)*100 as \"Max vMem Utilization (%)\"\nfrom metric mvcpu\njoin metric mvmem on mvcpu.entity_oid = mvmem.entity_oid AND mvmem.time = mvcpu.time\njoin entity e on e.oid = mvmem.entity_oid and e.oid = mvcpu.entity_oid\nwhere\n  $__timeFilter(mvcpu.\"time\") AND\n  $__timeFilter(mvmem.\"time\") AND\n  mvcpu.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvmem.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvcpu.\"type\" = 'VCPU' AND\n  mvmem.\"type\" = 'VMEM' AND\n  mvcpu.utilization IS NOT NULL AND\n  mvmem.utilization IS NOT NULL\nGROUP BY e.name, mvcpu.\"type\", mvmem.\"type\"\nHAVING max(mvcpu.utilization)*100 <= ${MAXIMUM_VCPU} AND max(mvmem.utilization)*100 <= ${MAXIMUM_VMEM}\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Lowly Utilized VMs",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "error": null,
+        "hide": 0,
+        "label": "Maximum vCPU Usage",
+        "name": "MAXIMUM_VCPU",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "error": null,
+        "hide": 0,
+        "label": "Maximum vMem Usage",
+        "name": "MAXIMUM_VMEM",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Lowly Utilized VMs",
+  "uid": "XquBcW3Gz",
+  "version": 2
+}
