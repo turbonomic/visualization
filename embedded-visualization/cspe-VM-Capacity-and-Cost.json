@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 92,
-  "iteration": 1622657176064,
+  "iteration": 1622712126820,
   "links": [],
   "panels": [
     {
@@ -428,7 +428,7 @@
           ]
         },
         "datasource": "Turbo Timescale",
-        "definition": "select name from entity where \"type\" = 'GROUP'",
+        "definition": "select name from entity where \"type\" = 'GROUP' order by name",
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -436,7 +436,7 @@
         "multi": true,
         "name": "GROUP_NAME",
         "options": [],
-        "query": "select name from entity where \"type\" = 'GROUP'",
+        "query": "select name from entity where \"type\" = 'GROUP' order by name",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -584,7 +584,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10",
           "value": "10"
         },
@@ -613,5 +613,5 @@
   "timezone": "",
   "title": "VM Capacity and Cost",
   "uid": "FzQmaDeGz",
-  "version": 10
+  "version": 12
 }
