@@ -1,0 +1,1426 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 94,
+  "iteration": 1622798659963,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 19,
+      "panels": [],
+      "title": "Global information",
+      "type": "row"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Successfully Completed Resize Actions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 6,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Difference$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Net vCPU difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "deckbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 11,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Difference$/",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Net vMem difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Cost$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vCPU cost difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Cost$/",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/1000 as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vMem cost difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 6,
+        "x": 0,
+        "y": 3
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state <> 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Non Successfully Completed Resize Actions",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 17,
+      "panels": [],
+      "title": "Scoped information",
+      "type": "row"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 0,
+        "y": 6
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Successfully Completed Resize Actions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 5,
+        "y": 6
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state <> 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Non Successfully Completed Resize Actions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Direction"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "yellow",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "from": "",
+                    "id": 1,
+                    "text": "Upscale",
+                    "to": "",
+                    "type": 1,
+                    "value": "1"
+                  },
+                  {
+                    "from": "",
+                    "id": 2,
+                    "text": "Downscale",
+                    "to": "",
+                    "type": 1,
+                    "value": "-1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 14,
+        "x": 10,
+        "y": 6
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring})\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "On-Prem Completed Actions",
+      "transformations": [],
+      "type": "table"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 9
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%')\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Completed vCPU Resize Actions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 9
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%')\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Completed vMem Resize Actions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 13
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Difference$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Net vCPU difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "deckbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 13
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Difference$/",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Net vMem difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 17
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Cost$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "vCPU cost difference",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Cost$/",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/1000 as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "vMem cost difference",
+      "type": "stat"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select name from entity e\nwhere \"type\" = 'COMPUTE_CLUSTER'\norder by name",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": true,
+        "name": "CLUSTER_NAME",
+        "options": [],
+        "query": "select name from entity e\nwhere \"type\" = 'COMPUTE_CLUSTER'\norder by name",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select oid from entity e\nwhere \"type\" = 'COMPUTE_CLUSTER'\nand name IN (${CLUSTER_NAME:sqlstring})\norder by name",
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "Cluster OID",
+        "multi": true,
+        "name": "CLUSTER_OID",
+        "options": [],
+        "query": "select oid from entity e\nwhere \"type\" = 'COMPUTE_CLUSTER'\nand name IN (${CLUSTER_NAME:sqlstring})\norder by name",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "20",
+          "value": "20"
+        },
+        "error": null,
+        "hide": 0,
+        "label": "Cost of a vCPU ($)",
+        "name": "VCPU_COST",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "error": null,
+        "hide": 0,
+        "label": "Cost of a vMem GB ($)",
+        "name": "VMEM_COST",
+        "options": [
+          {
+            "selected": true,
+            "text": "20",
+            "value": "20"
+          }
+        ],
+        "query": "20",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": false
+  },
+  "timezone": "",
+  "title": "Taken Actions Summary",
+  "uid": "U2GYCteMk",
+  "version": 2
+}

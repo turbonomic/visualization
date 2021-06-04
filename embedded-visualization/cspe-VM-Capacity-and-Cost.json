@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 92,
-  "iteration": 1622657176064,
+  "iteration": 1622732695424,
   "links": [],
   "panels": [
     {
@@ -245,7 +245,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.name as \"VM Name\",\n--  m.type,\n  avg((attrs->>'num_cpus')::integer) as \"Number of vCPU(s)\",\n  ${VCPU_COST} as \"vCPU Price ($)\"\nFROM metric m\nJOIN entity e ON e.oid = m.entity_oid\nWHERE\n  $__timeFilter(time)\n  AND entity_oid IN (${VM_OID})\n  AND m.type = 'VCPU'\nGROUP BY e.name\nORDER BY 1",
+          "rawSql": "WITH last_num_cpus AS\n(\n  select\n  \tdistinct on (e.oid)\n  \te.oid,\n  \te.name,\n  \t(e.attrs->>'num_cpus')::integer as \"num_cpus\"\n  from entity e\n  where\n  \te.\"type\" = 'VIRTUAL_MACHINE'\n    AND e.oid IN (${VM_OID})\n  order by e.oid, e.last_seen DESC\n),\navg_num_cpu as\n(\n\tselect\n\t\thea.entity_oid as oid,\n\t\tavg(hea.int_value) as \"num_cpus\"\n\tfrom historical_entity_attrs hea\n\tWHERE\n  \t\t$__timeFilter(hea.time)\n  \t    AND hea.type = 'NUM_VCPU'\n        AND hea.entity_oid IN (${VM_OID})\n  \tgroup by hea.entity_oid \n)\nSELECT\n    lnc.name as \"VM Name\",\n    coalesce(a.num_cpus, lnc.num_cpus) as \"Number of vCPU(s)\",\n    ${VCPU_COST} as \"vCPU Price ($)\"\nfrom last_num_cpus lnc\nleft join avg_num_cpu a on a.oid = lnc.oid",
           "refId": "A",
           "select": [
             [
@@ -428,7 +428,7 @@
           ]
         },
         "datasource": "Turbo Timescale",
-        "definition": "select name from entity where \"type\" = 'GROUP'",
+        "definition": "select name from entity where \"type\" = 'GROUP' order by name",
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -436,7 +436,7 @@
         "multi": true,
         "name": "GROUP_NAME",
         "options": [],
-        "query": "select name from entity where \"type\" = 'GROUP'",
+        "query": "select name from entity where \"type\" = 'GROUP' order by name",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -584,7 +584,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10",
           "value": "10"
         },
@@ -606,12 +606,12 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "VM Capacity and Cost",
   "uid": "FzQmaDeGz",
-  "version": 10
+  "version": 13
 }
