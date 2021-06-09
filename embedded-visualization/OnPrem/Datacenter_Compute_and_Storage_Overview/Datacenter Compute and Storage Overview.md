@@ -1,4 +1,4 @@
-# Datacenter Compute and Storage Overview | Infrastructure | Dashboard
+# Datacenter Compute and Storage Overview | Infrastructure Dashboard
 ## Build for On-Prem Use Cases
 
 ### ![Screen Shot 2021-06-09 at 10 39 53 AM](https://user-images.githubusercontent.com/84854976/121377738-987e3600-c910-11eb-9765-98ba623786bd.png)
