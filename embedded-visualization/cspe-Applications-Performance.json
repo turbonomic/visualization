@@ -1,0 +1,1076 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 2,
+  "id": 95,
+  "iteration": 1623184098210,
+  "links": [
+    {
+      "icon": "bolt",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Jump on the Application in Turbonomic ARM UI",
+      "type": "link",
+      "url": "../app/#/view/main/${APPLICATION_OID}/overview"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Description$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 4,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Number of Actions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Category"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 193
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Recommendation Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 210
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 21,
+        "x": 3,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  TO_CHAR(recommendation_time, 'dd/mm/yyyy hh:mm:ss') AS \"Recommendation Time\",\n  e.name as \"Component Name\",\n  CASE pa.category\n    WHEN 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN 'PREVENTION' THEN 'Prevention'\n    WHEN 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN 'COMPLIANCE' THEN 'Compliance' END as \"Category\",\n  description AS \"Description\"\nFROM pending_action pa\nJOIN entity e ON e.oid = pa.target_entity_id\nWHERE\n  target_entity_id IN\n  (\n    SELECT\n      DISTINCT e.oid\n    FROM scope s\n    JOIN entity e ON s.scoped_oid = e.oid\n    WHERE\n      s.seed_oid IN (${APPLICATION_OID})\n    AND e.type <> 'GROUP'\n  )\nORDER BY 1 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Actions",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.3.8",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time AS \"time\",\n  CASE \"type\"::text\n    WHEN 'RESPONSE_TIME' THEN 'Response Time'\n    WHEN 'TRANSACTION' THEN 'Transaction(s)' END as \"metric\",\n  current as \"value\"\nFROM metric m\nWHERE\n  $__timeFilter(time)\n  AND entity_oid in ('${APPLICATION_OID}')\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Response Time & Transactions",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:56",
+          "decimals": 0,
+          "format": "ms",
+          "label": "response time",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:57",
+          "decimals": 0,
+          "format": "tps",
+          "label": "transaction(s) per second",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 7,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DISTINCT e.name as \"Component Name\",\n  e.\"type\" as \"Component Type\",\n  TO_CHAR(s.start, 'dd/mm/yyyy hh:mm:ss') as \"Start Time\",\n  TO_CHAR(s.finish, 'dd/mm/yyyy hh:mm:ss') as \"Finish Time\"\nFROM scope s\nJOIN entity e ON s.scoped_oid = e.oid\nWHERE\n  --s.start > $__timeFrom()\n  -- s.finish < $__timeTo()\n  s.seed_oid IN (${APPLICATION_OID})\n  AND e.type <> 'GROUP'\nORDER BY 2 ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Application Components",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "Turbonomic [turbonomic]",
+          "value": "Turbonomic [turbonomic]"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select e.name from entity e where e.\"type\" = 'BUSINESS_APPLICATION' order by e.name",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application",
+        "multi": false,
+        "name": "APPLICATION_NAME",
+        "options": [
+          {
+            "selected": false,
+            "text": "AD-Financial",
+            "value": "AD-Financial"
+          },
+          {
+            "selected": false,
+            "text": "AD-Financial-GKE",
+            "value": "AD-Financial-GKE"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_alec.kemp@turbonomic.com",
+            "value": "auto_owner_Owner Email_alec.kemp@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_alexander.nish@turbonomic.com",
+            "value": "auto_owner_Owner Email_alexander.nish@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_alexey.stokes@turbonomic.com",
+            "value": "auto_owner_Owner Email_alexey.stokes@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_andrew.hockly@turbonomic.com",
+            "value": "auto_owner_Owner Email_andrew.hockly@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_andy.hockly@turbonomic.com",
+            "value": "auto_owner_Owner Email_andy.hockly@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_anson.mccook@turbonomic.com",
+            "value": "auto_owner_Owner Email_anson.mccook@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_antoine.feriaux@turbonomic.com",
+            "value": "auto_owner_Owner Email_antoine.feriaux@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_artem.artyunov@turbonomic.com",
+            "value": "auto_owner_Owner Email_artem.artyunov@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_aseem.anwar@turbonomic.com",
+            "value": "auto_owner_Owner Email_aseem.anwar@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ayodele.spencer@turbonomic.com",
+            "value": "auto_owner_Owner Email_ayodele.spencer@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_barry.howard@turbonomic.com",
+            "value": "auto_owner_Owner Email_barry.howard@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ben.liebowitz@turbonomic.com",
+            "value": "auto_owner_Owner Email_ben.liebowitz@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_bill.sanders@turbonomic.com",
+            "value": "auto_owner_Owner Email_bill.sanders@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_brad.stern@turbonomic.com",
+            "value": "auto_owner_Owner Email_brad.stern@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_brian.besley@turbonomic.com",
+            "value": "auto_owner_Owner Email_brian.besley@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_cherif.djerboua@turbonomic.com",
+            "value": "auto_owner_Owner Email_cherif.djerboua@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_chris.lowth@turbonomic.com",
+            "value": "auto_owner_Owner Email_chris.lowth@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_chris.sawtelle@turbonomic.com",
+            "value": "auto_owner_Owner Email_chris.sawtelle@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_christophe.sperandio@turbonomic.com",
+            "value": "auto_owner_Owner Email_christophe.sperandio@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_dallas.demarr@turbonomic.com",
+            "value": "auto_owner_Owner Email_dallas.demarr@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_dan.germain@turbonomic.com",
+            "value": "auto_owner_Owner Email_dan.germain@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_david.fiore@turbonomic.com",
+            "value": "auto_owner_Owner Email_david.fiore@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_devaughn.riley@turbonomic.com",
+            "value": "auto_owner_Owner Email_devaughn.riley@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_divya.singal@turbonomic.com",
+            "value": "auto_owner_Owner Email_divya.singal@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_dmitri.pappa@turbonomic.com",
+            "value": "auto_owner_Owner Email_dmitri.pappa@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_endre.sara@turbonomic.com",
+            "value": "auto_owner_Owner Email_endre.sara@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_eric.deschamps@turbonomic.com",
+            "value": "auto_owner_Owner Email_eric.deschamps@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_eric.wright@turbonomic.com",
+            "value": "auto_owner_Owner Email_eric.wright@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_eva.tuczai@turbonomic.com",
+            "value": "auto_owner_Owner Email_eva.tuczai@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_fadi.josef@turbonomic.com",
+            "value": "auto_owner_Owner Email_fadi.josef@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_geva.assayag@turbonomic.com",
+            "value": "auto_owner_Owner Email_geva.assayag@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_gregg.minichiello@turbonomic.com",
+            "value": "auto_owner_Owner Email_gregg.minichiello@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_greg.whelan@turbonomic.com",
+            "value": "auto_owner_Owner Email_greg.whelan@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_hillel.adler@turbonomic.com",
+            "value": "auto_owner_Owner Email_hillel.adler@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_isabella.togni@turbonomic.com",
+            "value": "auto_owner_Owner Email_isabella.togni@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_james.diehl@turbonomic.com",
+            "value": "auto_owner_Owner Email_james.diehl@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_jamie.eastabrook@turbonomic.com",
+            "value": "auto_owner_Owner Email_jamie.eastabrook@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_jason.shaw@turbonomic.com",
+            "value": "auto_owner_Owner Email_jason.shaw@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_jeremy.gentel@turbonomic.com",
+            "value": "auto_owner_Owner Email_jeremy.gentel@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_jeremy.hazlett@turbonomic.com",
+            "value": "auto_owner_Owner Email_jeremy.hazlett@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_jet.khargi@turbonomic.com",
+            "value": "auto_owner_Owner Email_jet.khargi@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_jimmy.herbert@turbonomic.com",
+            "value": "auto_owner_Owner Email_jimmy.herbert@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_joe.burke@turbonomic.com",
+            "value": "auto_owner_Owner Email_joe.burke@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_joe.fontenot@turbonomic.com",
+            "value": "auto_owner_Owner Email_joe.fontenot@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_john.williams@turbonomic.com",
+            "value": "auto_owner_Owner Email_john.williams@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_juan.santos@turbonomic.com",
+            "value": "auto_owner_Owner Email_juan.santos@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_justus.gries@turbonomic.com",
+            "value": "auto_owner_Owner Email_justus.gries@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_kevin.lamb@turbonomic.com",
+            "value": "auto_owner_Owner Email_kevin.lamb@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_kevin.smith@turbonomic.com",
+            "value": "auto_owner_Owner Email_kevin.smith@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_khon.lam@turbonomic.com",
+            "value": "auto_owner_Owner Email_khon.lam@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_leo.carroll@turbonomic.com",
+            "value": "auto_owner_Owner Email_leo.carroll@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_luke.tilja@turbonomic.com",
+            "value": "auto_owner_Owner Email_luke.tilja@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_marc.beckert@turbonomic.com",
+            "value": "auto_owner_Owner Email_marc.beckert@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_marc.jenkins@turbonomic.com",
+            "value": "auto_owner_Owner Email_marc.jenkins@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_mark.hastings@turbonomic.com",
+            "value": "auto_owner_Owner Email_mark.hastings@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_mark.newton@turbonomic.com",
+            "value": "auto_owner_Owner Email_mark.newton@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_masa.kawano@turbonomic.com",
+            "value": "auto_owner_Owner Email_masa.kawano@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_matt.grimes@turbonomic.com",
+            "value": "auto_owner_Owner Email_matt.grimes@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_matthew.barto@turbonomic.com",
+            "value": "auto_owner_Owner Email_matthew.barto@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_michael.nagar@turbonomic.com",
+            "value": "auto_owner_Owner Email_michael.nagar@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_michael.scott@turbonomic.com",
+            "value": "auto_owner_Owner Email_michael.scott@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_mike.martinelli@turbonomic.com",
+            "value": "auto_owner_Owner Email_mike.martinelli@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_mitchell.lau@turbonomic.com",
+            "value": "auto_owner_Owner Email_mitchell.lau@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_mohamed.elsherif@turbonomic.com",
+            "value": "auto_owner_Owner Email_mohamed.elsherif@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_neil.vaid@turbonomic.com",
+            "value": "auto_owner_Owner Email_neil.vaid@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_odera.nweke@turbonomic.com",
+            "value": "auto_owner_Owner Email_odera.nweke@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_paul.zychowicz@turbonomic.com",
+            "value": "auto_owner_Owner Email_paul.zychowicz@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_philomena.kiernan@turbonomic.com",
+            "value": "auto_owner_Owner Email_philomena.kiernan@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ray.mileo@turbonomic.com",
+            "value": "auto_owner_Owner Email_ray.mileo@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_richard.drolet@turbonomic.com",
+            "value": "auto_owner_Owner Email_richard.drolet@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_richard.stern@turbonomic.com",
+            "value": "auto_owner_Owner Email_richard.stern@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_richard.trickey@turbonomic.com",
+            "value": "auto_owner_Owner Email_richard.trickey@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_robert.cooper@turbonomic.com",
+            "value": "auto_owner_Owner Email_robert.cooper@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_robert.coppersmith@turbonomic.com",
+            "value": "auto_owner_Owner Email_robert.coppersmith@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_robert.young@turbonomic.com",
+            "value": "auto_owner_Owner Email_robert.young@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ron.whitling@turbonomic.com",
+            "value": "auto_owner_Owner Email_ron.whitling@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_russ.erbe@turbonomic.com",
+            "value": "auto_owner_Owner Email_russ.erbe@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ryan.geyer@turbonomic.com",
+            "value": "auto_owner_Owner Email_ryan.geyer@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ryan.stone@turbonomic.com",
+            "value": "auto_owner_Owner Email_ryan.stone@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_ryan.strehlke@turbonomic.com",
+            "value": "auto_owner_Owner Email_ryan.strehlke@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_safa.baha@turbonomic.com",
+            "value": "auto_owner_Owner Email_safa.baha@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_sergey.omelaenko@turbonomic.com",
+            "value": "auto_owner_Owner Email_sergey.omelaenko@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_shawn.madden@turbonomic.com",
+            "value": "auto_owner_Owner Email_shawn.madden@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_shravan.sriram@turbonomic.com",
+            "value": "auto_owner_Owner Email_shravan.sriram@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_stephen.wagner@turbonomic.com",
+            "value": "auto_owner_Owner Email_stephen.wagner@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_steven.burak@turbonomic.com",
+            "value": "auto_owner_Owner Email_steven.burak@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_svetlana.snegour@turbonomic.com",
+            "value": "auto_owner_Owner Email_svetlana.snegour@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_tess.jewkes@turbonomic.com",
+            "value": "auto_owner_Owner Email_tess.jewkes@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_tim.sweetz@turbonomic.com",
+            "value": "auto_owner_Owner Email_tim.sweetz@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_tony.meigides@turbonomic.com",
+            "value": "auto_owner_Owner Email_tony.meigides@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_victor.wokili@turbonomic.com",
+            "value": "auto_owner_Owner Email_victor.wokili@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "auto_owner_Owner Email_will.searle@turbonomic.com",
+            "value": "auto_owner_Owner Email_will.searle@turbonomic.com"
+          },
+          {
+            "selected": false,
+            "text": "critical-ARM-application",
+            "value": "critical-ARM-application"
+          },
+          {
+            "selected": false,
+            "text": "CWOM",
+            "value": "CWOM"
+          },
+          {
+            "selected": false,
+            "text": "Daintree",
+            "value": "Daintree"
+          },
+          {
+            "selected": false,
+            "text": "DataBridge",
+            "value": "DataBridge"
+          },
+          {
+            "selected": false,
+            "text": "DotNet Test",
+            "value": "DotNet Test"
+          },
+          {
+            "selected": false,
+            "text": "EStore",
+            "value": "EStore"
+          },
+          {
+            "selected": false,
+            "text": "JBOSS Application",
+            "value": "JBOSS Application"
+          },
+          {
+            "selected": false,
+            "text": "LexCorp WebMail",
+            "value": "LexCorp WebMail"
+          },
+          {
+            "selected": false,
+            "text": "Mobile-Banking-Transfers-App",
+            "value": "Mobile-Banking-Transfers-App"
+          },
+          {
+            "selected": false,
+            "text": "Monteverde",
+            "value": "Monteverde"
+          },
+          {
+            "selected": false,
+            "text": "OpenCart",
+            "value": "OpenCart"
+          },
+          {
+            "selected": false,
+            "text": "OpenCart-App",
+            "value": "OpenCart-App"
+          },
+          {
+            "selected": false,
+            "text": "PT App",
+            "value": "PT App"
+          },
+          {
+            "selected": false,
+            "text": "PT Cloud App",
+            "value": "PT Cloud App"
+          },
+          {
+            "selected": false,
+            "text": "PT DotNet",
+            "value": "PT DotNet"
+          },
+          {
+            "selected": false,
+            "text": "PT NodeJS App",
+            "value": "PT NodeJS App"
+          },
+          {
+            "selected": false,
+            "text": "Shopizer",
+            "value": "Shopizer"
+          },
+          {
+            "selected": false,
+            "text": "ShopizerTestApp",
+            "value": "ShopizerTestApp"
+          },
+          {
+            "selected": false,
+            "text": "Shopping-Cart-App",
+            "value": "Shopping-Cart-App"
+          },
+          {
+            "selected": false,
+            "text": "Sonoran",
+            "value": "Sonoran"
+          },
+          {
+            "selected": false,
+            "text": "Standalone Node.js",
+            "value": "Standalone Node.js"
+          },
+          {
+            "selected": false,
+            "text": "t8c-Endre-Dynatrace",
+            "value": "t8c-Endre-Dynatrace"
+          },
+          {
+            "selected": false,
+            "text": "TestCase/OpenCart",
+            "value": "TestCase/OpenCart"
+          },
+          {
+            "selected": false,
+            "text": "Travel",
+            "value": "Travel"
+          },
+          {
+            "selected": true,
+            "text": "Turbonomic [turbonomic]",
+            "value": "Turbonomic [turbonomic]"
+          },
+          {
+            "selected": false,
+            "text": "Weblogic Lab",
+            "value": "Weblogic Lab"
+          }
+        ],
+        "query": "select e.name from entity e where e.\"type\" = 'BUSINESS_APPLICATION' order by e.name",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "73624108447089",
+          "value": "73624108447089"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select e.oid from entity e where e.\"type\" = 'BUSINESS_APPLICATION' and e.name IN ('${APPLICATION_NAME}')",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": "Application OID",
+        "multi": false,
+        "name": "APPLICATION_OID",
+        "options": [
+          {
+            "selected": true,
+            "text": "73624108447089",
+            "value": "73624108447089"
+          }
+        ],
+        "query": "select e.oid from entity e where e.\"type\" = 'BUSINESS_APPLICATION' and e.name IN ('${APPLICATION_NAME}')",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Applications Performance",
+  "uid": "vvaQFw6Mk",
+  "version": 9
+}
