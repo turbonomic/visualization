@@ -13,7 +13,7 @@
 ######   5. Once Selected you will see the Import will allow you to change the Name, Grafana Folder Location and UID, Change as needed.
 ######    ![Screen Shot 2021-06-09 at 11 06 48 AM](https://user-images.githubusercontent.com/84854976/121381825-0d9f3a80-c914-11eb-9c38-fb892bce5e47.png)
 
-## Import as test (.json)
+## Import as text (.json)
 
 ######   1. Login to Turbonomic T8 / CWOM 
 ######   2. Click on Dashboards > Manage
@@ -26,3 +26,4 @@
 ######   5. Once Copied, Paste the entirety of the .json report into the "Import via panel json" > [Blue] "Load" Button
 ######    <img width="1840" alt="Screen Shot 2021-06-09 at 2 12 56 PM" src="https://user-images.githubusercontent.com/84854976/121407769-aaba9d00-c92d-11eb-9703-a02d02299a8b.png">
 ######   6. Once Selected you will see the Import will allow you to change the Name, Grafana Folder Location and UID, Change as needed.
+######    ![Screen Shot 2021-06-09 at 11 06 48 AM](https://user-images.githubusercontent.com/84854976/121381825-0d9f3a80-c914-11eb-9c38-fb892bce5e47.png)
