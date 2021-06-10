@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 74,
-  "iteration": 1623248451004,
+  "iteration": 1623264460697,
   "links": [],
   "panels": [
     {
@@ -723,7 +723,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:776",
           "format": "iops",
           "label": null,
           "logBase": 2,
@@ -732,7 +731,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:777",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -957,6 +955,7 @@
           },
           "displayName": "$__cell_0",
           "mappings": [],
+          "max": 100,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -1089,6 +1088,7 @@
           },
           "displayName": "$__cell_0",
           "mappings": [],
+          "max": 100,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -1617,12 +1617,22 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
-            "All"
+            "Datacenter-dc9",
+            "DC14",
+            "Development67",
+            "Development DC2",
+            "Cloud",
+            "Datacenter-dc18"
           ],
           "value": [
-            "$__all"
+            "73646555296465",
+            "73644888577857",
+            "73644889176529",
+            "73750169056240",
+            "73644888429841",
+            "73644889043393"
           ]
         },
         "datasource": "Turbo Timescale",
@@ -1648,7 +1658,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -1679,7 +1689,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1699,5 +1709,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "plTScXjGz",
-  "version": 6
+  "version": 8
 }
