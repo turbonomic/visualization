@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 2,
   "id": 95,
-  "iteration": 1623184098210,
+  "iteration": 1623318678574,
   "links": [
     {
       "icon": "bolt",
@@ -51,7 +51,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 3,
         "x": 0,
         "y": 0
@@ -81,6 +81,12 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Number of Actions",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
       "type": "stat"
     },
     {
@@ -127,7 +133,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 193
+                "value": 229
               }
             ]
           },
@@ -142,19 +148,37 @@
                 "value": 210
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 238
+              }
+            ]
           }
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 21,
         "x": 3,
         "y": 0
       },
       "id": 4,
       "options": {
+        "frameIndex": 1,
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Description"
+          }
+        ]
       },
       "pluginVersion": "7.3.8",
       "targets": [
@@ -163,8 +187,34 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  TO_CHAR(recommendation_time, 'dd/mm/yyyy hh:mm:ss') AS \"Recommendation Time\",\n  e.name as \"Component Name\",\n  CASE pa.category\n    WHEN 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN 'PREVENTION' THEN 'Prevention'\n    WHEN 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN 'COMPLIANCE' THEN 'Compliance' END as \"Category\",\n  description AS \"Description\"\nFROM pending_action pa\nJOIN entity e ON e.oid = pa.target_entity_id\nWHERE\n  target_entity_id IN\n  (\n    SELECT\n      DISTINCT e.oid\n    FROM scope s\n    JOIN entity e ON s.scoped_oid = e.oid\n    WHERE\n      s.seed_oid IN (${APPLICATION_OID})\n    AND e.type <> 'GROUP'\n  )\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  TO_CHAR(recommendation_time, 'dd/mm/yyyy hh:mm:ss') AS \"Recommendation Time\",\n  e.name as \"Component Name\",\n  --e.type as \"type\",\n  CASE pa.category\n    WHEN 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN 'PREVENTION' THEN 'Prevention'\n    WHEN 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN 'COMPLIANCE' THEN 'Compliance' END as \"Category\",\n  pa.\"type\" as \"Type\",\n  pa.description AS \"Description\"\nFROM pending_action pa\nJOIN entity e ON e.oid = pa.target_entity_id\nWHERE\n  pa.target_entity_id IN\n  (\n    SELECT\n      DISTINCT s.scoped_oid\n    FROM scope s\n    --JOIN entity e ON s.scoped_oid = e.oid\n    WHERE\n      s.seed_oid IN (${APPLICATION_OID})\n    --AND e.type <> 'GROUP'\n    AND s.finish > now()\n  )\nORDER BY 1 DESC",
           "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  TO_CHAR(recommendation_time, 'dd/mm/yyyy hh:mm:ss') AS \"Recommendation Time\",\n  e.name as \"Component Name\",\n  --e.type as \"type\",\n  CASE pa.category\n    WHEN 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN 'PREVENTION' THEN 'Prevention'\n    WHEN 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN 'COMPLIANCE' THEN 'Compliance' END as \"Category\",\n  pa.\"type\" as \"Type\",\n  pa.description AS \"Description\"\nFROM pending_action pa\nJOIN entity e ON e.oid = pa.target_entity_id\nWHERE\n  pa.target_entity_id IN\n  (\n    select s.scoped_oid\n    from \"scope\" s \n    where s.seed_oid in (\n      select s.scoped_oid\n\t    from \"scope\" s \n\t    where s.scoped_type = 'PHYSICAL_MACHINE'\n\t    and s.seed_oid IN (${APPLICATION_OID})\n\t    and s.finish > now()\n\t  )\n  and s.scoped_type = 'VIRTUAL_MACHINE'\n  and s.finish > now()\n  )\nAND pa.type IN ('MOVE', 'PROVISION', 'SUSPEND')\nAND ('${INCLUDE_NEIGHBORS}' = 'Yes')\nORDER BY 1 DESC",
+          "refId": "B",
           "select": [
             [
               {
@@ -188,6 +238,12 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Actions",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
       "type": "table"
     },
     {
@@ -205,13 +261,13 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 10,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 6
       },
       "hiddenSeries": false,
-      "id": 2,
+      "id": 14,
       "legend": {
         "avg": true,
         "current": false,
@@ -313,6 +369,684 @@
       }
     },
     {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finish Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 14
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Component Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 12,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Business Transactions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finish Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 14
+      },
+      "id": 12,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DISTINCT e.name as \"Component Name\"\n  --e.\"type\" as \"Component Type\",\n  --TO_CHAR(s.start, 'dd/mm/yyyy hh:mm:ss') as \"Start Time\",\n  --TO_CHAR(s.finish, 'dd/mm/yyyy hh:mm:ss') as \"Finish Time\"\nFROM scope s\nJOIN entity e ON s.scoped_oid = e.oid\nWHERE\n  (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n  AND s.seed_oid IN (${APPLICATION_OID})\n  AND e.type <> 'GROUP'\n  AND e.type = 'BUSINESS_TRANSACTION'\nORDER BY 1 ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Business Transactions",
+      "type": "table"
+    },
+    {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finish Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 8,
+        "y": 14
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Component Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 9,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Services",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finish Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 14
+      },
+      "id": 9,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DISTINCT e.name as \"Component Name\"\n  --e.\"type\" as \"Component Type\",\n  --TO_CHAR(s.start, 'dd/mm/yyyy hh:mm:ss') as \"Start Time\",\n  --TO_CHAR(s.finish, 'dd/mm/yyyy hh:mm:ss') as \"Finish Time\"\nFROM scope s\nJOIN entity e ON s.scoped_oid = e.oid\nWHERE\n  (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n  AND s.seed_oid IN (${APPLICATION_OID})\n  AND e.type <> 'GROUP'\n  AND e.type = 'SERVICE'\nORDER BY 1 ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Services",
+      "type": "table"
+    },
+    {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finish Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 16,
+        "y": 14
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Component Name$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 10,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Application Components",
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 314
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Start Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Finish Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 14
+      },
+      "id": 10,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DISTINCT e.name as \"Component Name\"\n  --e.\"type\" as \"Component Type\",\n  --TO_CHAR(s.start, 'dd/mm/yyyy hh:mm:ss') as \"Start Time\",\n  --TO_CHAR(s.finish, 'dd/mm/yyyy hh:mm:ss') as \"Finish Time\"\nFROM scope s\nJOIN entity e ON s.scoped_oid = e.oid\nWHERE\n  (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n  AND s.seed_oid IN (${APPLICATION_OID})\n  AND e.type <> 'GROUP'\n  AND e.type = 'APPLICATION_COMPONENT'\nORDER BY 1 ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Application Components",
+      "type": "table"
+    },
+    {
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
@@ -354,7 +1088,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 22
       },
       "id": 7,
       "options": {
@@ -368,7 +1102,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.name as \"Component Name\",\n  e.\"type\" as \"Component Type\",\n  TO_CHAR(s.start, 'dd/mm/yyyy hh:mm:ss') as \"Start Time\",\n  TO_CHAR(s.finish, 'dd/mm/yyyy hh:mm:ss') as \"Finish Time\"\nFROM scope s\nJOIN entity e ON s.scoped_oid = e.oid\nWHERE\n  --s.start > $__timeFrom()\n  -- s.finish < $__timeTo()\n  s.seed_oid IN (${APPLICATION_OID})\n  AND e.type <> 'GROUP'\nORDER BY 2 ASC",
+          "rawSql": "SELECT\n  DISTINCT e.name as \"Component Name\",\n  e.\"type\" as \"Component Type\",\n  TO_CHAR(s.start, 'dd/mm/yyyy hh:mm:ss') as \"Start Time\",\n  TO_CHAR(s.finish, 'dd/mm/yyyy hh:mm:ss') as \"Finish Time\"\nFROM scope s\nJOIN entity e ON s.scoped_oid = e.oid\nWHERE\n  (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n  AND s.seed_oid IN (${APPLICATION_OID})\n  AND e.type <> 'GROUP'\nORDER BY 2 ASC",
           "refId": "A",
           "select": [
             [
@@ -392,7 +1126,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Application Components",
+      "title": "Detailed Information",
       "type": "table"
     }
   ],
@@ -405,8 +1139,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "Turbonomic [turbonomic]",
-          "value": "Turbonomic [turbonomic]"
+          "text": "Mobile-Banking-Transfers-App",
+          "value": "Mobile-Banking-Transfers-App"
         },
         "datasource": "Turbo Timescale",
         "definition": "select e.name from entity e where e.\"type\" = 'BUSINESS_APPLICATION' order by e.name",
@@ -928,7 +1662,7 @@
             "value": "LexCorp WebMail"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "Mobile-Banking-Transfers-App",
             "value": "Mobile-Banking-Transfers-App"
           },
@@ -1008,7 +1742,7 @@
             "value": "Travel"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "Turbonomic [turbonomic]",
             "value": "Turbonomic [turbonomic]"
           },
@@ -1033,8 +1767,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "73624108447089",
-          "value": "73624108447089"
+          "text": "73704202783701",
+          "value": "73704202783701"
         },
         "datasource": "Turbo Timescale",
         "definition": "select e.oid from entity e where e.\"type\" = 'BUSINESS_APPLICATION' and e.name IN ('${APPLICATION_NAME}')",
@@ -1047,8 +1781,8 @@
         "options": [
           {
             "selected": true,
-            "text": "73624108447089",
-            "value": "73624108447089"
+            "text": "73704202783701",
+            "value": "73704202783701"
           }
         ],
         "query": "select e.oid from entity e where e.\"type\" = 'BUSINESS_APPLICATION' and e.name IN ('${APPLICATION_NAME}')",
@@ -1061,16 +1795,46 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "No",
+          "value": "No"
+        },
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Include Neighbor Entities",
+        "multi": false,
+        "name": "INCLUDE_NEIGHBORS",
+        "options": [
+          {
+            "selected": false,
+            "text": "Yes",
+            "value": "Yes"
+          },
+          {
+            "selected": true,
+            "text": "No",
+            "value": "No"
+          }
+        ],
+        "query": "Yes,No",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Applications Performance",
   "uid": "vvaQFw6Mk",
-  "version": 9
+  "version": 14
 }
