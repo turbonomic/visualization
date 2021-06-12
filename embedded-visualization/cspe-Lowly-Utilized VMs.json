@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 77,
-  "iteration": 1621371540674,
+  "id": 98,
+  "iteration": 1623423924758,
   "links": [],
   "panels": [
     {
@@ -25,7 +25,7 @@
         "defaults": {
           "custom": {
             "align": null,
-            "filterable": false
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -92,7 +92,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  e.name as \"VM Name\",\n  max(mvcpu.utilization)*100 as \"Max vCPU Utilization (%)\",\n  max(mvmem.utilization)*100 as \"Max vMem Utilization (%)\"\nfrom metric mvcpu\njoin metric mvmem on mvcpu.entity_oid = mvmem.entity_oid AND mvmem.time = mvcpu.time\njoin entity e on e.oid = mvmem.entity_oid and e.oid = mvcpu.entity_oid\nwhere\n  $__timeFilter(mvcpu.\"time\") AND\n  $__timeFilter(mvmem.\"time\") AND\n  mvcpu.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvmem.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvcpu.\"type\" = 'VCPU' AND\n  mvmem.\"type\" = 'VMEM' AND\n  mvcpu.utilization IS NOT NULL AND\n  mvmem.utilization IS NOT NULL\nGROUP BY e.name, mvcpu.\"type\", mvmem.\"type\"\nHAVING max(mvcpu.utilization)*100 <= ${MAXIMUM_VCPU} AND max(mvmem.utilization)*100 <= ${MAXIMUM_VMEM}\nORDER BY \"VM Name\"",
+          "rawSql": "select\n  e.name as \"VM Name\",\n  max(mvcpu.utilization)*100 as \"Max vCPU Utilization (%)\",\n  max(mvmem.utilization)*100 as \"Max vMem Utilization (%)\"\nfrom metric mvcpu\njoin metric mvmem on mvcpu.entity_oid = mvmem.entity_oid AND mvmem.time = mvcpu.time\njoin entity e on e.oid = mvmem.entity_oid and e.oid = mvcpu.entity_oid\njoin scope s on s.scoped_oid = e.oid AND s.scoped_type = 'VIRTUAL_MACHINE' AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(mvcpu.\"time\") AND\n  $__timeFilter(mvmem.\"time\") AND\n  mvcpu.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvmem.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvcpu.\"type\" = 'VCPU' AND\n  mvmem.\"type\" = 'VMEM' AND\n  mvcpu.utilization IS NOT NULL AND\n  mvmem.utilization IS NOT NULL AND\n  e.name like '%${VM_FILTER}%'\nGROUP BY e.name, mvcpu.\"type\", mvmem.\"type\"\nHAVING max(mvcpu.utilization)*100 <= ${MAXIMUM_VCPU} AND max(mvmem.utilization)*100 <= ${MAXIMUM_VMEM}\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -128,8 +128,70 @@
   "templating": {
     "list": [
       {
+        "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select name from entity e where \"type\" = 'GROUP' and attrs->'member_types' ? 'VIRTUAL_MACHINE' and last_seen > now() order by name",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "VM Group(s)",
+        "multi": true,
+        "name": "GROUP_NAME",
+        "options": [],
+        "query": "select name from entity e where \"type\" = 'GROUP' and attrs->'member_types' ? 'VIRTUAL_MACHINE' and last_seen > now() order by name",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select oid from entity where name IN (${GROUP_NAME:sqlstring}) and last_seen > now()",
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "GROUP_OID",
+        "options": [],
+        "query": "select oid from entity where name IN (${GROUP_NAME:sqlstring}) and last_seen > now()",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
           "text": "10",
           "value": "10"
         },
@@ -150,7 +212,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "10",
           "value": "10"
         },
@@ -168,6 +230,27 @@
         "query": "10",
         "skipUrlSync": false,
         "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "error": null,
+        "hide": 0,
+        "label": "VM Name Filter",
+        "name": "VM_FILTER",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },
@@ -177,7 +260,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Lowly Utilized VMs",
-  "uid": "XquBcW3Gz",
-  "version": 2
+  "title": "Lowly Utilized VMs 2",
+  "uid": "cAwM4RRnz",
+  "version": 8
 }
