@@ -2,7 +2,7 @@
 ## Note: Embedded Reporting must be enabled and configured.
 ## Import Procedure :
 ## Import as a File (.json)
-######   1. Login to Turbonomic T8 / CWOM 
+######   1. Login to Turbonomic T8 / CWOM > Reporting
 ######   2. Click on Dashboards > Manage
 ######    ![Screen Shot 2021-06-09 at 11 05 59 AM](https://user-images.githubusercontent.com/84854976/121380793-2c510180-c913-11eb-9f1c-4bfcbc782b19.png)
 ######    ![Screen Shot 2021-06-09 at 11 06 12 AM](https://user-images.githubusercontent.com/84854976/121380890-4094fe80-c913-11eb-8050-5c2ace869e85.png)
@@ -15,7 +15,7 @@
 
 ## Import as text (.json)
 
-######   1. Login to Turbonomic T8 / CWOM 
+######   1. Login to Turbonomic T8 / CWOM > Reporting
 ######   2. Click on Dashboards > Manage
 ######    ![Screen Shot 2021-06-09 at 11 05 59 AM](https://user-images.githubusercontent.com/84854976/121380793-2c510180-c913-11eb-9f1c-4bfcbc782b19.png)
 ######    ![Screen Shot 2021-06-09 at 11 06 12 AM](https://user-images.githubusercontent.com/84854976/121380890-4094fe80-c913-11eb-8050-5c2ace869e85.png)
