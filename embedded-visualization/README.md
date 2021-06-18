@@ -1,6 +1,7 @@
-### Turbonomic Inc. | Professional Services | Embedded Reporting 
-#### Embedded Reporting Visualization Library
+### Turbonomic Inc. | Professional Services | Embedded Reporting [Embedded Reporting Visualization Library]
 #### Note: Embedded Reporting must be enabled and configured.
+####
+####
 #### Import Procedure :
 #### Import as a File (.json)
 ######   1. Login to Turbonomic T8 / CWOM > Reporting
