@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 80,
-  "iteration": 1624532846311,
+  "iteration": 1624908907889,
   "links": [],
   "panels": [
     {
@@ -1152,11 +1152,12 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
-            "HawthorneSales/SEDEMO"
+            "All"
           ],
           "value": [
-            "HawthorneSales/SEDEMO"
+            "$__all"
           ]
         },
         "datasource": "Turbo Timescale",
@@ -1260,5 +1261,5 @@
   "timezone": "",
   "title": "Pending Resize Actions Summary",
   "uid": "3NU2CIqGk",
-  "version": 8
+  "version": 9
 }

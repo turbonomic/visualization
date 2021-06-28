@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 103,
-  "iteration": 1624530251729,
+  "iteration": 1624909221448,
   "links": [],
   "panels": [
     {
@@ -1151,7 +1151,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -1183,12 +1183,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Turbo Timescale",
         "definition": "select oid from entity e\nwhere e.\"type\" = 'GROUP'\nand e.attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\nand e.name IN (${GROUP_NAME:sqlstring})\norder by e.name",
@@ -1212,7 +1208,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10",
           "value": "10"
         },
@@ -1233,9 +1229,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "10",
-          "value": "10"
+          "selected": false,
+          "text": "20",
+          "value": "20"
         },
         "error": null,
         "hide": 0,
@@ -1244,11 +1240,11 @@
         "options": [
           {
             "selected": true,
-            "text": "10",
-            "value": "10"
+            "text": "20",
+            "value": "20"
           }
         ],
-        "query": "10",
+        "query": "20",
         "skipUrlSync": false,
         "type": "textbox"
       }
@@ -1264,5 +1260,5 @@
   "timezone": "",
   "title": "Pending Resize Actions Summary by VM Group",
   "uid": "tykl2kknz",
-  "version": 6
+  "version": 9
 }
