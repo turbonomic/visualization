@@ -1,13 +1,10 @@
 ### Datacenter and Cluster | Infrastructure | Dashboard
-#### Build for On-Prem Use Cases
+#### Build for On-Prem Use Cases | With Utilization and Stats Tables
  ###### 1. Virtual Machine Counter (Timescale)
- ###### 2. Datacenter Compute Stats
- ###### 3. Cluster Compute Stats
- ###### 4. Datacenter Storage Stats
- ###### 5. Cluster Storage Stats
- ###### 6. IOPS / Latency TimeSeries Stats
- ###### 7. Utilization Tables
+ ###### 2. Datacenter Compute Stats | Cluster Compute Stats
+ ###### 3. Datacenter Storage Stats | Cluster Storage Stats
+ ###### 4. IOPS / Latency TimeSeries Stats
 
-### <img width="1917" alt="Screen Shot 2021-06-29 at 4 22 17 PM" src="https://user-images.githubusercontent.com/84854976/123863022-0bb70e80-d8f7-11eb-91a0-7dea9b9730d4.png">
-### <img width="1917" alt="Screen Shot 2021-06-29 at 4 22 43 PM" src="https://user-images.githubusercontent.com/84854976/123863049-14a7e000-d8f7-11eb-9698-eecccc9d2c7f.png">
-### <img width="1917" alt="Screen Shot 2021-06-29 at 4 24 21 PM" src="https://user-images.githubusercontent.com/84854976/123863160-3b661680-d8f7-11eb-85fb-458adbd0c5eb.png"> 
+### <img width="1917" alt="Screen Shot 2021-06-29 at 5 34 00 PM" src="https://user-images.githubusercontent.com/84854976/123870719-c13a8f80-d900-11eb-85bd-e7b20a46ed31.png">
+### <img width="1917" alt="Screen Shot 2021-06-29 at 5 34 22 PM" src="https://user-images.githubusercontent.com/84854976/123870740-c7307080-d900-11eb-94a7-1748cd34e65b.png">
+### <img width="1917" alt="Screen Shot 2021-06-29 at 5 34 07 PM" src="https://user-images.githubusercontent.com/84854976/123870755-cc8dbb00-d900-11eb-81e2-0f448dd47072.png">
