@@ -1862,7 +1862,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 200
+                "value": 235
               }
             ]
           },
@@ -1886,7 +1886,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 277
+                "value": 260
               }
             ]
           },
@@ -1898,7 +1898,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 310
+                "value": 281
               }
             ]
           },
@@ -1910,7 +1910,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 286
+                "value": 277
               }
             ]
           },
@@ -1922,7 +1922,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 280
+                "value": 266
               }
             ]
           },
@@ -1934,7 +1934,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 233
+                "value": 258
               }
             ]
           },
@@ -1946,7 +1946,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 296
+                "value": 353
               }
             ]
           },
@@ -1958,7 +1958,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 341
+                "value": 375
               }
             ]
           },
@@ -2231,5 +2231,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "v-wNa3eMz",
-  "version": 57
+  "version": 58
 }
