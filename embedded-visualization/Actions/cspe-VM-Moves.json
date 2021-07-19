@@ -1,0 +1,143 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 65,
+  "iteration": 1626728293463,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Action Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 565
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  evm.name as \"Entity Name\",\n  ec.name as \"Cluster Name\",\n  count(evm.name) as \"Number of moves\"\nFROM completed_action ca\nJOIN entity evm ON ca.target_entity_id = evm.oid\nJOIN scope s on s.seed_oid = evm.oid and s.scoped_type = 'COMPUTE_CLUSTER'\nJOIN entity ec on ec.oid = s.scoped_oid\nWHERE\n  $__timeFilter(ca.acceptance_time)\n  AND evm.type::text = 'VIRTUAL_MACHINE'\n  AND ca.type::text = 'MOVE'\n  AND ca.final_state::text = 'SUCCEEDED'\nGROUP BY evm.name, ec.name\nHAVING count(evm.name) > coalesce(${VM_MOVE_THRESHOLD},0)\nORDER BY evm.name ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "VM Moves",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "3",
+          "value": "3"
+        },
+        "error": null,
+        "hide": 0,
+        "label": "Minimum VM Moves",
+        "name": "VM_MOVE_THRESHOLD",
+        "options": [
+          {
+            "selected": true,
+            "text": "3",
+            "value": "3"
+          }
+        ],
+        "query": "3",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "VM Moves",
+  "uid": "LQLGzWZnz",
+  "version": 3
+}

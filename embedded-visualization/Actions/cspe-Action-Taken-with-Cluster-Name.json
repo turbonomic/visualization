@@ -1,0 +1,144 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 105,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Execution Message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1607
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Risk Type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 196
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date Created"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 249
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT distinct on (ca.acceptance_time)\n  TO_CHAR(ca.recommendation_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Created\",\n  evm.name as \"Entity Name\",\n  ec.name as \"Cluster Name\",\n  initcap(replace(evm.type::text, '_', ' ')) as \"Entity Type\",\n  ca.description as \"Action Description\",\n  CASE\n    WHEN ca.category = 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN ca.category = 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN ca.category = 'PREVENTION' THEN 'Prevention'\n    WHEN ca.category = 'COMPLIANCE' THEN 'Compliance'\n  END as \"Risk Type\",\n  initcap(ca.type::text) as \"Type\",\n  initcap(ca.final_state::text) as \"Execution State\",\n  TO_CHAR(ca.acceptance_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Executed\",\n  ca.final_message as \"Execution Message\"\nFROM completed_action ca\nJOIN entity evm ON ca.target_entity_id = evm.oid\nJOIN scope s on s.seed_oid = evm.oid and s.scoped_type = 'COMPUTE_CLUSTER'\nJOIN entity ec on ec.oid = s.scoped_oid\nWHERE\n  $__timeFilter(ca.acceptance_time)\n--GROUP BY \"type\"\nORDER BY ca.acceptance_time ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Completed Actions",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Actions Taken with Cluster Name",
+  "uid": "DkrXsiWnk",
+  "version": 2
+}
