@@ -1,4 +1,4 @@
-### Here is a few sample screen shots
+### Examples
 #### You get CPU, Memory and Storage in one Dashboard
 #### You can also change the Threshold for CPU and Memory as well to have that changed as needed
 #### You can also scope to individual Data Centers and Clusters
