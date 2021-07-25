@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 65,
-  "iteration": 1626728293463,
+  "iteration": 1626896619209,
   "links": [],
   "panels": [
     {
@@ -75,7 +75,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  evm.name as \"Entity Name\",\n  ec.name as \"Cluster Name\",\n  count(evm.name) as \"Number of moves\"\nFROM completed_action ca\nJOIN entity evm ON ca.target_entity_id = evm.oid\nJOIN scope s on s.seed_oid = evm.oid and s.scoped_type = 'COMPUTE_CLUSTER'\nJOIN entity ec on ec.oid = s.scoped_oid\nWHERE\n  $__timeFilter(ca.acceptance_time)\n  AND evm.type::text = 'VIRTUAL_MACHINE'\n  AND ca.type::text = 'MOVE'\n  AND ca.final_state::text = 'SUCCEEDED'\nGROUP BY evm.name, ec.name\nHAVING count(evm.name) > coalesce(${VM_MOVE_THRESHOLD},0)\nORDER BY evm.name ASC",
+          "rawSql": "SELECT\n  evm.name as \"Entity Name\",\n  ec.name as \"Cluster Name\",\n  count(evm.name) as \"Number of Moves\",\n  TO_CHAR(max(ca.acceptance_time), 'dd/mm/yyyy hh:mm:ss') as \"Last Move Date\"\nFROM completed_action ca\nJOIN entity evm ON ca.target_entity_id = evm.oid\nJOIN scope s on s.seed_oid = evm.oid and s.scoped_type = 'COMPUTE_CLUSTER'\nJOIN entity ec on ec.oid = s.scoped_oid\nWHERE\n  $__timeFilter(ca.acceptance_time)\n  AND evm.type::text = 'VIRTUAL_MACHINE'\n  AND ca.type::text = 'MOVE'\n  AND ca.final_state::text = 'SUCCEEDED'\nGROUP BY evm.name, ec.name\nHAVING count(evm.name) > coalesce(${VM_MOVE_THRESHOLD},0)\nORDER BY evm.name ASC",
           "refId": "A",
           "select": [
             [
@@ -139,5 +139,5 @@
   "timezone": "",
   "title": "VM Moves",
   "uid": "LQLGzWZnz",
-  "version": 3
+  "version": 6
 }
