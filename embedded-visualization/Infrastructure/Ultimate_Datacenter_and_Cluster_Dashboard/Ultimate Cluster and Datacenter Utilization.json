@@ -12,12 +12,12 @@
       }
     ]
   },
-  "description": "v.4.4.2",
+  "description": "v.4.4.3",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
   "id": 75,
-  "iteration": 1625058171552,
+  "iteration": 1627416608113,
   "links": [],
   "panels": [
     {
@@ -33,11 +33,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgb(171, 242, 87)",
+                "color": "rgb(122, 255, 0)",
                 "value": null
               },
               {
-                "color": "rgb(251, 33, 58)",
+                "color": "red",
                 "value": 80
               }
             ]
@@ -1648,6 +1648,124 @@
             "mode": "absolute",
             "steps": [
               {
+                "color": "light-yellow",
+                "value": null
+              },
+              {
+                "color": "rgb(154, 242, 73)",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "-- ! Old Quick Subract Query\n\n/*\nselect \n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) as \"Previous Host Count\", count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Current Host Count\",\n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) - count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Deleted Host Count\"\nfrom metric\njoin scope_to($__timeFrom(), $__timeTo(), 'PHYSICAL_MACHINE', ARRAY[$Cluster]::bigint[], false) s on s.oid = metric.entity_oid\n  where $__timeFilter(time)\n  AND entity_type = 'PHYSICAL_MACHINE'\n  AND time BETWEEN s.from_time AND s.to_time\n  AND type = 'STORAGE_AMOUNT'  */\n  \n  with monthly_Hosts as (\n    select date_trunc('hour', time) as current\n          ,entity_oid as hosts_oid\n      FROM (\n        select time\n              ,entity_oid\n          from extractor.metric\n         WHERE entity_type = 'PHYSICAL_MACHINE'\n           AND type = 'CPU'\n           AND $__timeFilter(time)\n      ) as metric_data\n     GROUP BY 1, 2\n),\nadded_and_removed as (\n    SELECT COUNT(DISTINCT hosts_oid) FILTER (where current = (select max(current) from monthly_Hosts)) as \"Hosts Total Count\",\n           COUNT(DISTINCT hosts_oid) FILTER (WHERE hosts_oid NOT IN (SELECT DISTINCT hosts_oid\n                                                                 FROM monthly_Hosts m2\n                                                               WHERE m2.current = (select min(current) from monthly_Hosts))) as \"Hosts Added\"\n          ,COUNT(DISTINCT hosts_oid) FILTER (WHERE hosts_oid NOT IN (SELECT DISTINCT hosts_oid\n                                                                 FROM monthly_Hosts m2\n                                                                WHERE m2.current = (select max(current) from monthly_Hosts))) as \"Hosts Removed\"\n      FROM monthly_Hosts m1\n)\nselect * from added_and_removed\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Scoped Host Counter (within Timescale)",
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Hosts Delta",
+            "binary": {
+              "left": "Hosts Added",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "Hosts Removed"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Host Total Count": 3,
+              "Hosts Added": 0,
+              "Hosts Delta": 2,
+              "Hosts Removed": 1
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
                 "color": "green",
                 "value": null
               },
@@ -1702,7 +1820,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 74
       },
       "id": 2,
       "options": {
@@ -1786,7 +1904,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 82
+        "y": 85
       },
       "id": 10,
       "options": {
@@ -1980,7 +2098,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 95
       },
       "id": 32,
       "options": {
@@ -2089,7 +2207,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 103
+        "y": 106
       },
       "id": 35,
       "options": {
@@ -2149,7 +2267,6 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
           "text": [
             "All"
           ],
@@ -2211,7 +2328,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2231,5 +2348,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "v-wNa3eMz",
-  "version": 58
+  "version": 76
 }
