@@ -1,9 +1,10 @@
 ### Datacenter and Cluster | Infrastructure | Dashboard
 #### Build for On-Prem Use Cases | With Utilization and Stats Tables
- ###### 1. Virtual Machine Counter (Timescale)
- ###### 2. Datacenter Compute Stats | Cluster Compute Stats
- ###### 3. Datacenter Storage Stats | Cluster Storage Stats
- ###### 4. IOPS | Latency (TimeSeries Stats)
+ ###### 1. Virtual Machine Counter  (Timescale)
+ ###### 2. Physical Machine Counter (Timescale)
+ ###### 3. Datacenter Compute Stats | Cluster Compute Stats
+ ###### 4. Datacenter Storage Stats | Cluster Storage Stats
+ ###### 5. IOPS | Latency (TimeSeries Stats)
 
 ### <img width="1867" alt="Screen Shot 2021-07-27 at 4 15 32 PM" src="https://user-images.githubusercontent.com/84854976/127222013-90ff37b3-44ee-4ee3-bf9b-0cebaf017d84.png">
 ### <img width="1867" alt="Screen Shot 2021-07-27 at 4 16 10 PM" src="https://user-images.githubusercontent.com/84854976/127222044-517f82c8-50be-424a-8bab-b2d4ca591fc7.png">
