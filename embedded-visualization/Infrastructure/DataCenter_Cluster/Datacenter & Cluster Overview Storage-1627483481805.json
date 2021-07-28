@@ -1,0 +1,389 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 69,
+  "iteration": 1627483411403,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "$DB",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# Hosts"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 73
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# VMs"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Location"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Datacenter"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 108
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 123
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Utilization"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 128
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "N-1 MEM Threshold %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 146
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Storage.*|.*Provisioned.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "gbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*%"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "%"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Used %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Used"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Provisioned"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 137
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Capacity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Free %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 108
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# Datastores"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 108
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# Wasted Files"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 124
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with clusters_by_datacenter as (\n    SELECT DISTINCT e.oid as cluster_oid\n      FROM entity e\n      JOIN scope s on (s.seed_oid = e.oid)\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       AND s.scoped_type = 'DATACENTER'\n       AND CASE WHEN $datacenter = '0' THEN true ELSE s.scoped_oid = $datacenter END\n       AND CASE WHEN $cluster = '0' THEN true ELSE e.oid = $cluster END\n),\n\nvms_and_hosts_datastore AS (\n  SELECT e.oid as storage_oid\n        ,count(distinct s1.scoped_oid) as vm_count\n        ,count(distinct s2.scoped_oid) as pm_count\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN scope s2 ON (s2.seed_oid = e.oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'VIRTUAL_MACHINE')\n       AND (s2.scoped_type = 'PHYSICAL_MACHINE')\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n     group by 1\n),\n\nstorages_by_cluster as (\n    SELECT g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as storage_oid,\n        e.name as datastore_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in (select cluster_oid from clusters_by_datacenter))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n     group by 1,2,3\n),\n\ncluster_stats as (\n    SELECT cluster_oid\n          ,cluster_name\n          ,storage_stats.storage_oid\n          ,datastore_name\n          ,COUNT(distinct storages_by_cluster.storage_oid) as ds_count\n          ,SUM(stor_cap) as storage_capacity\n          ,SUM(stor_prov) as storage_provisioned\n          ,SUM(stor_used) as storage_amount\n          ,SUM(stor_used) / SUM(stor_cap) as storage_util\n      FROM (\n        SELECT entity_oid as storage_oid\n              ,max(metric.capacity) FILTER (WHERE metric.type = 'STORAGE_AMOUNT') AS stor_cap\n              ,max(metric.current) FILTER (WHERE metric.type = 'STORAGE_PROVISIONED') AS stor_prov\n              ,max(metric.current) FILTER (WHERE metric.type = 'STORAGE_AMOUNT') AS stor_used\n          FROM metric\n         WHERE type in ('STORAGE_AMOUNT', 'STORAGE_PROVISIONED')\n           AND $__timeFilter(time)\n           AND consumed is NULL\n         GROUP BY 1) as storage_stats\n    JOIN storages_by_cluster ON storage_stats.storage_oid = storages_by_cluster.storage_oid\n   GROUP BY 1, 2, 3, 4 \n),\n\nwasted_storage as (\n  SELECT storage_oid,\n         count(*) as num_wasted_files,\n         sum(file_size_kb)/1024 as total_wasted_mb\n    FROM wasted_file\n   WHERE file_size_kb > 0\n   GROUP BY 1\n)\n\nSELECT SPLIT_PART(cluster_stats.cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_stats.cluster_name, '/', 2) as \"Cluster Name\",\n       datastore_name as \"DataStore Name\",\n       vm_count as \"Datastore # VMs\",\n       pm_count as \"Datastore # Hosts\",\n       storage_capacity/1024 as \"Storage Capacity\",\n       storage_provisioned/1024 as \"Storage Provisioned\",\n       storage_amount/1024 as \"Storage Used\",\n       storage_util*100 as \"Storage Used %\",\n       (1 - storage_util)*100 as \"Storage Free %\",\n       num_wasted_files as \"# Wasted Files\",\n       total_wasted_mb/1024 as \"Storage Wasted\"\n  FROM cluster_stats\n  JOIN vms_and_hosts_datastore on cluster_stats.storage_oid = vms_and_hosts_datastore.storage_oid\n  JOIN wasted_storage on wasted_storage.storage_oid = cluster_stats.storage_oid",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Storage",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "Turbo Timescale",
+          "value": "Turbo Timescale"
+        },
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DB",
+        "options": [],
+        "query": "postgres",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": "'0'",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT DISTINCT name as __text\n              ,oid as __value \n   FROM entity\n WHERE type = 'DATACENTER'\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Datacenter",
+        "multi": false,
+        "name": "datacenter",
+        "options": [],
+        "query": "SELECT DISTINCT name as __text\n              ,oid as __value \n   FROM entity\n WHERE type = 'DATACENTER'\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "'0'",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT DISTINCT SPLIT_PART(name, '/', 2) as __text,\n               oid as __value\n    FROM entity e\n    JOIN scope s on s.seed_oid = e.oid\n  WHERE type = 'COMPUTE_CLUSTER'\n      AND s.scoped_type = 'DATACENTER'\n      AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND CASE WHEN $datacenter = '0' THEN true ELSE s.scoped_oid = $datacenter END\n  ",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": false,
+        "name": "cluster",
+        "options": [],
+        "query": "SELECT DISTINCT SPLIT_PART(name, '/', 2) as __text,\n               oid as __value\n    FROM entity e\n    JOIN scope s on s.seed_oid = e.oid\n  WHERE type = 'COMPUTE_CLUSTER'\n      AND s.scoped_type = 'DATACENTER'\n      AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND CASE WHEN $datacenter = '0' THEN true ELSE s.scoped_oid = $datacenter END\n  ",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Datacenter & Cluster Overview Storage",
+  "uid": "O7jfvi8Mx",
+  "version": 1
+}
