@@ -1,0 +1,523 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 65,
+  "iteration": 1627484195564,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "$DB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# Hosts"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 73
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "# VMs"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Location"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 77
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Datacenter"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 126
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Utilization"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 124
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*%.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "N-2 MEM Threshold %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "N-2 Ideal Available MEMORY"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 102
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Ideal Available"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 84
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Capacity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Used"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 85
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Available"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Threshold %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 101
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "N-1 Ideal Available MEMORY"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "N-1 MEM Threshold %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "MEM Utilization %"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 127
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Capacity.*|.*Avail.*|.*Used.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "MEM Available"
+          }
+        ]
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with clusters_by_datacenter as (\n    SELECT DISTINCT e.oid as cluster_oid\n      FROM entity e\n      JOIN scope s on (s.seed_oid = e.oid)\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       AND s.scoped_type = 'DATACENTER'\n       AND CASE WHEN $datacenter = '0' THEN true ELSE s.scoped_oid = $datacenter END\n       AND CASE WHEN $cluster = '0' THEN true ELSE e.oid = $cluster END\n),\n\nvms_by_cluster AS (\n  SELECT s1.scoped_oid as cluster_oid\n        ,count(distinct e.oid) as vm_count\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in (select cluster_oid from clusters_by_datacenter))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n     group by 1\n),\n\npms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in (select cluster_oid from clusters_by_datacenter))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\ncluster_stats as (\n    select cluster_oid\n          ,count(distinct pm_stats.pm_oid) as pm_count\n          ,SUM(mem_used) as mem_used\n          ,SUM(mem_capacity) as mem_capacity \n          ,SUM(mem_available) as mem_available \n          ,SUM(mem_used) / SUM(mem_capacity) as mem_util\n    from\n        (SELECT entity_oid as pm_oid,\n                AVG(current) as mem_used,\n                AVG(capacity) as mem_capacity,\n                AVG(capacity - current) as mem_available\n           FROM metric\n          WHERE type = 'MEM'\n            AND $__timeFilter(time)\n            AND consumed is NULL\n          GROUP BY 1) as pm_stats\n     join pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n    group by 1\n)\n\nSELECT LEFT(pms_by_cluster.cluster_name, 3) as \"Location\", \n       SPLIT_PART(pms_by_cluster.cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(pms_by_cluster.cluster_name, '/', 2) as \"Cluster Name\",\n       MAX(pm_count) \"# Hosts\",\n       MAX(vm_count) \"# VMs\",\n       MAX(mem_capacity)/1024/1024 as \"MEM Capacity\",\n       MAX(mem_used)/1024/1024 as \"MEM Used\",\n       MAX(mem_available)/1024/1024 as \"MEM Available\",\n       MAX(mem_util) as \"MEM Utilization %\",\n       $hostThreshold::numeric as \"MEM Threshold %\",\n       ((1 - $hostThreshold)::numeric * MAX(MEM_capacity))/1024/1024 as \"MEM Ideal Available\",\n       MAX((pm_count::numeric - 1) / pm_count) \"N-1 MEM Threshold %\",\n       MAX((1 - (pm_count::numeric - 1) / pm_count)) * MAX(MEM_capacity)/1024/1024 \"N-1 Ideal Available MEMORY\",\n       MAX((pm_count::numeric - 2) / pm_count) \"N-2 MEM Threshold %\",\n       MAX((1 - (pm_count::numeric - 2) / pm_count)) * MAX(MEM_capacity)/1024/1024 \"N-2 Ideal Available MEMORY\"\n  FROM vms_by_cluster, pms_by_cluster, cluster_stats\n WHERE vms_by_cluster.cluster_oid = pms_by_cluster.cluster_oid\n   AND cluster_stats.cluster_oid = pms_by_cluster.cluster_oid\n GROUP BY 1, 2, 3",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Memory Utilization",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "Turbo Timescale",
+          "value": "Turbo Timescale"
+        },
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DB",
+        "options": [],
+        "query": "postgres",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": "'0'",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT DISTINCT name as __text\n              ,oid as __value \n   FROM entity\n WHERE type = 'DATACENTER'\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Datacenter",
+        "multi": false,
+        "name": "datacenter",
+        "options": [],
+        "query": "SELECT DISTINCT name as __text\n              ,oid as __value \n   FROM entity\n WHERE type = 'DATACENTER'\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "'0'",
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT DISTINCT SPLIT_PART(name, '/', 2) as __text,\n               oid as __value\n    FROM entity e\n    JOIN scope s on s.seed_oid = e.oid\n  WHERE type = 'COMPUTE_CLUSTER'\n      AND s.scoped_type = 'DATACENTER'\n      AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND CASE WHEN $datacenter = '0' THEN true ELSE s.scoped_oid = $datacenter END\n  ",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": false,
+        "name": "cluster",
+        "options": [],
+        "query": "SELECT DISTINCT SPLIT_PART(name, '/', 2) as __text,\n               oid as __value\n    FROM entity e\n    JOIN scope s on s.seed_oid = e.oid\n  WHERE type = 'COMPUTE_CLUSTER'\n      AND s.scoped_type = 'DATACENTER'\n      AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n      AND CASE WHEN $datacenter = '0' THEN true ELSE s.scoped_oid = $datacenter END\n  ",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "70%",
+          "value": "0.7"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT generate_series || '%' as __text,\n               generate_series*.01 as __value\n  FROM generate_series(30,100,5)",
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Mem Threshold",
+        "multi": false,
+        "name": "hostThreshold",
+        "options": [
+          {
+            "selected": false,
+            "text": "30%",
+            "value": "0.3"
+          },
+          {
+            "selected": false,
+            "text": "35%",
+            "value": "0.35"
+          },
+          {
+            "selected": false,
+            "text": "40%",
+            "value": "0.4"
+          },
+          {
+            "selected": false,
+            "text": "45%",
+            "value": "0.45"
+          },
+          {
+            "selected": false,
+            "text": "50%",
+            "value": "0.5"
+          },
+          {
+            "selected": false,
+            "text": "55%",
+            "value": "0.55"
+          },
+          {
+            "selected": false,
+            "text": "60%",
+            "value": "0.6"
+          },
+          {
+            "selected": false,
+            "text": "65%",
+            "value": "0.65"
+          },
+          {
+            "selected": true,
+            "text": "70%",
+            "value": "0.7"
+          },
+          {
+            "selected": false,
+            "text": "75%",
+            "value": "0.75"
+          },
+          {
+            "selected": false,
+            "text": "80%",
+            "value": "0.8"
+          },
+          {
+            "selected": false,
+            "text": "85%",
+            "value": "0.85"
+          },
+          {
+            "selected": false,
+            "text": "90%",
+            "value": "0.9"
+          },
+          {
+            "selected": false,
+            "text": "95%",
+            "value": "0.95"
+          },
+          {
+            "selected": false,
+            "text": "100%",
+            "value": "1"
+          }
+        ],
+        "query": "SELECT generate_series || '%' as __text,\n               generate_series*.01 as __value\n  FROM generate_series(30,100,5)",
+        "refresh": 0,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Datacenter & Cluster Overview Memory",
+  "uid": "Swb-viUGk",
+  "version": 1
+}
