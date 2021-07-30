@@ -1,0 +1,379 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 108,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 188
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Namespace"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 155
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) AS \"vCPU (Millicores)\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VCPU')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) as \"vMem (Kb)\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VMEM')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) AS \"vCPU Requests\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VCPU_REQUEST')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) AS \"vMem Requests\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VMEM_REQUEST')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) AS \"vCPU Requests Quota\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VCPU_REQUEST_QUOTA')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) AS \"vCPU Limit Quota\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VCPU_LIMIT_QUOTA')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "F",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  en.name AS \"Namespace\",\n  en.oid AS \"Namespace OID\",\n  m.type,\n  sum(coalesce(m.consumed, m.current)) AS \"vMem Limit Quota\"\nFROM metric m\nJOIN entity en on en.oid = m.entity_oid\nWHERE\n  $__timeFilter(\"time\") AND\n  en.type = 'NAMESPACE' AND\n  m.type IN ('VMEM_LIMIT_QUOTA')\nGROUP BY en.name, en.oid, m.type\nORDER BY 1",
+          "refId": "G",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n\ten.\"oid\" AS \"Namespace OID\",\n\tec.\"name\" AS \"Cluster Name\"\nfrom entity en \njoin \"scope\" s on s.seed_oid = en.\"oid\" and s.scoped_type = 'CONTAINER_PLATFORM_CLUSTER'\njoin entity ec on s.scoped_oid = ec.\"oid\" and ec.\"type\" = 'CONTAINER_PLATFORM_CLUSTER' \nwhere en.type = 'NAMESPACE'",
+          "refId": "H",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Namespaces (all values are sums over period)",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "Namespace OID"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Namespace 2": true,
+              "Namespace 3": true,
+              "Namespace 4": true,
+              "Namespace 5": true,
+              "Namespace 6": true,
+              "Namespace 7": true,
+              "Namespace OID": true,
+              "Namespace OID 1": true,
+              "Namespace OID 2": true,
+              "Namespace OID 3": true,
+              "Namespace OID 4": true,
+              "Namespace OID 5": true,
+              "Namespace OID 6": true,
+              "Namespace OID 7": true,
+              "type 1": true,
+              "type 2": true,
+              "type 3": true,
+              "type 4": true,
+              "type 5": true,
+              "type 6": true,
+              "type 7": true,
+              "vCPU Requests Quota": true
+            },
+            "indexByName": {
+              "Cluster Name": 2,
+              "Namespace 1": 1,
+              "Namespace 2": 7,
+              "Namespace 3": 10,
+              "Namespace 4": 12,
+              "Namespace 5": 15,
+              "Namespace 6": 18,
+              "Namespace 7": 20,
+              "Namespace OID": 0,
+              "type 1": 3,
+              "type 2": 8,
+              "type 3": 11,
+              "type 4": 13,
+              "type 5": 16,
+              "type 6": 19,
+              "type 7": 21,
+              "vCPU (Millicores)": 4,
+              "vCPU Limit Quota": 6,
+              "vCPU Requests": 5,
+              "vCPU Requests Quota": 17,
+              "vMem (Kb)": 9,
+              "vMem Limit Quota": 22,
+              "vMem Requests": 14
+            },
+            "renameByName": {
+              "Namespace 1": "Namespace"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Kubernetes Namespace Chargeback",
+  "uid": "NZSZmqW7z",
+  "version": 1
+}
