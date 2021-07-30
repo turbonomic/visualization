@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 2,
-  "id": 95,
-  "iteration": 1623318678574,
+  "id": 97,
+  "iteration": 1627629398781,
   "links": [
     {
       "icon": "bolt",
@@ -80,7 +80,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Number of Actions",
+      "title": "Pending Actions Count",
       "transformations": [
         {
           "id": "merge",
@@ -165,7 +165,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 21,
+        "w": 9,
         "x": 3,
         "y": 0
       },
@@ -237,7 +237,225 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Actions",
+      "title": "Pending Actions",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^Description$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 16,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Executed Actions Count",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 194
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Category"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 229
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Recommendation Time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 210
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Component Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 238
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 15,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Description"
+          }
+        ]
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  TO_CHAR(recommendation_time, 'dd/mm/yyyy hh:mm:ss') AS \"Recommendation Time\",\n  e.name as \"Component Name\",\n  --e.type as \"type\",\n  CASE ca.category\n    WHEN 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN 'PREVENTION' THEN 'Prevention'\n    WHEN 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN 'COMPLIANCE' THEN 'Compliance' END as \"Category\",\n  ca.\"type\" as \"Type\",\n  ca.description AS \"Description\",\n  ca.final_state AS \"Final State\"\nFROM completed_action ca\nJOIN entity e ON e.oid = ca.target_entity_id\nWHERE\n  ca.target_entity_id IN\n  (\n    SELECT\n      DISTINCT s.scoped_oid\n    FROM scope s\n    --JOIN entity e ON s.scoped_oid = e.oid\n    WHERE\n      s.seed_oid IN (${APPLICATION_OID})\n    --AND e.type <> 'GROUP'\n    AND s.finish > now()\n  )\nORDER BY 1 DESC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  TO_CHAR(recommendation_time, 'dd/mm/yyyy hh:mm:ss') AS \"Recommendation Time\",\n  e.name as \"Component Name\",\n  --e.type as \"type\",\n  CASE ca.category\n    WHEN 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN 'PREVENTION' THEN 'Prevention'\n    WHEN 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN 'COMPLIANCE' THEN 'Compliance' END as \"Category\",\n  ca.\"type\" as \"Type\",\n  ca.description AS \"Description\",\n  ca.final_state AS \"Final State\"\nFROM completed_action ca\nJOIN entity e ON e.oid = ca.target_entity_id\nWHERE\n  ca.target_entity_id IN\n  (\n    select s.scoped_oid\n    from \"scope\" s \n    where s.seed_oid in (\n      select s.scoped_oid\n\t    from \"scope\" s \n\t    where s.scoped_type = 'PHYSICAL_MACHINE'\n\t    and s.seed_oid IN (${APPLICATION_OID})\n\t    and s.finish > now()\n\t  )\n  and s.scoped_type = 'VIRTUAL_MACHINE'\n  and s.finish > now()\n  )\nAND ca.type IN ('MOVE', 'PROVISION', 'SUSPEND')\nAND ('${INCLUDE_NEIGHBORS}' = 'Yes')\nORDER BY 1 DESC",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Executed Actions",
       "transformations": [
         {
           "id": "merge",
@@ -1835,6 +2053,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Applications Performance",
-  "uid": "vvaQFw6Mk",
-  "version": 14
+  "uid": "xlknqe6Mz",
+  "version": 3
 }
