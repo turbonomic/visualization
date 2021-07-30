@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 98,
-  "iteration": 1623423924758,
+  "id": 100,
+  "iteration": 1627630063341,
   "links": [],
   "panels": [
     {
@@ -64,6 +64,10 @@
               {
                 "id": "noValue",
                 "value": "-"
+              },
+              {
+                "id": "max",
+                "value": 100
               }
             ]
           }
@@ -76,6 +80,7 @@
         "y": 0
       },
       "id": 5,
+      "links": [],
       "options": {
         "showHeader": true,
         "sortBy": [
@@ -92,7 +97,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  e.name as \"VM Name\",\n  max(mvcpu.utilization)*100 as \"Max vCPU Utilization (%)\",\n  max(mvmem.utilization)*100 as \"Max vMem Utilization (%)\"\nfrom metric mvcpu\njoin metric mvmem on mvcpu.entity_oid = mvmem.entity_oid AND mvmem.time = mvcpu.time\njoin entity e on e.oid = mvmem.entity_oid and e.oid = mvcpu.entity_oid\njoin scope s on s.scoped_oid = e.oid AND s.scoped_type = 'VIRTUAL_MACHINE' AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(mvcpu.\"time\") AND\n  $__timeFilter(mvmem.\"time\") AND\n  mvcpu.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvmem.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvcpu.\"type\" = 'VCPU' AND\n  mvmem.\"type\" = 'VMEM' AND\n  mvcpu.utilization IS NOT NULL AND\n  mvmem.utilization IS NOT NULL AND\n  e.name like '%${VM_FILTER}%'\nGROUP BY e.name, mvcpu.\"type\", mvmem.\"type\"\nHAVING max(mvcpu.utilization)*100 <= ${MAXIMUM_VCPU} AND max(mvmem.utilization)*100 <= ${MAXIMUM_VMEM}\nORDER BY \"VM Name\"",
+          "rawSql": "select\n  e.name as \"VM Name\",\n  e.oid as \"VM OID\",\n  max(mvcpu.utilization)*100 as \"Max vCPU Utilization (%)\",\n  max(mvmem.utilization)*100 as \"Max vMem Utilization (%)\"\nfrom metric mvcpu\njoin metric mvmem on mvcpu.entity_oid = mvmem.entity_oid AND mvmem.time = mvcpu.time\njoin entity e on e.oid = mvmem.entity_oid and e.oid = mvcpu.entity_oid\njoin scope s on s.scoped_oid = e.oid AND s.scoped_type = 'VIRTUAL_MACHINE' AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(mvcpu.\"time\") AND\n  $__timeFilter(mvmem.\"time\") AND\n  mvcpu.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvmem.\"entity_type\" = 'VIRTUAL_MACHINE' AND\n  mvcpu.\"type\" = 'VCPU' AND\n  mvmem.\"type\" = 'VMEM' AND\n  mvcpu.utilization IS NOT NULL AND\n  mvmem.utilization IS NOT NULL AND\n  e.name like '%${VM_FILTER}%'\nGROUP BY e.name, e.oid, mvcpu.\"type\", mvmem.\"type\"\nHAVING max(mvcpu.utilization)*100 <= ${MAXIMUM_VCPU} AND max(mvmem.utilization)*100 <= ${MAXIMUM_VMEM}\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -119,6 +124,18 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Lowly Utilized VMs",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "VM OID": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
       "type": "table"
     }
   ],
@@ -255,12 +272,12 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Lowly Utilized VMs 2",
-  "uid": "cAwM4RRnz",
-  "version": 8
+  "title": "Lowly Utilized VMs",
+  "uid": "KLwaxRRnz",
+  "version": 4
 }
