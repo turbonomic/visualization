@@ -12,12 +12,12 @@
       }
     ]
   },
-  "description": "v.4.4.3",
+  "description": "v.4.4.5",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
   "id": 75,
-  "iteration": 1627416608113,
+  "iteration": 1628095157519,
   "links": [],
   "panels": [
     {
@@ -33,11 +33,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "rgb(122, 255, 0)",
+                "color": "light-yellow",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "rgb(154, 242, 73)",
                 "value": 80
               }
             ]
@@ -51,7 +51,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 42,
+      "id": 43,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -73,7 +73,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- ! Old Quick Subract Query\n\n/*\nselect \n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) as \"Previous VM Count\", count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Current VM Count\",\n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) - count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Deleted VM Count\"\nfrom metric\njoin scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE', ARRAY[$Cluster]::bigint[], false) s on s.oid = metric.entity_oid\n  where $__timeFilter(time)\n  AND entity_type = 'VIRTUAL_MACHINE'\n  AND time BETWEEN s.from_time AND s.to_time\n  AND type = 'STORAGE_AMOUNT'  */\n  \n  with monthly_vms as (\n    select date_trunc('hour', time) as current\n          ,entity_oid as vm_oid\n      FROM (\n        select time\n              ,entity_oid\n          from extractor.metric\n         WHERE entity_type = 'VIRTUAL_MACHINE'\n           AND type = 'STORAGE_PROVISIONED'\n           AND $__timeFilter(time)\n      ) as metric_data\n     GROUP BY 1, 2\n),\nadded_and_removed as (\n    SELECT COUNT(DISTINCT vm_oid) FILTER (where current = (select max(current) from monthly_vms)) as \"Virtual Machine Total Count\",\n           COUNT(DISTINCT vm_oid) FILTER (WHERE vm_oid NOT IN (SELECT DISTINCT vm_oid\n                                                                 FROM monthly_vms m2\n                                                               WHERE m2.current = (select min(current) from monthly_vms))) as \"Virtual Machines Added\"\n          ,COUNT(DISTINCT vm_oid) FILTER (WHERE vm_oid NOT IN (SELECT DISTINCT vm_oid\n                                                                 FROM monthly_vms m2\n                                                                WHERE m2.current = (select max(current) from monthly_vms))) as \"Virtual Machines Removed\"\n      FROM monthly_vms m1\n)\nselect * from added_and_removed\n",
+          "rawSql": "-- ! Old Quick Subract Query\n\n/*\nselect \n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) as \"Previous Host Count\", count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Current Host Count\",\n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) - count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Deleted Host Count\"\nfrom metric\njoin scope_to($__timeFrom(), $__timeTo(), 'PHYSICAL_MACHINE', ARRAY[$Cluster]::bigint[], false) s on s.oid = metric.entity_oid\n  where $__timeFilter(time)\n  AND entity_type = 'PHYSICAL_MACHINE'\n  AND time BETWEEN s.from_time AND s.to_time\n  AND type = 'STORAGE_AMOUNT'  */\n  \n  with monthly_Hosts as (\n    select date_trunc('hour', time) as current\n          ,entity_oid as hosts_oid\n      FROM (\n        select time\n              ,entity_oid\n          from extractor.metric\n         join scope s on s.scoped_oid = entity_oid\n         WHERE entity_type = 'PHYSICAL_MACHINE'\n           AND seed_oid in ($Cluster)\n           AND (start,finish) overlaps ($__timeFrom(), $__timeTo())\n           AND type = 'CPU'\n           AND $__timeFilter(time)\n      ) as metric_data\n     GROUP BY 1, 2\n),\nadded_and_removed as (\n    SELECT COUNT(DISTINCT hosts_oid) FILTER (where current = (select max(current) from monthly_Hosts)) as \"Hosts Total Count\",\n           COUNT(DISTINCT hosts_oid) FILTER (WHERE hosts_oid NOT IN (SELECT DISTINCT hosts_oid\n                                                                 FROM monthly_Hosts m2\n                                                               WHERE m2.current = (select min(current) from monthly_Hosts))) as \"Hosts Added\"\n          ,COUNT(DISTINCT hosts_oid) FILTER (WHERE hosts_oid NOT IN (SELECT DISTINCT hosts_oid\n                                                                 FROM monthly_Hosts m2\n                                                                WHERE m2.current = (select max(current) from monthly_Hosts))) as \"Hosts Removed\"\n      FROM monthly_Hosts m1\n)\nselect * from added_and_removed\n",
           "refId": "A",
           "select": [
             [
@@ -99,7 +99,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Scoped Virtual Machines Counter (within Timescale)",
+      "title": "Scoped Host Counter (within Timescale)",
       "transformations": [
         {
           "id": "filterByRefId",
@@ -108,12 +108,12 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Virtual Machine Delta",
+            "alias": "Hosts Delta",
             "binary": {
-              "left": "Virtual Machines Added",
+              "left": "Hosts Added",
               "operator": "-",
               "reducer": "sum",
-              "right": "Virtual Machines Removed"
+              "right": "Hosts Removed"
             },
             "mode": "binary",
             "reduce": {
@@ -127,10 +127,10 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "Virtual Machine Delta": 2,
-              "Virtual Machine Total Count": 3,
-              "Virtual Machines Added": 1,
-              "Virtual Machines Removed": 0
+              "Host Total Count": 3,
+              "Hosts Added": 0,
+              "Hosts Delta": 2,
+              "Hosts Removed": 1
             },
             "renameByName": {}
           }
@@ -437,7 +437,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 12,
+        "w": 11,
         "x": 0,
         "y": 15
       },
@@ -588,8 +588,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 12,
-        "x": 12,
+        "w": 13,
+        "x": 11,
         "y": 15
       },
       "id": 38,
@@ -665,11 +665,36 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Latency Peak"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Iops Peak"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
+        "w": 11,
         "x": 0,
         "y": 21
       },
@@ -716,94 +741,14 @@
               "type": "macro"
             }
           ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Datacenter Cluster Compute Utilization Peak (Percentile)",
-      "type": "gauge"
-    },
-    {
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "semi-dark-red",
-                "value": null
-              }
-            ]
-          }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Storage Latency Peak"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "ms"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Iops Peak"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "iops"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 6,
-        "y": 21
-      },
-      "id": 40,
-      "options": {
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "max"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "7.3.8",
-      "targets": [
         {
           "format": "table",
           "group": [],
-          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "\n-- Datastore Stats Panel\nwith ds_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as ds_oid,\n        e.name as ds_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_stats as (\n     select ds_oid\n          ,max(iops_used) as iops_max\n          ,max(latency_used) as latency_max\n    from\n        (SELECT entity_oid as ds_oid\n               ,time\n               ,max(current) FILTER (where type = 'STORAGE_LATENCY') as latency_used\n               ,max(current) FILTER (where type = 'STORAGE_ACCESS') as iops_used\n          FROM metric\n         WHERE type in ('STORAGE_LATENCY', 'STORAGE_ACCESS')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'STORAGE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\n\n-- TODO: Update all of the column names below with the new names above\n\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       ds_name as \"Datastore Name\",\n       latency_max as \"Storage Latency Peak\",\n       iops_max as \"Iops Peak\"\n  from ds_stats\n  join ds_by_cluster on ds_stats.ds_oid = ds_by_cluster.ds_oid\n;\n",
-          "refId": "A",
+          "refId": "B",
           "select": [
             [
               {
@@ -828,7 +773,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Datacenter Cluster Storage Utilization Peak (Percentile)",
+      "title": "Datacenter Cluster Compute Utilization Peak (Percentile)",
       "type": "gauge"
     },
     {
@@ -1376,6 +1321,124 @@
             "align": null,
             "filterable": false
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(255, 115, 221)",
+                "value": null
+              },
+              {
+                "color": "purple",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "-- ! Old Quick Subract Query\n\n/*\nselect \n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) as \"Previous VM Count\", count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Current VM Count\",\n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) - count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Deleted VM Count\"\nfrom metric\njoin scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE', ARRAY[$Cluster]::bigint[], false) s on s.oid = metric.entity_oid\n  where $__timeFilter(time)\n  AND entity_type = 'VIRTUAL_MACHINE'\n  AND time BETWEEN s.from_time AND s.to_time\n  AND type = 'STORAGE_AMOUNT'  */\n  \n  with monthly_vms as (\n    select date_trunc('hour', time) as current\n          ,entity_oid as vm_oid\n      FROM (\n        select time\n              ,entity_oid\n          from extractor.metric\n          join scope s on s.scoped_oid = entity_oid\n         WHERE entity_type = 'VIRTUAL_MACHINE'\n           AND type = 'STORAGE_PROVISIONED'\n           AND $__timeFilter(time)\n           and s.seed_oid in ($Cluster)\n           and (start, finish) overlaps ($__timeFrom(), $__timeTo())\n      ) as metric_data\n     GROUP BY 1, 2\n),\nadded_and_removed as (\n    SELECT COUNT(DISTINCT vm_oid) FILTER (where current = (select max(current) from monthly_vms)) as \"Virtual Machine Total Count\",\n           COUNT(DISTINCT vm_oid) FILTER (WHERE vm_oid NOT IN (SELECT DISTINCT vm_oid\n                                                                 FROM monthly_vms m2\n                                                               WHERE m2.current = (select min(current) from monthly_vms))) as \"Virtual Machines Added\"\n          ,COUNT(DISTINCT vm_oid) FILTER (WHERE vm_oid NOT IN (SELECT DISTINCT vm_oid\n                                                                 FROM monthly_vms m2\n                                                                WHERE m2.current = (select max(current) from monthly_vms))) as \"Virtual Machines Removed\"\n      FROM monthly_vms m1\n)\nselect * from added_and_removed\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Scoped Virtual Machines Counter (within Timescale)",
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Virtual Machine Delta",
+            "binary": {
+              "left": "Virtual Machines Added",
+              "operator": "-",
+              "reducer": "sum",
+              "right": "Virtual Machines Removed"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "Virtual Machine Delta": 2,
+              "Virtual Machine Total Count": 3,
+              "Virtual Machines Added": 1,
+              "Virtual Machines Removed": 0
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
           "displayName": "$__cell_0",
           "mappings": [],
           "max": 100,
@@ -1424,7 +1487,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 60
       },
       "id": 36,
       "options": {
@@ -1557,7 +1620,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 67
       },
       "id": 37,
       "options": {
@@ -1648,124 +1711,6 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
-                "value": null
-              },
-              {
-                "color": "rgb(154, 242, 73)",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 24,
-        "x": 0,
-        "y": 71
-      },
-      "id": 43,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.3.8",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "-- ! Old Quick Subract Query\n\n/*\nselect \n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) as \"Previous Host Count\", count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Current Host Count\",\n    count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeFrom()::date)) - count(distinct entity_oid) filter (where date_trunc('day', time) = date_trunc('day', $__timeTo()::date)) as \"Deleted Host Count\"\nfrom metric\njoin scope_to($__timeFrom(), $__timeTo(), 'PHYSICAL_MACHINE', ARRAY[$Cluster]::bigint[], false) s on s.oid = metric.entity_oid\n  where $__timeFilter(time)\n  AND entity_type = 'PHYSICAL_MACHINE'\n  AND time BETWEEN s.from_time AND s.to_time\n  AND type = 'STORAGE_AMOUNT'  */\n  \n  with monthly_Hosts as (\n    select date_trunc('hour', time) as current\n          ,entity_oid as hosts_oid\n      FROM (\n        select time\n              ,entity_oid\n          from extractor.metric\n         WHERE entity_type = 'PHYSICAL_MACHINE'\n           AND type = 'CPU'\n           AND $__timeFilter(time)\n      ) as metric_data\n     GROUP BY 1, 2\n),\nadded_and_removed as (\n    SELECT COUNT(DISTINCT hosts_oid) FILTER (where current = (select max(current) from monthly_Hosts)) as \"Hosts Total Count\",\n           COUNT(DISTINCT hosts_oid) FILTER (WHERE hosts_oid NOT IN (SELECT DISTINCT hosts_oid\n                                                                 FROM monthly_Hosts m2\n                                                               WHERE m2.current = (select min(current) from monthly_Hosts))) as \"Hosts Added\"\n          ,COUNT(DISTINCT hosts_oid) FILTER (WHERE hosts_oid NOT IN (SELECT DISTINCT hosts_oid\n                                                                 FROM monthly_Hosts m2\n                                                                WHERE m2.current = (select max(current) from monthly_Hosts))) as \"Hosts Removed\"\n      FROM monthly_Hosts m1\n)\nselect * from added_and_removed\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Scoped Host Counter (within Timescale)",
-      "transformations": [
-        {
-          "id": "filterByRefId",
-          "options": {}
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Hosts Delta",
-            "binary": {
-              "left": "Hosts Added",
-              "operator": "-",
-              "reducer": "sum",
-              "right": "Hosts Removed"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {
-              "Host Total Count": 3,
-              "Hosts Added": 0,
-              "Hosts Delta": 2,
-              "Hosts Removed": 1
-            },
-            "renameByName": {}
-          }
-        }
-      ],
-      "type": "stat"
-    },
-    {
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
                 "color": "green",
                 "value": null
               },
@@ -1813,6 +1758,18 @@
                 "value": "hertz"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Cores"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
           }
         ]
       },
@@ -1833,7 +1790,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tand (s.scoped_oid in ($Cluster))\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n pm_stats as (\n \tselect pm_oid,\n \t\t  AVG(cpu_used) as cpu_used,\n \t\t  MAX(cpu_used) as cpu_max,\n \t\t  percentile_cont(.01) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_01,\n \t\t  percentile_cont(.95) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_95,\n \t\t  percentile_cont(.97) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_97,\n \t\t  avg(cpu_capacity) as cpu_capacity\n \tfrom \n\t \t(select entity_oid as pm_oid\n\t \t      ,current as cpu_used\n\t \t      ,capacity as cpu_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'CPU'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n\t \t ) as data\n\t group by 1\n )\n \n select cluster_name as \"Cluster Name\"\n       ,avg(cpu_max)/nullif(avg(cpu_capacity),0) as \"CPU Util Max\"\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util Avg\"\n       ,avg(cpu_percentile_01)/nullif(avg(cpu_capacity), 0) as \"CPU Util 1% Lows\"\n       ,avg(cpu_percentile_95)/nullif(avg(cpu_capacity), 0) as \"CPU Util 95%\"\n       ,avg(cpu_percentile_97)/nullif(avg(cpu_capacity), 0) as \"CPU Util 97%\"\n       ,sum(cpu_capacity)*1000 as \"CPU Capacity\"\n       ,sum(cpu_max)*1000 as \"CPU Used Max\"\n       ,sum(cpu_used)*1000 as \"CPU Used Avg\"\n   from hosts_by_cluster, pm_stats\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   group by 1\n        ",
+          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name,\n \t\t   avg((e.attrs ->> 'num_cpus')::numeric) as cpus\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tand (s.scoped_oid in ($Cluster))\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n group by 1,2,3\n ),\n \n pm_stats as (\n \tselect pm_oid,\n \t\t  AVG(cpu_used) as cpu_used,\n \t\t  MAX(cpu_used) as cpu_max,\n \t\t  percentile_cont(.01) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_01,\n \t\t  percentile_cont(.95) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_95,\n \t\t  percentile_cont(.97) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_97,\n \t\t  avg(cpu_capacity) as cpu_capacity\n \tfrom \n\t \t(select entity_oid as pm_oid\n\t \t      ,current as cpu_used\n\t \t      ,capacity as cpu_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'CPU'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n\t \t ) as data\n\t group by 1\n )\n \n select cluster_name as \"Cluster Name\"\n       ,sum(cpus) as \"CPU Cores\"\n       ,avg(cpu_max)/nullif(avg(cpu_capacity),0) as \"CPU Util Max\"\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util Avg\"\n       ,avg(cpu_percentile_01)/nullif(avg(cpu_capacity), 0) as \"CPU Util 1% Lows\"\n       ,avg(cpu_percentile_95)/nullif(avg(cpu_capacity), 0) as \"CPU Util 95%\"\n       ,avg(cpu_percentile_97)/nullif(avg(cpu_capacity), 0) as \"CPU Util 97%\"\n       ,sum(cpu_capacity)*1000 as \"CPU Capacity\"\n       ,sum(cpu_max)*1000 as \"CPU Used Max\"\n       ,sum(cpu_used)*1000 as \"CPU Used Avg\"\n   from hosts_by_cluster, pm_stats\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   group by 1\n        ",
           "refId": "A",
           "select": [
             [
@@ -1918,7 +1875,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name,\n        (e.attrs ->> 'num_cpus')::numeric as cpus\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       cpus as \"CPU Cores\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
           "refId": "A",
           "select": [
             [
@@ -2328,7 +2285,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {
@@ -2348,5 +2305,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "v-wNa3eMz",
-  "version": 76
+  "version": 85
 }
