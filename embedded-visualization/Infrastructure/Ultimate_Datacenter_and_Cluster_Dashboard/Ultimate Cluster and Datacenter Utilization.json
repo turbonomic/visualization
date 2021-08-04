@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 75,
-  "iteration": 1628095157519,
+  "iteration": 1628095157523,
   "links": [],
   "panels": [
     {
@@ -1768,6 +1768,10 @@
               {
                 "id": "unit",
                 "value": "none"
+              },
+              {
+                "id": "custom.width",
+                "value": 168
               }
             ]
           },
@@ -1782,6 +1786,18 @@
                 "value": 251
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 484
+              }
+            ]
           }
         ]
       },
@@ -1794,7 +1810,12 @@
       "id": 2,
       "options": {
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Cores"
+          }
+        ]
       },
       "pluginVersion": "7.3.8",
       "targets": [
@@ -1867,6 +1888,30 @@
                 "value": 298
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 242
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Datacenter"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 230
+              }
+            ]
           }
         ]
       },
@@ -1879,7 +1924,12 @@
       "id": 10,
       "options": {
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Cores"
+          }
+        ]
       },
       "pluginVersion": "7.3.8",
       "targets": [
@@ -2170,6 +2220,18 @@
                 "value": null
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Virtual Machine Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 311
+              }
+            ]
           }
         ]
       },
@@ -2268,11 +2330,34 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
-            "All"
+            "Datacenter-dc18/DC18-Cluster1",
+            "Datacenter-dc18/VCD Cluster2 - DO NOT USE",
+            "Datacenter-dc9/DC9-Cluster1 (vSAN)",
+            "Datacenter-dc9/DC9-vSAN Cluster (Astra)",
+            "DC13/DC13-Cluster",
+            "Datacenter-dc18/DC18-Cluster2",
+            "Datacenter-dc18/VCD Cluster - DO NOT USE",
+            "Cloud/Physical2",
+            "Cloud/Development",
+            "ACM/ACM Cluster",
+            "Cloud/Physical",
+            "Datacenter01/Cluster01"
           ],
           "value": [
-            "$__all"
+            "284751121845402",
+            "284751121845395",
+            "284752796200177",
+            "284752796200192",
+            "284751131445981",
+            "284751121845405",
+            "284751121845394",
+            "285130348518784",
+            "284751121845332",
+            "284695107753178",
+            "284751121845322",
+            "284751121844097"
           ]
         },
         "datasource": "Turbo Timescale",
