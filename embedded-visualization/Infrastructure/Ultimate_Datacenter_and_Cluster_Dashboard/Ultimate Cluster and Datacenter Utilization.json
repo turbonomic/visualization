@@ -37,7 +37,7 @@
                 "value": null
               },
               {
-                "color": "rgb(154, 242, 73)",
+                "color": "light-orange",
                 "value": 80
               }
             ]
@@ -423,7 +423,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "purple",
+                "color": "rgb(255, 95, 237)",
                 "value": null
               },
               {
@@ -437,7 +437,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 11,
+        "w": 12,
         "x": 0,
         "y": 15
       },
@@ -588,8 +588,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 13,
-        "x": 11,
+        "w": 12,
+        "x": 12,
         "y": 15
       },
       "id": 38,
@@ -659,7 +659,7 @@
                 "value": null
               },
               {
-                "color": "rgb(255, 0, 5)",
+                "color": "rgb(252, 65, 243)",
                 "value": 88
               }
             ]
@@ -694,7 +694,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 11,
+        "w": 12,
         "x": 0,
         "y": 21
       },
@@ -888,7 +888,7 @@
       },
       "gridPos": {
         "h": 15,
-        "w": 9,
+        "w": 10,
         "x": 0,
         "y": 27
       },
@@ -971,8 +971,8 @@
       "fillGradient": 6,
       "gridPos": {
         "h": 15,
-        "w": 15,
-        "x": 9,
+        "w": 14,
+        "x": 10,
         "y": 27
       },
       "hiddenSeries": false,
@@ -1152,7 +1152,7 @@
       },
       "gridPos": {
         "h": 15,
-        "w": 9,
+        "w": 10,
         "x": 0,
         "y": 42
       },
@@ -1244,8 +1244,8 @@
       },
       "gridPos": {
         "h": 15,
-        "w": 15,
-        "x": 9,
+        "w": 14,
+        "x": 10,
         "y": 42
       },
       "heatmap": {},
@@ -1770,6 +1770,18 @@
                 "value": "none"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Cores (Cluster Aggregate)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 251
+              }
+            ]
           }
         ]
       },
@@ -1781,7 +1793,8 @@
       },
       "id": 2,
       "options": {
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "7.3.8",
       "targets": [
@@ -2285,7 +2298,7 @@
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -2305,5 +2318,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "v-wNa3eMz",
-  "version": 85
+  "version": 93
 }
