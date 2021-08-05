@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 75,
-  "iteration": 1628095157523,
+  "iteration": 1628167595459,
   "links": [],
   "panels": [
     {
@@ -33,11 +33,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-yellow",
+                "color": "rgb(181, 255, 82)",
                 "value": null
               },
               {
-                "color": "light-orange",
+                "color": "rgb(250, 59, 20)",
                 "value": 80
               }
             ]
@@ -1768,10 +1768,6 @@
               {
                 "id": "unit",
                 "value": "none"
-              },
-              {
-                "id": "custom.width",
-                "value": 168
               }
             ]
           },
@@ -1784,18 +1780,6 @@
               {
                 "id": "custom.width",
                 "value": 251
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Cluster Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 484
               }
             ]
           }
@@ -1886,30 +1870,6 @@
               {
                 "id": "custom.width",
                 "value": 298
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Cluster Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 242
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Datacenter"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 230
               }
             ]
           }
@@ -2220,18 +2180,6 @@
                 "value": null
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Virtual Machine Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 311
-              }
-            ]
           }
         ]
       },
@@ -2299,11 +2247,40 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": [
-            "All"
+            "Datacenter-dc18",
+            "DC13",
+            "DC14",
+            "DC23-Datacenter",
+            "Development67",
+            "Datacenter01",
+            "Cloud",
+            "10.10.150.145:RegionOne/nova",
+            "ACM",
+            "Datacenter-dc9",
+            "nutanix.eng.vmturbo.com",
+            "HawthorneSales",
+            "HawthorneHC",
+            "RedHatDC-iSCSI",
+            "RedHatDC-NFS"
           ],
           "value": [
-            "$__all"
+            "73644889043393",
+            "73644890513857",
+            "73644888577857",
+            "73644888920097",
+            "73644889176529",
+            "73644887943745",
+            "73644888429841",
+            "73644890216928",
+            "73588869275680",
+            "73646555296465",
+            "73644887484760",
+            "74039853202225",
+            "73956182096721",
+            "73644887908273",
+            "73644887908274"
           ]
         },
         "datasource": "Turbo Timescale",
@@ -2329,36 +2306,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
-          "text": [
-            "Datacenter-dc18/DC18-Cluster1",
-            "Datacenter-dc18/VCD Cluster2 - DO NOT USE",
-            "Datacenter-dc9/DC9-Cluster1 (vSAN)",
-            "Datacenter-dc9/DC9-vSAN Cluster (Astra)",
-            "DC13/DC13-Cluster",
-            "Datacenter-dc18/DC18-Cluster2",
-            "Datacenter-dc18/VCD Cluster - DO NOT USE",
-            "Cloud/Physical2",
-            "Cloud/Development",
-            "ACM/ACM Cluster",
-            "Cloud/Physical",
-            "Datacenter01/Cluster01"
-          ],
-          "value": [
-            "284751121845402",
-            "284751121845395",
-            "284752796200177",
-            "284752796200192",
-            "284751131445981",
-            "284751121845405",
-            "284751121845394",
-            "285130348518784",
-            "284751121845332",
-            "284695107753178",
-            "284751121845322",
-            "284751121844097"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT DISTINCT name as __text\n            ,oid as __value\n   FROM entity e\n   JOIN scope s on s.seed_oid = e.oid\n WHERE e.type = 'COMPUTE_CLUSTER'\n  AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n  and s.scoped_type = 'DATACENTER'\n  and s.scoped_oid in ($Datacenter)",
@@ -2383,7 +2333,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -2403,5 +2353,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "v-wNa3eMz",
-  "version": 93
+  "version": 95
 }
