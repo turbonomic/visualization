@@ -12,12 +12,12 @@
       }
     ]
   },
-  "description": "v.4.4.5",
+  "description": "v.4.4.6",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
   "id": 75,
-  "iteration": 1628167595459,
+  "iteration": 1628523209962,
   "links": [],
   "panels": [
     {
@@ -1704,7 +1704,7 @@
         "defaults": {
           "custom": {
             "align": null,
-            "filterable": false
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -1843,7 +1843,7 @@
         "defaults": {
           "custom": {
             "align": null,
-            "filterable": false
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -1886,7 +1886,7 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": true,
+            "desc": false,
             "displayName": "CPU Cores"
           }
         ]
@@ -1934,7 +1934,7 @@
         "defaults": {
           "custom": {
             "align": null,
-            "filterable": false
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -2127,7 +2127,7 @@
         "defaults": {
           "custom": {
             "align": null,
-            "filterable": false
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -2247,40 +2247,11 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
           "text": [
-            "Datacenter-dc18",
-            "DC13",
-            "DC14",
-            "DC23-Datacenter",
-            "Development67",
-            "Datacenter01",
-            "Cloud",
-            "10.10.150.145:RegionOne/nova",
-            "ACM",
-            "Datacenter-dc9",
-            "nutanix.eng.vmturbo.com",
-            "HawthorneSales",
-            "HawthorneHC",
-            "RedHatDC-iSCSI",
-            "RedHatDC-NFS"
+            "All"
           ],
           "value": [
-            "73644889043393",
-            "73644890513857",
-            "73644888577857",
-            "73644888920097",
-            "73644889176529",
-            "73644887943745",
-            "73644888429841",
-            "73644890216928",
-            "73588869275680",
-            "73646555296465",
-            "73644887484760",
-            "74039853202225",
-            "73956182096721",
-            "73644887908273",
-            "73644887908274"
+            "$__all"
           ]
         },
         "datasource": "Turbo Timescale",
@@ -2306,9 +2277,17 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "Cloud/Development",
+            "Cloud/Physical",
+            "Cloud/Physical2"
+          ],
+          "value": [
+            "284751121845332",
+            "284751121845322",
+            "285130348518784"
+          ]
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT DISTINCT name as __text\n            ,oid as __value\n   FROM entity e\n   JOIN scope s on s.seed_oid = e.oid\n WHERE e.type = 'COMPUTE_CLUSTER'\n  AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n  and s.scoped_type = 'DATACENTER'\n  and s.scoped_oid in ($Datacenter)",
@@ -2353,5 +2332,5 @@
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
   "uid": "v-wNa3eMz",
-  "version": 95
+  "version": 100
 }
