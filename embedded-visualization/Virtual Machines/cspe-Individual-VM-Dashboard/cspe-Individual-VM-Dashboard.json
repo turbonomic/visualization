@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 59,
-  "iteration": 1621244007087,
+  "iteration": 1628700336857,
   "links": [
     {
       "icon": "external link",
@@ -2214,8 +2214,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "73571704046386",
-          "value": "73571704046386"
+          "text": "74039857670352",
+          "value": "74039857670352"
         },
         "datasource": "Turbo Timescale",
         "definition": "select oid from entity where name = '$VM' and type = 'VIRTUAL_MACHINE' order by last_seen DESC limit 1",
@@ -2322,8 +2322,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "3",
-          "value": "3"
+          "text": "4",
+          "value": "4"
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT\nattrs->>'num_cpus'\nFROM entity\nWHERE oid = $VM_OID",
@@ -2403,11 +2403,11 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "2021-03-08T14:43:48.933Z",
-          "value": "2021-03-08T14:43:48.933Z"
+          "text": "05/07/2021 06:07:28",
+          "value": "05/07/2021 06:07:28"
         },
         "datasource": "Turbo Timescale",
-        "definition": "SELECT\nfirst_seen\nFROM entity\nWHERE oid = $VM_OID",
+        "definition": "SELECT\nTO_CHAR(first_seen, 'dd/mm/yyyy hh:mm:ss')\nFROM entity\nWHERE oid = $VM_OID",
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2415,7 +2415,7 @@
         "multi": false,
         "name": "VM_FIRST_SEEN",
         "options": [],
-        "query": "SELECT\nfirst_seen\nFROM entity\nWHERE oid = $VM_OID",
+        "query": "SELECT\nTO_CHAR(first_seen, 'dd/mm/yyyy hh:mm:ss')\nFROM entity\nWHERE oid = $VM_OID",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2430,11 +2430,11 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "9999-12-31T00:00:00Z",
-          "value": "9999-12-31T00:00:00Z"
+          "text": "Still present",
+          "value": "Still present"
         },
         "datasource": "Turbo Timescale",
-        "definition": "SELECT\nlast_seen\nFROM entity\nWHERE oid = $VM_OID",
+        "definition": "SELECT\nCASE WHEN TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') = '31/12/9999 12:12:00' THEN 'Still present' ELSE TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') END\nFROM entity\nWHERE oid = $VM_OID",
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2442,7 +2442,7 @@
         "multi": false,
         "name": "VM_LAST_SEEN",
         "options": [],
-        "query": "SELECT\nlast_seen\nFROM entity\nWHERE oid = $VM_OID",
+        "query": "SELECT\nCASE WHEN TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') = '31/12/9999 12:12:00' THEN 'Still present' ELSE TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') END\nFROM entity\nWHERE oid = $VM_OID",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2490,5 +2490,5 @@
   "timezone": "",
   "title": "Individual VM Dashboard",
   "uid": "rriSBmQMk",
-  "version": 52
+  "version": 53
 }
