@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 110,
-  "iteration": 1628701354666,
+  "iteration": 1628702450458,
   "links": [
     {
       "icon": "external link",
@@ -1935,6 +1935,74 @@
       "type": "table"
     },
     {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 632
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 0,
+        "y": 53
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "panelId": 37,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Related VMs",
+      "transformations": [],
+      "type": "stat"
+    },
+    {
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
@@ -1974,8 +2042,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
-        "x": 0,
+        "w": 21,
+        "x": 3,
         "y": 53
       },
       "id": 37,
@@ -2343,5 +2411,5 @@
   "timezone": "",
   "title": "Individual Host Dashboard",
   "uid": "7NR7xCGnz",
-  "version": 13
+  "version": 15
 }
