@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 88,
-  "iteration": 1622221465373,
+  "iteration": 1627998325333,
   "links": [],
   "panels": [
     {
@@ -162,7 +162,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH last_status as (\n  SELECT\n    DISTINCT ON (a.entity_oid) a.time,\n    a.entity_oid,\n    a.int_value\n  FROM\n    historical_entity_attrs a\n  WHERE\n    a.\"type\" = 'ENTITY_STATE'\n  ORDER BY a.entity_oid, a.time DESC\n),\nlast_powered_on as (\n  SELECT\n    DISTINCT ON (a.entity_oid) a.time,\n    a.entity_oid\n  FROM\n    historical_entity_attrs a\n  WHERE\n    a.\"type\" = 'ENTITY_STATE'\n    AND a.int_value::entity_state = 'POWERED_ON'\n  ORDER BY a.entity_oid, a.time DESC\n)\n\nSELECT\n  DISTINCT ON (e.name) e.name AS \"VM Name\",\n--  ls.int_value::entity_state AS \"Status\",\n  lpon.time AS \"Last Powered On Date\",\n  --lpon.time AS \"Last Powered On Date\",\n  COALESCE(DATE_PART('day', now()::timestamp - lpon.time::timestamp),999999) AS \"Number of Powered Off days\"\nFROM\n  entity e\nJOIN\n  last_status ls ON ls.entity_oid = e.oid\nLEFT JOIN\n  last_powered_on lpon ON lpon.entity_oid = e.oid\nWHERE\n  e.\"type\" = 'VIRTUAL_MACHINE'\n--  AND ls.int_value::entity_state = 'POWERED_OFF'\n--  AND lpoff.time IS NOT NULL\n -- AND ((lpoff.time > lpon.time) OR (lpon.time IS NULL))\n AND ls.int_value::entity_state = 'POWERED_OFF'\n AND ((COALESCE(DATE_PART('day', now()::timestamp - lpon.time::timestamp),999999) <> 999999) OR '${ALWAYS_OFF}' = 'Yes')\nORDER BY e.name, e.last_seen DESC",
+          "rawSql": "WITH last_status as (\n  SELECT\n    DISTINCT ON (a.entity_oid) a.time,\n    a.entity_oid,\n    a.int_value\n  FROM\n    historical_entity_attrs a\n  WHERE\n    a.\"type\" = 'ENTITY_STATE'\n  ORDER BY a.entity_oid, a.time DESC\n),\nlast_powered_on as (\n  SELECT\n    DISTINCT ON (a.entity_oid) a.time,\n    a.entity_oid\n  FROM\n    historical_entity_attrs a\n  WHERE\n    a.\"type\" = 'ENTITY_STATE'\n    AND a.int_value::entity_state = 'POWERED_ON'\n  ORDER BY a.entity_oid, a.time DESC\n)\n\nSELECT\n  DISTINCT ON (e.name) e.name AS \"VM Name\",\n--  ls.int_value::entity_state AS \"Status\",\n  lpon.time AS \"Last Powered On Date\",\n  --lpon.time AS \"Last Powered On Date\",\n  COALESCE(DATE_PART('day', now()::timestamp - lpon.time::timestamp),999999) AS \"Number of Powered Off days\"\nFROM\n  entity e\nJOIN\n  last_status ls ON ls.entity_oid = e.oid\nLEFT JOIN\n  last_powered_on lpon ON lpon.entity_oid = e.oid\nWHERE\n  e.\"type\" = 'VIRTUAL_MACHINE'\n--  AND ls.int_value::entity_state = 'POWERED_OFF'\n--  AND lpoff.time IS NOT NULL\n -- AND ((lpoff.time > lpon.time) OR (lpon.time IS NULL))\n AND ls.int_value::entity_state = 'POWERED_OFF'\n AND ((COALESCE(DATE_PART('day', now()::timestamp - lpon.time::timestamp),999999) <> 999999) OR '${ALWAYS_OFF}' = 'Yes')\n AND e.last_seen > now()\nORDER BY e.name, e.last_seen DESC",
           "refId": "A",
           "select": [
             [
@@ -237,5 +237,5 @@
   "timezone": "",
   "title": "Powered Off VMs",
   "uid": "uNnmsrqMz",
-  "version": 2
+  "version": 3
 }

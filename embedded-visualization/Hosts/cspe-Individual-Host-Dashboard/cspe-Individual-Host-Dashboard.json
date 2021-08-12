@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 59,
-  "iteration": 1628700336857,
+  "id": 111,
+  "iteration": 1628755083140,
   "links": [
     {
       "icon": "external link",
@@ -25,7 +25,7 @@
       "targetBlank": true,
       "title": "Jump on the VM in Turbonomic ARM UI",
       "type": "link",
-      "url": "../app/#/view/main/$VM_OID/overview"
+      "url": "../app/#/view/main/$HOST_OID/overview"
     }
   ],
   "panels": [
@@ -55,20 +55,20 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 16,
         "x": 0,
         "y": 0
       },
       "id": 24,
       "options": {
-        "content": "<center>\n\nThe VM is currently <b>$VM_STATE</b>.\n<br /><br />\n\n<table>\n    <thead>\n        <tr>\n            <td><b>Name</b></td>\n            <td><b>Environment Type</b></td>\n            <td><b>First Seen Date</b></td>\n            <td><b>Last Seen Date</b></td>\n            <td><b>Guest OS</b></td>\n            <td><b>Number of vCPUs</b></td>\n            <td><b>Quantity of vMem</b></td>\n            <td><b>Connected Networks</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${VM}</td>\n            <td>${VM_ENVIRONMENT}</td>\n            <td>${VM_FIRST_SEEN}</td>\n            <td>${VM_LAST_SEEN}</td>\n            <td>${VM_OS_TYPE} - ${VM_OS_NAME}</td>\n            <td>${VM_NUM_CPUS}</td>\n            <td>${VM_MEMORY_CURGBCAPACITY} GB</td>\n            <td>${VM_CONNECTED_NETWORKS}</td>\n        </tr>\n    </tbody>\n</table>\n</center>\n\n",
+        "content": "<center>\n\nThe Host is currently <b>$HOST_STATE</b>.\n<br /><br />\n\n<table>\n    <thead>\n        <tr>\n            <td><b>Name</b></td>\n            <td><b>Cluster</b></td>\n            <td><b>Datacenter</b></td>\n            <td><b>Target Name</b></td>\n            <td><b>Target Type</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST}</td>\n            <td>${HOST_CLUSTER}</td>\n            <td>${HOST_DATACENTER}</td>\n            <td>${TARGET_NAME}</td>\n            <td>${TARGET_TYPE}</td>\n        </tr>\n    </tbody>\n</table>\n<br />\n<table>\n    <thead>\n        <tr>\n            <td><b>Model</b></td>\n            <td><b>Number of CPUs</b></td>\n            <td><b>CPU Model</b></td>\n            <td><b>Quantity of Memory (Gb)</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST_MODEL}</td>\n            <td>${HOST_NUM_CPUS}</td>\n            <td>${HOST_CPU_MODEL}</td>\n            <td>${HOST_MEMORY_CURGBCAPACITY}</td>\n        </tr>\n    </tbody>\n</table>\n</center>\n\n",
         "mode": "html"
       },
       "pluginVersion": "7.3.8",
       "timeFrom": null,
       "timeShift": null,
-      "title": "VM Identity Card",
+      "title": "Host Identity Card",
       "type": "text"
     },
     {
@@ -97,7 +97,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 8,
         "x": 16,
         "y": 0
@@ -113,7 +113,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select e.name from \"scope\" s\njoin entity e on s.scoped_oid = e.oid\nwhere s.seed_oid = $VM_OID\nand s.scoped_type = 'GROUP'\nand s.finish >= $__timeTo()\norder by e.name",
+          "rawSql": "select e.name from \"scope\" s\njoin entity e on s.scoped_oid = e.oid\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'GROUP'\nand s.finish >= $__timeTo()\norder by e.name",
           "refId": "A",
           "select": [
             [
@@ -177,7 +177,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 7
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 2,
@@ -211,7 +211,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  \"type\" as metric,\n  utilization as value\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  (type = 'VCPU' or type = 'VMEM') AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  \"type\" as metric,\n  utilization as value\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  (type = 'CPU' or type = 'MEM') AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -324,7 +324,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 7
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 20,
@@ -358,7 +358,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  utilization as value,\n  \"type\" as metric\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  (type IN ('CPU_READY','Q1_VCPU','Q2_VCPU','Q4_VCPU','Q8_VCPU','Q16_VCPU','Q32_VCPU','Q64_VCPU')) AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  utilization as value,\n  \"type\" as metric\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  (type IN ('CPU_READY','Q1_VCPU','Q2_VCPU','Q4_VCPU','Q8_VCPU','Q16_VCPU','Q32_VCPU','Q64_VCPU')) AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -472,7 +472,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 7
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 25,
@@ -506,7 +506,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed as value,\n  \"type\" as metric\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  (type IN ('SWAPPING','BALLOONING')) AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  utilization as value,\n  \"type\" as metric\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  (type IN ('SWAPPING','BALLOONING')) AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -620,7 +620,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 16
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 14,
@@ -654,7 +654,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'STORAGE_LATENCY' AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'STORAGE_LATENCY' AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -767,7 +767,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 16
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 15,
@@ -801,7 +801,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'STORAGE_ACCESS' AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'STORAGE_ACCESS' AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -914,7 +914,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 16
+        "y": 17
       },
       "hiddenSeries": false,
       "id": 12,
@@ -948,7 +948,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'IO_THROUGHPUT' AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  utilization\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'IO_THROUGHPUT' AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1061,7 +1061,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 25
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 13,
@@ -1095,7 +1095,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  consumed\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'NET_THROUGHPUT' AND\n  entity_oid = $VM_OID\nORDER BY 1",
+          "rawSql": "SELECT\n  \"time\" AS \"time\",\n  utilization\nFROM metric\nWHERE\n  $__timeFilter(\"time\") AND\n  type = 'NET_THROUGHPUT' AND\n  entity_oid = $HOST_OID\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1208,7 +1208,7 @@
         "h": 9,
         "w": 16,
         "x": 8,
-        "y": 25
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 16,
@@ -1242,7 +1242,7 @@
           "group": [],
           "metricColumn": "count(type)",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"time\",\n  count(type) as value,\n  CONCAT(category,' - ',type) as metric\nFROM pending_action\nWHERE\n  target_entity_id = $VM_OID\nGROUP BY 1, 3\nORDER BY 1 ASC",
+          "rawSql": "SELECT\n  recommendation_time AS \"time\",\n  count(type) as value,\n  CONCAT(category,' - ',type) as metric\nFROM pending_action\nWHERE\n  involved_entities @> '{\"$HOST_OID\"}'\nGROUP BY 1, 3\nORDER BY 1 ASC",
           "refId": "A",
           "select": [
             [
@@ -1351,7 +1351,7 @@
         "h": 3,
         "w": 8,
         "x": 0,
-        "y": 34
+        "y": 35
       },
       "id": 30,
       "options": {
@@ -1375,7 +1375,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'PERFORMANCE_ASSURANCE' OR category = 'PREVENTION') AND\n  target_entity_id = $VM_OID\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'PERFORMANCE_ASSURANCE' OR category = 'PREVENTION') AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY 1 DESC",
           "refId": "A",
           "select": [
             [
@@ -1446,7 +1446,7 @@
         "h": 3,
         "w": 8,
         "x": 8,
-        "y": 34
+        "y": 35
       },
       "id": 31,
       "options": {
@@ -1470,7 +1470,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'EFFICIENCY_IMPROVEMENT') AND\n  target_entity_id = $VM_OID\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'EFFICIENCY_IMPROVEMENT') AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY 1 DESC",
           "refId": "A",
           "select": [
             [
@@ -1541,7 +1541,7 @@
         "h": 3,
         "w": 8,
         "x": 16,
-        "y": 34
+        "y": 35
       },
       "id": 32,
       "options": {
@@ -1565,7 +1565,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'COMPLIANCE') AND\n  target_entity_id = $VM_OID\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'COMPLIANCE') AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY 1 DESC",
           "refId": "A",
           "select": [
             [
@@ -1636,7 +1636,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 37
+        "y": 38
       },
       "id": 9,
       "options": {
@@ -1650,7 +1650,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'PERFORMANCE_ASSURANCE' OR category = 'PREVENTION') AND\n  target_entity_id = $VM_OID\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  (category = 'PERFORMANCE_ASSURANCE' OR category = 'PREVENTION') AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY 1 DESC",
           "refId": "A",
           "select": [
             [
@@ -1721,7 +1721,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 37
+        "y": 38
       },
       "id": 10,
       "options": {
@@ -1735,7 +1735,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  category = 'EFFICIENCY_IMPROVEMENT' AND\n  target_entity_id = $VM_OID\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  category = 'EFFICIENCY_IMPROVEMENT' AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY 1 DESC",
           "refId": "A",
           "select": [
             [
@@ -1806,7 +1806,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 37
+        "y": 38
       },
       "id": 11,
       "options": {
@@ -1820,7 +1820,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  category = 'COMPLIANCE' AND\n  target_entity_id = $VM_OID\nORDER BY 1 DESC",
+          "rawSql": "SELECT\n  recommendation_time AS \"Time\",\n  description AS \"Description\"\nFROM pending_action\nWHERE\n  category = 'COMPLIANCE' AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY 1 DESC",
           "refId": "A",
           "select": [
             [
@@ -1884,6 +1884,18 @@
                 "value": 146
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": null
+              }
+            ]
           }
         ]
       },
@@ -1891,7 +1903,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 46
       },
       "id": 35,
       "options": {
@@ -1905,7 +1917,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  description AS \"Description\",\n  acceptance_time AS \"Acceptance Time\",\n  recommendation_time as \"Recommendation Time\",\n  final_state as \"Final State\",\n  \"type\" as \"Type\",\n  category as \"Category\",\n  savings as \"Savings\"\nFROM completed_action\nWHERE\n  $__timeFilter(\"acceptance_time\") AND\n  target_entity_id = $VM_OID\nORDER BY acceptance_time DESC",
+          "rawSql": "SELECT\n  description AS \"Description\",\n  acceptance_time AS \"Acceptance Time\",\n  recommendation_time as \"Recommendation Time\",\n  final_state as \"Final State\",\n  \"type\" as \"Type\",\n  category as \"Category\",\n  savings as \"Savings\"\nFROM completed_action\nWHERE\n  $__timeFilter(\"acceptance_time\") AND\n  involved_entities @> '{\"$HOST_OID\"}'\nORDER BY acceptance_time DESC",
           "refId": "A",
           "select": [
             [
@@ -1935,193 +1947,336 @@
       "type": "table"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Turbo Timescale",
+      "datasource": "-- Dashboard --",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 52
-      },
-      "hiddenSeries": false,
-      "id": 28,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": false
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.8",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  CONCAT(m.\"type\",' - ',e.name) as metric\nfrom \"scope\" s\njoin metric m on m.entity_oid = s.scoped_oid\njoin entity e on m.entity_oid = e.\"oid\" \nwhere\n$__timeFilter(m.\"time\")\nand s.seed_oid = $VM_OID\nand m.\"type\" IN ('CPU', 'MEM')\nand s.scoped_type = 'PHYSICAL_MACHINE'\nand m.\"time\" >= s.\"start\" and m.\"time\" <= s.finish\norder by m.\"time\", metric",
-          "refId": "A",
-          "select": [
-            [
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
+                "color": "green",
+                "value": null
               }
             ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Associated Host(s) Performance - CPU & Mem",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transformations": [],
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:147",
-          "decimals": 2,
-          "format": "percentunit",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
+          }
         },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 632
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 0,
+        "y": 53
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
         {
-          "$$hashKey": "object:148",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
+          "panelId": 37,
+          "refId": "A"
         }
       ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Related VMs",
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": "A"
+          }
+        }
+      ],
+      "type": "stat"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {
+            "align": null,
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*%.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IO Throughput (iops)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Net Throughput (KB/s)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "KBs"
+              }
+            ]
+          }
+        ]
       },
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 59
+        "h": 8,
+        "w": 21,
+        "x": 3,
+        "y": 53
       },
-      "hiddenSeries": false,
-      "id": 29,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
+      "id": 37,
       "options": {
-        "alertThreshold": false
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": []
       },
-      "percentage": false,
       "pluginVersion": "7.3.8",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
       "targets": [
         {
-          "format": "time_series",
+          "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  CONCAT(m.\"type\",' - ',e.name) as metric\nfrom \"scope\" s\njoin metric m on m.entity_oid = s.scoped_oid\njoin entity e on m.entity_oid = e.\"oid\" \nwhere\n$__timeFilter(m.\"time\")\nand s.seed_oid = $VM_OID\nand m.\"type\" IN ('Q1_VCPU','Q2_VCPU','Q4_VCPU','Q8_VCPU','Q16_VCPU','Q32_VCPU','Q64_VCPU')\nand s.scoped_type = 'PHYSICAL_MACHINE'\nand m.\"time\" >= s.\"start\" and m.\"time\" <= s.finish\norder by m.\"time\", metric",
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\te.name as \"Name\",\n\tTO_CHAR(e.first_seen, 'dd/mm/yyyy hh:mm:ss') as \"First seen\",\n\tCASE WHEN TO_CHAR(e.last_seen, 'dd/mm/yyyy hh:mm:ss') = '31/12/9999 12:12:00' THEN 'Still present' ELSE TO_CHAR(e.last_seen, 'dd/mm/yyyy hh:mm:ss') END  as \"Last seen\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\norder by e.name",
           "refId": "A",
           "select": [
             [
               {
                 "params": [
-                  "savings"
+                  "value"
                 ],
                 "type": "column"
               }
             ]
           ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('VCPU')\ngroup by e.oid, m.type",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('VMEM')\ngroup by e.oid, m.type",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('CPU_READY')\ngroup by e.oid, m.type",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('IO_THROUGHPUT')\ngroup by e.oid, m.type",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('NET_THROUGHPUT')\ngroup by e.oid, m.type",
+          "refId": "F",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
           "where": [
             {
               "name": "$__timeFilter",
@@ -2131,50 +2286,39 @@
           ]
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "Associated Host(s) Performance - Ready Queue",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transformations": [],
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
+      "title": "Related VMs",
+      "transformations": [
         {
-          "$$hashKey": "object:147",
-          "decimals": 2,
-          "format": "percentunit",
-          "label": "",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "OID"
+          }
         },
         {
-          "$$hashKey": "object:148",
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "OID": true,
+              "Type 1": true,
+              "Type 2": true,
+              "Type 3": true,
+              "Type 4": true,
+              "Type 5": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Utilization 1": "VCPU (%)",
+              "Utilization 2": "VMem (%)",
+              "Utilization 3": "CPU Ready (%)",
+              "Utilization 4": "IO Throughput (iops)",
+              "Utilization 5": "Net Throughput (kB/s)"
+            }
+          }
         }
       ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "table"
     }
   ],
   "refresh": false,
@@ -2187,19 +2331,19 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "CSOwnTurboXL",
-          "value": "CSOwnTurboXL"
+          "text": "hp-dl5110.sedemo.vmturbo.com",
+          "value": "hp-dl5110.sedemo.vmturbo.com"
         },
         "datasource": "Turbo Timescale",
-        "definition": "select name from entity where type = 'VIRTUAL_MACHINE' order by 1",
+        "definition": "select name from entity where type = 'PHYSICAL_MACHINE' order by 1",
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Host",
         "multi": false,
-        "name": "VM",
+        "name": "HOST",
         "options": [],
-        "query": "select name from entity where type = 'VIRTUAL_MACHINE' order by 1",
+        "query": "select name from entity where type = 'PHYSICAL_MACHINE' order by 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2214,19 +2358,19 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "74039857670352",
-          "value": "74039857670352"
+          "text": "73571704045008",
+          "value": "73571704045008"
         },
         "datasource": "Turbo Timescale",
-        "definition": "select oid from entity where name = '$VM' and type = 'VIRTUAL_MACHINE' order by last_seen DESC limit 1",
+        "definition": "select oid from entity where name = '$HOST' and type = 'PHYSICAL_MACHINE' order by last_seen DESC limit 1",
         "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
         "multi": false,
-        "name": "VM_OID",
+        "name": "HOST_OID",
         "options": [],
-        "query": "select oid from entity where name = '$VM' and type = 'VIRTUAL_MACHINE' order by last_seen DESC limit 1",
+        "query": "select oid from entity where name = '$HOST' and type = 'PHYSICAL_MACHINE' order by last_seen DESC limit 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2241,19 +2385,19 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "On-Premise",
-          "value": "On-Premise"
+          "text": "vCenter",
+          "value": "vCenter"
         },
         "datasource": "Turbo Timescale",
-        "definition": "SELECT\nCASE environment\nWHEN 'ON_PREM' THEN 'On-Premise'\nWHEN 'CLOUD' Then 'Cloud'\nEND\nFROM entity\nWHERE oid = $VM_OID",
+        "definition": "SELECT\njsonb_array_elements(attrs->'targets')->>'type'\nFROM entity\nWHERE oid = $HOST_OID",
         "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
         "multi": false,
-        "name": "VM_ENVIRONMENT",
+        "name": "TARGET_TYPE",
         "options": [],
-        "query": "SELECT\nCASE environment\nWHEN 'ON_PREM' THEN 'On-Premise'\nWHEN 'CLOUD' Then 'Cloud'\nEND\nFROM entity\nWHERE oid = $VM_OID",
+        "query": "SELECT\njsonb_array_elements(attrs->'targets')->>'type'\nFROM entity\nWHERE oid = $HOST_OID",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2268,19 +2412,19 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "LINUX",
-          "value": "LINUX"
+          "text": "vcenter.demo.turbonomic.com",
+          "value": "vcenter.demo.turbonomic.com"
         },
         "datasource": "Turbo Timescale",
-        "definition": "SELECT\nattrs->>'guest_os_type'\nFROM entity\nWHERE oid = $VM_OID",
+        "definition": "SELECT\njsonb_array_elements(attrs->'targets')->>'name'\nFROM entity\nWHERE oid = $HOST_OID",
         "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
         "multi": false,
-        "name": "VM_OS_TYPE",
+        "name": "TARGET_NAME",
         "options": [],
-        "query": "SELECT\nattrs->>'guest_os_type'\nFROM entity\nWHERE oid = $VM_OID",
+        "query": "SELECT\njsonb_array_elements(attrs->'targets')->>'name'\nFROM entity\nWHERE oid = $HOST_OID",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2295,154 +2439,19 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "CentOS 7 (64-bit)",
-          "value": "CentOS 7 (64-bit)"
+          "text": "Hypervisor",
+          "value": "Hypervisor"
         },
         "datasource": "Turbo Timescale",
-        "definition": "SELECT\nattrs->>'guest_os_name'\nFROM entity\nWHERE oid = $VM_OID",
+        "definition": "SELECT\njsonb_array_elements(attrs->'targets')->>'category'\nFROM entity\nWHERE oid = $HOST_OID",
         "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
         "multi": false,
-        "name": "VM_OS_NAME",
+        "name": "TARGET_CATEGORY",
         "options": [],
-        "query": "SELECT\nattrs->>'guest_os_name'\nFROM entity\nWHERE oid = $VM_OID",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "4",
-          "value": "4"
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "SELECT\nattrs->>'num_cpus'\nFROM entity\nWHERE oid = $VM_OID",
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "VM_NUM_CPUS",
-        "options": [],
-        "query": "SELECT\nattrs->>'num_cpus'\nFROM entity\nWHERE oid = $VM_OID",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "64",
-          "value": "64"
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $VM_OID\nand type = 'VMEM'\nORDER by time DESC limit 1",
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "VM_MEMORY_CURGBCAPACITY",
-        "options": [],
-        "query": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $VM_OID\nand type = 'VMEM'\nORDER by time DESC limit 1",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "VM Network",
-          "value": "VM Network"
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "SELECT\njsonb_array_elements_text(attrs->'connected_networks') as \"Connected Networks\"\nFROM entity\nWHERE oid = $VM_OID",
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "VM_CONNECTED_NETWORKS",
-        "options": [],
-        "query": "SELECT\njsonb_array_elements_text(attrs->'connected_networks') as \"Connected Networks\"\nFROM entity\nWHERE oid = $VM_OID",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "05/07/2021 06:07:28",
-          "value": "05/07/2021 06:07:28"
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "SELECT\nTO_CHAR(first_seen, 'dd/mm/yyyy hh:mm:ss')\nFROM entity\nWHERE oid = $VM_OID",
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "VM_FIRST_SEEN",
-        "options": [],
-        "query": "SELECT\nTO_CHAR(first_seen, 'dd/mm/yyyy hh:mm:ss')\nFROM entity\nWHERE oid = $VM_OID",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "Still present",
-          "value": "Still present"
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "SELECT\nCASE WHEN TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') = '31/12/9999 12:12:00' THEN 'Still present' ELSE TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') END\nFROM entity\nWHERE oid = $VM_OID",
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "VM_LAST_SEEN",
-        "options": [],
-        "query": "SELECT\nCASE WHEN TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') = '31/12/9999 12:12:00' THEN 'Still present' ELSE TO_CHAR(last_seen, 'dd/mm/yyyy hh:mm:ss') END\nFROM entity\nWHERE oid = $VM_OID",
+        "query": "SELECT\njsonb_array_elements(attrs->'targets')->>'category'\nFROM entity\nWHERE oid = $HOST_OID",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2461,15 +2470,177 @@
           "value": "Powered On"
         },
         "datasource": "Turbo Timescale",
-        "definition": "SELECT\nCASE WHEN int_value::entity_state = 'POWERED_ON' THEN 'Powered On' \nELSE 'Powered Off'\nEND\nFROM historical_entity_attrs\nWHERE entity_oid = $VM_OID\nAND type = 'ENTITY_STATE'\nORDER by time DESC limit 1",
+        "definition": "SELECT\nCASE WHEN int_value::entity_state = 'POWERED_ON' THEN 'Powered On' \nELSE 'Powered Off'\nEND\nFROM historical_entity_attrs\nWHERE entity_oid = $HOST_OID\nAND type = 'ENTITY_STATE'\nORDER by time DESC limit 1",
         "error": null,
         "hide": 2,
         "includeAll": false,
         "label": null,
         "multi": false,
-        "name": "VM_STATE",
+        "name": "HOST_STATE",
         "options": [],
-        "query": "SELECT\nCASE WHEN int_value::entity_state = 'POWERED_ON' THEN 'Powered On' \nELSE 'Powered Off'\nEND\nFROM historical_entity_attrs\nWHERE entity_oid = $VM_OID\nAND type = 'ENTITY_STATE'\nORDER by time DESC limit 1",
+        "query": "SELECT\nCASE WHEN int_value::entity_state = 'POWERED_ON' THEN 'Powered On' \nELSE 'Powered Off'\nEND\nFROM historical_entity_attrs\nWHERE entity_oid = $HOST_OID\nAND type = 'ENTITY_STATE'\nORDER by time DESC limit 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "HawthorneSales/EDUDEMO",
+          "value": "HawthorneSales/EDUDEMO"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select e.\"name\" \nfrom \"scope\" s\njoin entity e on e.oid = s.scoped_oid \nwhere seed_oid = $HOST_OID\nand scoped_type = 'COMPUTE_CLUSTER'\nand finish > now()",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_CLUSTER",
+        "options": [],
+        "query": "select e.\"name\" \nfrom \"scope\" s\njoin entity e on e.oid = s.scoped_oid \nwhere seed_oid = $HOST_OID\nand scoped_type = 'COMPUTE_CLUSTER'\nand finish > now()",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "HawthorneSales",
+          "value": "HawthorneSales"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select e.\"name\" \nfrom \"scope\" s\njoin entity e on e.oid = s.scoped_oid \nwhere seed_oid = $HOST_OID\nand scoped_type = 'DATACENTER'\nand finish > now()",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_DATACENTER",
+        "options": [],
+        "query": "select e.\"name\" \nfrom \"scope\" s\njoin entity e on e.oid = s.scoped_oid \nwhere seed_oid = $HOST_OID\nand scoped_type = 'DATACENTER'\nand finish > now()",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "ProLiant DL560 Gen8",
+          "value": "ProLiant DL560 Gen8"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select attrs->>'model' from entity e where oid = $HOST_OID",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_MODEL",
+        "options": [],
+        "query": "select attrs->>'model' from entity e where oid = $HOST_OID",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "Intel(R) Xeon(R) CPU E5-4657L v2 @ 2.40GHz",
+          "value": "Intel(R) Xeon(R) CPU E5-4657L v2 @ 2.40GHz"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select attrs->>'cpu_model' from entity e where oid = $HOST_OID",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_CPU_MODEL",
+        "options": [],
+        "query": "select attrs->>'cpu_model' from entity e where oid = $HOST_OID",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "48",
+          "value": "48"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select attrs->>'num_cpus' from entity e where oid = $HOST_OID",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_NUM_CPUS",
+        "options": [],
+        "query": "select attrs->>'num_cpus' from entity e where oid = $HOST_OID",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "1536",
+          "value": "1536"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $HOST_OID\nand type = 'MEM'\nORDER by time DESC limit 1",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_MEMORY_CURGBCAPACITY",
+        "options": [],
+        "query": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $HOST_OID\nand type = 'MEM'\nORDER by time DESC limit 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -2483,12 +2654,12 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Individual VM Dashboard",
-  "uid": "rriSBmQMk",
-  "version": 53
+  "title": "Individual Host Dashboard",
+  "uid": "mfPeteGnk",
+  "version": 5
 }
