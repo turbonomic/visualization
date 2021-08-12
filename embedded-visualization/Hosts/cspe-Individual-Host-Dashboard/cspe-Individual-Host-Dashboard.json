@@ -23,7 +23,7 @@
       "includeVars": false,
       "tags": [],
       "targetBlank": true,
-      "title": "Jump on the VM in Turbonomic ARM UI",
+      "title": "Jump on the Host in Turbonomic ARM UI",
       "type": "link",
       "url": "../app/#/view/main/$HOST_OID/overview"
     }
@@ -2661,5 +2661,5 @@
   "timezone": "",
   "title": "Individual Host Dashboard",
   "uid": "mfPeteGnk",
-  "version": 5
+  "version": 6
 }
