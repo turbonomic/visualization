@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 110,
-  "iteration": 1628702450458,
+  "id": 111,
+  "iteration": 1628755083140,
   "links": [
     {
       "icon": "external link",
@@ -62,7 +62,7 @@
       },
       "id": 24,
       "options": {
-        "content": "<center>\n\nThe Host is currently <b>$HOST_STATE</b>.\n<br /><br />\n\n<table>\n    <thead>\n        <tr>\n            <td><b>Name</b></td>\n            <td><b>Datacenter</b></td>\n            <td><b>Cluster</b></td>\n            <td><b>Target Name</b></td>\n            <td><b>Target Type</b></td>\n            <td><b>Target Category</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST}</td>\n            <td>${HOST_DATACENTER}</td>\n            <td>${HOST_CLUSTER}</td>\n            <td>${TARGET_NAME}</td>\n            <td>${TARGET_TYPE}</td>\n            <td>${TARGET_CATEGORY}</td>\n        </tr>\n    </tbody>\n</table>\n<br />\n<table>\n    <thead>\n        <tr>\n            <td><b>Model</b></td>\n            <td><b>Number of CPUs</b></td>\n            <td><b>CPU Model</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST_MODEL}</td>\n            <td>${HOST_NUM_CPUS}</td>\n            <td>${HOST_CPU_MODEL}</td>\n        </tr>\n    </tbody>\n</table>\n</center>\n\n",
+        "content": "<center>\n\nThe Host is currently <b>$HOST_STATE</b>.\n<br /><br />\n\n<table>\n    <thead>\n        <tr>\n            <td><b>Name</b></td>\n            <td><b>Cluster</b></td>\n            <td><b>Datacenter</b></td>\n            <td><b>Target Name</b></td>\n            <td><b>Target Type</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST}</td>\n            <td>${HOST_CLUSTER}</td>\n            <td>${HOST_DATACENTER}</td>\n            <td>${TARGET_NAME}</td>\n            <td>${TARGET_TYPE}</td>\n        </tr>\n    </tbody>\n</table>\n<br />\n<table>\n    <thead>\n        <tr>\n            <td><b>Model</b></td>\n            <td><b>Number of CPUs</b></td>\n            <td><b>CPU Model</b></td>\n            <td><b>Quantity of Memory (Gb)</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST_MODEL}</td>\n            <td>${HOST_NUM_CPUS}</td>\n            <td>${HOST_CPU_MODEL}</td>\n            <td>${HOST_MEMORY_CURGBCAPACITY}</td>\n        </tr>\n    </tbody>\n</table>\n</center>\n\n",
         "mode": "html"
       },
       "pluginVersion": "7.3.8",
@@ -1884,6 +1884,18 @@
                 "value": 146
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": null
+              }
+            ]
           }
         ]
       },
@@ -1999,7 +2011,14 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Related VMs",
-      "transformations": [],
+      "transformations": [
+        {
+          "id": "filterByRefId",
+          "options": {
+            "include": "A"
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -2034,7 +2053,63 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 632
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*%.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "lcd-gauge"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "percentage",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IO Throughput (iops)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Net Throughput (KB/s)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "KBs"
               }
             ]
           }
@@ -2048,6 +2123,7 @@
       },
       "id": 37,
       "options": {
+        "frameIndex": 1,
         "showHeader": true,
         "sortBy": []
       },
@@ -2078,6 +2154,136 @@
               "type": "macro"
             }
           ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('VCPU')\ngroup by e.oid, m.type",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('VMEM')\ngroup by e.oid, m.type",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('CPU_READY')\ngroup by e.oid, m.type",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('IO_THROUGHPUT')\ngroup by e.oid, m.type",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\te.oid as \"OID\",\n\tm.\"type\" as \"Type\",\n\tcoalesce(avg(m.utilization), avg(m.consumed))\tas \"Utilization\"\nfrom scope s \njoin entity e on s.scoped_oid = e.\"oid\" \njoin metric m on m.entity_oid = e.\"oid\" AND $__timeFilter(m.time)\nwhere s.seed_oid = $HOST_OID\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand\n  (\n    (s.start <= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish <= $__timeTo()) or\n    (s.start >= $__timeFrom() and s.finish >= $__timeTo()) or\n    (s.start <= $__timeFrom() and s.finish >= $__timeTo())\n  )\nand s.finish >= $__timeFrom()\nand s.start <= $__timeTo()\nand m.\"type\" IN ('NET_THROUGHPUT')\ngroup by e.oid, m.type",
+          "refId": "F",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "timeFrom": null,
@@ -2085,13 +2291,30 @@
       "title": "Related VMs",
       "transformations": [
         {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "OID"
+          }
+        },
+        {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "OID": true
+              "OID": true,
+              "Type 1": true,
+              "Type 2": true,
+              "Type 3": true,
+              "Type 4": true,
+              "Type 5": true
             },
             "indexByName": {},
-            "renameByName": {}
+            "renameByName": {
+              "Utilization 1": "VCPU (%)",
+              "Utilization 2": "VMem (%)",
+              "Utilization 3": "CPU Ready (%)",
+              "Utilization 4": "IO Throughput (iops)",
+              "Utilization 5": "Net Throughput (kB/s)"
+            }
           }
         }
       ],
@@ -2400,6 +2623,33 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "1536",
+          "value": "1536"
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $HOST_OID\nand type = 'MEM'\nORDER by time DESC limit 1",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HOST_MEMORY_CURGBCAPACITY",
+        "options": [],
+        "query": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $HOST_OID\nand type = 'MEM'\nORDER by time DESC limit 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -2410,6 +2660,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Individual Host Dashboard",
-  "uid": "7NR7xCGnz",
-  "version": 15
+  "uid": "mfPeteGnk",
+  "version": 5
 }
