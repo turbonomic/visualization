@@ -1,0 +1,393 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 19,
+  "iteration": 1614807854879,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "$DB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Allocated"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Allocated"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "-- On-Prem Idle VMs\nWITH idle_counts as (\n    WITH idle_vms as (\n        SELECT entity_oid as oid\n              ,date_trunc('day', time) as idle_date\n          FROM metric \n         WHERE type in ('VMEM', 'VCPU')\n           AND $__timeFilter(time)\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1, 2\n        HAVING MAX(utilization) FILTER (WHERE type = 'VMEM') <= $MemIdle and MIN(utilization) FILTER (WHERE type = 'VMEM') > 0\n           AND MAX(utilization) FILTER (WHERE type = 'VCPU') <= $CpuIdle and MIN(utilization) FILTER (WHERE type = 'VCPU') > 0\n    ),\n\n    groups as (\n        SELECT oid\n              ,idle_date\n              ,ROW_NUMBER() OVER (PARTITION BY oid ORDER BY idle_date) as rn\n              ,idle_date - (ROW_NUMBER() OVER (PARTITION BY oid ORDER BY idle_date)||' day')::interval as grp\n          FROM idle_vms\n    )\n\n    SELECT oid as idle_oid\n          ,count(*) as days_idle\n      FROM groups\n     WHERE idle_date >= $__timeFrom()\n     GROUP BY oid, grp\n    HAVING max(idle_date) = (SELECT MAX(idle_date) FROM groups)\n),\n\nvms_by_cluster as (\n    SELECT distinct g.name as cluster_name\n          ,e.oid as vm_oid\n          ,e.name as vm_name\n          ,(e.attrs -> 'num_cpus')::int as vcpus\n          ,e.attrs -> 'tags' -> ${tagName:singlequote} ->> 0 as app_id\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n      JOIN entity g on s.scoped_oid = g.oid\n     where g.type = 'COMPUTE_CLUSTER'\n       and s.scoped_type = 'COMPUTE_CLUSTER'\n       AND e.type = 'VIRTUAL_MACHINE' \n       AND e.environment = 'ON_PREM'\n       AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n       and (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n),\n\nvm_metrics as (\n    SELECT entity_oid\n          ,AVG(consumed) FILTER (WHERE m.type = 'MEM_PROVISIONED') as mem_cap\n          ,AVG(consumed) FILTER (WHERE m.type = 'STORAGE_PROVISIONED') as stor_cap\n      FROM metric m\n     WHERE m.type in ('STORAGE_PROVISIONED', 'MEM_PROVISIONED')\n       AND m.time >= $__timeTo()::timestamptz - interval '15 minute'\n       and m.entity_type  = 'VIRTUAL_MACHINE'\n     GROUP BY entity_oid\n)\n\nSELECT cluster_name as \"Cluster Name\"\n      ,vm_name as \"VM Name\"\n      ,mem_cap/1024 as \"Mem Allocated\"\n      ,vcpus as \"VCPUs Allocated\"\n      ,stor_cap AS \"Storage Allocated\"\n      ,days_idle as \"Days\"\n      ,app_id as \"Tag\"\n  FROM vms_by_cluster\n  JOIN idle_counts on idle_oid = vm_oid\n  JOIN vm_metrics on vm_oid = vm_metrics.entity_oid\n   WHERE days_idle >= $MinDays",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "On-Prem Idle VMs",
+      "type": "table"
+    },
+    {
+      "datasource": "$DB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Allocated"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Allocated"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "7.1.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "-- Cloud Idle VMs\nWITH idle_counts as (\n    WITH idle_vms as (\n        SELECT entity_oid as oid\n              ,date_trunc('day', time) as idle_date\n          FROM metric \n         WHERE type in ('VMEM', 'VCPU')\n           AND $__timeFilter(time)\n           AND entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1, 2\n        HAVING MAX(utilization) FILTER (WHERE type = 'VMEM') <= $MemIdle and MIN(utilization) FILTER (WHERE type = 'VMEM') > 0\n           AND MAX(utilization) FILTER (WHERE type = 'VCPU') <= $CpuIdle and MIN(utilization) FILTER (WHERE type = 'VCPU') > 0\n    ),\n\n    groups as (\n        SELECT oid\n              ,idle_date\n              ,ROW_NUMBER() OVER (PARTITION BY oid ORDER BY idle_date) as rn\n              ,idle_date - (ROW_NUMBER() OVER (PARTITION BY oid ORDER BY idle_date)||' day')::interval as grp\n          FROM idle_vms\n    )\n\n    SELECT oid as idle_oid\n          ,count(*) as days_idle\n      FROM groups\n     WHERE idle_date >= $__timeFrom()\n     GROUP BY oid, grp\n    HAVING max(idle_date) = (SELECT MAX(idle_date) FROM groups)\n),\n\nvms_by_cluster as (\n    SELECT DISTINCT g.name as cluster_name\n          ,e.oid as vm_oid\n          ,e.name as vm_name\n          ,(e.attrs -> 'num_cpus')::int as vcpus\n          ,e.attrs -> 'tags' -> ${tagName:singlequote} ->> 0 as app_id\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n      JOIN entity g on s.scoped_oid = g.oid\n     where g.type = 'BUSINESS_ACCOUNT'\n       and s.scoped_type = 'BUSINESS_ACCOUNT'\n       AND e.type = 'VIRTUAL_MACHINE' \n       AND e.environment = 'CLOUD'\n       AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n       and (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n),\n\nvm_metrics as (\n    SELECT entity_oid\n          ,AVG(consumed) FILTER (WHERE m.type = 'MEM_PROVISIONED') as mem_cap\n          ,AVG(consumed) FILTER (WHERE m.type = 'STORAGE_PROVISIONED') as stor_cap\n      FROM metric m\n     WHERE m.type in ('STORAGE_PROVISIONED', 'MEM_PROVISIONED')\n       AND m.time >= $__timeTo()::timestamptz - interval '15 minute'\n       AND m.entity_type = 'VIRTUAL_MACHINE'\n     GROUP BY entity_oid\n)\n\nSELECT cluster_name as \"Business Account\"\n      ,vm_name as \"VM Name\"\n      ,mem_cap/1024 as \"Mem Allocated\"\n      ,vcpus as \"VCPUs Allocated\"\n      ,stor_cap AS \"Storage Allocated\"\n      ,days_idle as \"Days\"\n      ,app_id as \"Tag\"\n  FROM vms_by_cluster\n  JOIN idle_counts on idle_oid = vm_oid\n  JOIN vm_metrics on vm_oid = vm_metrics.entity_oid\n   WHERE days_idle >= $MinDays",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Cloud Idle VMs",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "10.10.168.1",
+          "value": "10.10.168.1"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DB",
+        "options": [],
+        "query": "postgres",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "7",
+          "value": "7"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Min Days",
+        "multi": false,
+        "name": "MinDays",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": true,
+            "text": "7",
+            "value": "7"
+          },
+          {
+            "selected": false,
+            "text": "14",
+            "value": "14"
+          },
+          {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          },
+          {
+            "selected": false,
+            "text": "60",
+            "value": "60"
+          },
+          {
+            "selected": false,
+            "text": "90",
+            "value": "90"
+          }
+        ],
+        "query": "1,7,14,30,60,90",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "5%",
+          "value": "0.05"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT generate_series || '%' as __text,\n       generate_series::numeric/100.0 as __value\n  FROM generate_series(5,25,5)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Idle VMem Threshold",
+        "multi": false,
+        "name": "MemIdle",
+        "options": [],
+        "query": "SELECT generate_series || '%' as __text,\n       generate_series::numeric/100.0 as __value\n  FROM generate_series(5,25,5)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "5%",
+          "value": "0.05"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT generate_series || '%' as __text,\n       generate_series::numeric/100.0 as __value\n  FROM generate_series(5,25,5)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Idle VCPU Threshold",
+        "multi": false,
+        "name": "CpuIdle",
+        "options": [],
+        "query": "SELECT generate_series || '%' as __text,\n       generate_series::numeric/100.0 as __value\n  FROM generate_series(5,25,5)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Owner",
+          "value": "Owner"
+        },
+        "hide": 0,
+        "label": "Tag Name",
+        "name": "tagName",
+        "options": [
+          {
+            "selected": true,
+            "text": "Owner",
+            "value": "Owner"
+          }
+        ],
+        "query": "Owner",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Idle VMs with Tags",
+  "uid": "idle_vms_with_tags",
+  "version": 3
+}
