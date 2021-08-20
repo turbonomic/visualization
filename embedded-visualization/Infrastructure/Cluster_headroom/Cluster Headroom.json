@@ -1,0 +1,298 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 87,
+  "iteration": 1629470154413,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "$DB",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "displayMode": "auto"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg VM Mem Consumed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Host Mem Free"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Host CPU Free"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "hertz"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg VM Storage Consumed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Storage Free"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg VM CPU Consumed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "hertz"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH percentiles as (\n    WITH entities_by_cluster as (\n        SELECT DISTINCT \n                   e.name as cluster_name\n                  ,e.oid as cluster_oid\n                  ,s.scoped_oid as entity_oid\n                  ,s.scoped_type as entity_type\n              FROM entity e \n              JOIN scope s on s.seed_oid = e.oid\n             WHERE e.type = 'COMPUTE_CLUSTER'\n               and s.scoped_type IN ('VIRTUAL_MACHINE', 'PHYSICAL_MACHINE', 'STORAGE')\n               AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n               AND (s.start, s.finish) overlaps ($__timeFrom(), $__timeTo())\n    ),\n\n    data_by_entity as (\n        SELECT entity_oid\n              ,entity_type\n              ,time\n              ,max(consumed) FILTER (WHERE m.type = 'MEM' and m.entity_type = 'VIRTUAL_MACHINE') as vm_mem\n              ,max(consumed) FILTER (WHERE m.type = 'CPU' and m.entity_type = 'VIRTUAL_MACHINE') as vm_cpu\n              ,max(consumed) FILTER (WHERE m.type = 'STORAGE_AMOUNT' and m.entity_type = 'VIRTUAL_MACHINE') as vm_storage\n              ,max(current) FILTER (WHERE m.type = 'MEM' and m.entity_type = 'PHYSICAL_MACHINE') as mem\n              ,max(current) FILTER (WHERE m.type = 'CPU' and m.entity_type = 'PHYSICAL_MACHINE') as cpu\n              ,max(current) FILTER (WHERE m.type = 'STORAGE_AMOUNT' and m.entity_type = 'STORAGE') as storage\n          FROM metric as m\n         WHERE $__timeFilter(\"time\")\n           AND type in ('CPU', 'MEM', 'STORAGE_AMOUNT')\n           AND entity_type in ('VIRTUAL_MACHINE', 'PHYSICAL_MACHINE', 'STORAGE')\n         GROUP BY 1, 2, 3\n    ),\n    \n    vm_stats as (\n        SELECT cluster_name\n              ,cluster_oid\n              ,AVG(vm_cpu) as cpu_consumed_perc\n              ,AVG(vm_mem) as mem_consumed_perc\n              ,AVG(vm_storage) as stor_consumed_perc\n          FROM \n                (SELECT entity_oid\n                      ,percentile_cont($Percentile) \n                           WITHIN GROUP (ORDER BY vm_mem) as vm_mem\n                      ,percentile_cont($Percentile) \n                           WITHIN GROUP (ORDER BY vm_cpu) as vm_cpu\n                      ,percentile_cont($Percentile) \n                           WITHIN GROUP (ORDER BY vm_storage) as vm_storage\n                  FROM data_by_entity dbe\n                 WHERE dbe.entity_type = 'VIRTUAL_MACHINE'\n                 GROUP BY 1) as data\n          JOIN entities_by_cluster ebc on ebc.entity_oid = data.entity_oid\n       GROUP BY 1, 2\n    ),\n\n    pm_stats as (\n        SELECT cluster_oid\n              ,percentile_cont($Percentile) \n                   WITHIN GROUP (ORDER BY mem) as pm_mem\n              ,percentile_cont($Percentile) \n                   WITHIN GROUP (ORDER BY cpu) as pm_cpu\n              ,percentile_cont($Percentile) \n                   WITHIN GROUP (ORDER BY storage) as ds_storage\n          FROM (SELECT cluster_oid\n                      ,time\n                      ,SUM(cpu) as cpu\n                      ,SUM(mem) as mem\n                      ,SUM(storage) as storage\n                  FROM data_by_entity dbe\n                  JOIN entities_by_cluster ebc on ebc.entity_oid = dbe.entity_oid\n                 WHERE dbe.entity_type in ('PHYSICAL_MACHINE', 'STORAGE')\n                 GROUP BY 1, 2) as perc_data\n         GROUP BY 1\n    )\n\n    SELECT vm_stats.cluster_name\n          ,vm_stats.cluster_oid\n          ,cpu_consumed_perc\n          ,mem_consumed_perc\n          ,stor_consumed_perc\n          ,pm_cpu as cpu_used_perc\n          ,pm_mem as mem_used_perc\n          ,ds_storage as stor_used_perc\n      FROM vm_stats\n      JOIN pm_stats ON vm_stats.cluster_oid = pm_stats.cluster_oid\n    ),\n\ncapacities as (\n    WITH entities_by_cluster as (\n        SELECT DISTINCT \n                   e.name as cluster_name\n                  ,e.oid as cluster_oid\n                  ,s.scoped_type as type\n                  ,s.scoped_oid as oid\n              FROM entity e\n              JOIN scope s on s.seed_oid = e.oid \n               AND e.type = 'COMPUTE_CLUSTER'\n               AND s.scoped_type IN ('PHYSICAL_MACHINE', 'STORAGE')\n               AND e.last_seen > now()\n               AND s.finish > now()\n    ),\n\n    pm_stats as (\n      SELECT cluster_oid\n            ,SUM(pm_cpu) as pm_cpu\n            ,SUM(pm_mem) as pm_mem\n            ,SUM(ds_storage) as ds_storage\n            ,COUNT(distinct oid) FILTER (where entity_type = 'PHYSICAL_MACHINE') as pm_count\n        FROM (\n            SELECT cluster_oid\n                  ,oid\n                  ,pm.type as entity_type\n                  ,MAX(capacity) FILTER (WHERE m.type = 'MEM') as pm_mem\n                  ,MAX(capacity) FILTER (WHERE m.type = 'CPU') as pm_cpu\n                  ,MAX(capacity) FILTER (WHERE m.type = 'STORAGE_AMOUNT') as ds_storage\n              FROM metric as m\n              JOIN entities_by_cluster as pm on pm.oid = m.entity_oid\n             WHERE time >= now() - interval '30 min'\n               AND m.type in ('CPU', 'MEM', 'STORAGE_AMOUNT')\n               AND pm.type in ('PHYSICAL_MACHINE', 'STORAGE')\n             GROUP BY 1, 2, 3) as a\n       GROUP BY 1\n    )\n\n    SELECT pm_stats.cluster_oid\n          ,pm_cpu as cpu_cap\n          ,pm_mem as mem_cap\n          ,ds_storage as stor_cap\n          ,pm_count\n      FROM pm_stats\n)\n\nSELECT cluster_name as \"Cluster Name\"\n      ,CASE\n         WHEN cpu_headroom < 0 THEN 0\n         ELSE cpu_headroom\n       END as \"CPU Headroom VMs\"\n      ,CASE\n         WHEN mem_headroom < 0 THEN 0\n         ELSE mem_headroom\n       END as \"Mem Headroom VMs\"\n      ,CASE\n         WHEN sto_headroom < 0 THEN 0\n         ELSE sto_headroom\n       END as \"Storage Headroom VMs\"\n      ,CASE\n         WHEN cpu_consumed < 0 THEN 0\n         ELSE cpu_consumed\n       END as \"Avg VM CPU Consumed\"\n      ,CASE\n         WHEN mem_consumed < 0 THEN 0\n         ELSE mem_consumed\n       END as \"Avg VM Mem Consumed\"\n      ,CASE\n         WHEN sto_consumed < 0 THEN 0\n         ELSE sto_consumed\n       END as \"Avg VM Storage Consumed\"\n      ,CASE\n         WHEN cpu_free < 0 THEN 0\n         ELSE cpu_free\n       END as \"Avg Host CPU Free\"\n      ,CASE\n         WHEN mem_free < 0 THEN 0\n         ELSE mem_free\n       END as \"Avg Host Mem Free\"\n      ,CASE\n         WHEN sto_free < 0 THEN 0\n         ELSE sto_free\n       END as \"Avg Storage Free\"\n  FROM\n    (SELECT percentiles.cluster_name\n           ,coalesce(floor((cpu_cap*$DesiredCapacity*((pm_count-$HA)/pm_count::numeric) - cpu_used_perc) / NULLIF(cpu_consumed_perc, 0)), 0) as cpu_headroom\n           ,coalesce(floor((mem_cap*$DesiredCapacity*((pm_count-$HA)/pm_count::numeric) - mem_used_perc) / NULLIF(mem_consumed_perc, 0)), 0) as mem_headroom\n           ,coalesce(floor((stor_cap*$DesiredCapacity - stor_used_perc) / NULLIF(stor_consumed_perc, 0)), 0) as sto_headroom\n           ,coalesce(NULLIF(cpu_consumed_perc, 0)*1000, 0) as cpu_consumed\n           ,coalesce(NULLIF(mem_consumed_perc, 0)/1024, 0) as mem_consumed\n           ,coalesce(NULLIF(stor_consumed_perc, 0), 0) as sto_consumed\n           ,(cpu_cap*$DesiredCapacity*((pm_count-$HA)/pm_count::numeric) - cpu_used_perc)*1000 as cpu_free\n           ,(mem_cap*$DesiredCapacity*((pm_count-$HA)/pm_count::numeric) - mem_used_perc)/1024 as mem_free\n           ,stor_cap*$DesiredCapacity - stor_used_perc as sto_free\n       FROM capacities\n       LEFT JOIN percentiles ON capacities.cluster_oid = percentiles.cluster_oid) as a\n  ORDER BY 2, 3, 4",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Headroom Per Cluster",
+      "transformations": [],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "Turbo Timescale",
+          "value": "Turbo Timescale"
+        },
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DB",
+        "options": [],
+        "query": "postgres",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "95%",
+          "value": "0.95"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT generate_series || '%' as __text,\n       generate_series*.01 as __value\n  FROM generate_series(50,95,5)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "Percentile",
+        "options": [],
+        "query": "SELECT generate_series || '%' as __text,\n       generate_series*.01 as __value\n  FROM generate_series(50,95,5)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "75%",
+          "value": "0.75"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT generate_series || '%' as __text,\n       generate_series*.01 as __value\n  FROM generate_series(70,100,5)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DesiredCapacity",
+        "options": [],
+        "query": "SELECT generate_series || '%' as __text,\n       generate_series*.01 as __value\n  FROM generate_series(70,100,5)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "N-1",
+          "value": "1"
+        },
+        "datasource": "$DB",
+        "definition": "SELECT 'N-' || generate_series  as __text,\n       generate_series as __value\n  FROM generate_series(0,4,1)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "HA",
+        "options": [],
+        "query": "SELECT 'N-' || generate_series  as __text,\n       generate_series as __value\n  FROM generate_series(0,4,1)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Cluster Headroom2",
+  "uid": "cluster_headroom2",
+  "version": 1
+}
