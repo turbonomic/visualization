@@ -16,11 +16,11 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 92,
-  "iteration": 1629908618969,
+  "iteration": 1629912212587,
   "links": [],
   "panels": [
     {
-      "datasource": "Turbo Timescale",
+      "datasource": "-- Dashboard --",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -85,7 +85,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 5,
+      "id": 6,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -104,84 +104,8 @@
       "pluginVersion": "8.0.6",
       "targets": [
         {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH last_num_cpus AS\n(\n  select\n  \tdistinct on (e.oid)\n  \te.oid,\n  \te.name,\n  \t(e.attrs->>'num_cpus')::integer as \"num_cpus\"\n  from entity e\n  where\n  \te.\"type\" = 'VIRTUAL_MACHINE'\n    AND e.oid IN (${VM_OID})\n  order by e.oid, e.last_seen DESC\n),\navg_num_cpu as\n(\n\tselect\n\t\thea.entity_oid as oid,\n\t\tavg(hea.int_value) as \"num_cpus\"\n\tfrom historical_entity_attrs hea\n\tWHERE\n  \t\t$__timeFilter(hea.time)\n  \t    AND hea.type = 'NUM_VCPU'\n        AND hea.entity_oid IN (${VM_OID})\n  \tgroup by hea.entity_oid \n)\nSELECT\n    lnc.name as \"VM Name\",\n    coalesce(a.num_cpus, lnc.num_cpus) as \"Average number of vCPU(s)\",\n    ${VCPU_COST} as \"vCPU Price ($)\"\nfrom last_num_cpus lnc\nleft join avg_num_cpu a on a.oid = lnc.oid",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  e.name as \"VM Name\",\n--  m.type,\n  avg(m.capacity)/(1024*1024) as \"vMem Average (GB)\",\n  ${VMEM_COST} as \"GB vMem Price ($)\"\nFROM metric m\nJOIN entity e ON e.oid = m.entity_oid\nWHERE\n  $__timeFilter(time)\n  AND entity_oid IN (${VM_OID})\n  AND m.type = 'VMEM'\nGROUP BY e.name, m.type\nORDER BY 1",
-          "refId": "B",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  e.name as \"VM Name\",\n--  m.type,\n  avg(m.consumed)/(1024) as \"Storage Average (GB)\",\n  ${STORAGE_COST} as \"GB Storage Price ($)\"\nFROM metric m\nJOIN entity e ON e.oid = m.entity_oid\nWHERE\n  $__timeFilter(time)\n  AND entity_oid IN (${VM_OID})\n  AND m.type = 'STORAGE_PROVISIONED'\nGROUP BY e.name, m.type\nORDER BY 1",
-          "refId": "C",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "panelId": 2,
+          "refId": "A"
         }
       ],
       "timeFrom": null,
@@ -297,7 +221,6 @@
             "filterable": true
           },
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -312,7 +235,20 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VM Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 20,
@@ -324,12 +260,7 @@
       "options": {
         "frameIndex": 2,
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Total Cost ($)"
-          }
-        ]
+        "sortBy": []
       },
       "pluginVersion": "8.0.6",
       "targets": [
@@ -338,7 +269,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH last_num_cpus AS\n(\n  select\n  \tdistinct on (e.oid)\n  \te.oid,\n  \te.name,\n  \t(e.attrs->>'num_cpus')::integer as \"num_cpus\"\n  from entity e\n  where\n  \te.\"type\" = 'VIRTUAL_MACHINE'\n    AND e.oid IN (${VM_OID})\n  order by e.oid, e.last_seen DESC\n),\navg_num_cpu as\n(\n\tselect\n\t\thea.entity_oid as oid,\n\t\tavg(hea.int_value) as \"num_cpus\"\n\tfrom historical_entity_attrs hea\n\tWHERE\n  \t\t$__timeFilter(hea.time)\n  \t    AND hea.type = 'NUM_VCPU'\n        AND hea.entity_oid IN (${VM_OID})\n  \tgroup by hea.entity_oid \n)\nSELECT\n    lnc.name as \"VM Name\",\n    coalesce(a.num_cpus, lnc.num_cpus) as \"Average number of vCPU(s)\",\n    ${VCPU_COST} as \"vCPU Price ($)\"\nfrom last_num_cpus lnc\nleft join avg_num_cpu a on a.oid = lnc.oid",
+          "rawSql": "WITH last_num_cpus AS\n(\n  select\n  \tdistinct on (e.oid)\n  \te.oid,\n  \te.name,\n  \t(e.attrs->>'num_cpus')::integer as \"num_cpus\"\n  from entity e\n  where\n  \te.\"type\" = 'VIRTUAL_MACHINE'\n    AND e.oid IN (${VM_OID})\n  order by e.oid, e.last_seen DESC\n),\navg_num_cpu as\n(\n\tselect\n\t\thea.entity_oid as oid,\n\t\tavg(hea.int_value) as \"num_cpus\"\n\tfrom historical_entity_attrs hea\n\tWHERE\n  \t\t$__timeFilter(hea.time)\n  \t    AND hea.type = 'NUM_VCPU'\n        AND hea.entity_oid IN (${VM_OID})\n  \tgroup by hea.entity_oid \n)\nSELECT\n    lnc.name as \"VM Name\",\n    coalesce(a.num_cpus, lnc.num_cpus) as \"Average number of vCPU(s)\",\n    ${VCPU_COST} as \"vCPU Price ($)\"\nfrom last_num_cpus lnc\nleft join avg_num_cpu a on a.oid = lnc.oid\norder by lnc.name ASC",
           "refId": "A",
           "select": [
             [
@@ -364,9 +295,10 @@
         {
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.name as \"VM Name\",\n--  m.type,\n  avg(m.capacity)/(1024*1024) as \"vMem Average (GB)\",\n  ${VMEM_COST} as \"GB vMem Price ($)\"\nFROM metric m\nJOIN entity e ON e.oid = m.entity_oid\nWHERE\n  $__timeFilter(time)\n  AND entity_oid IN (${VM_OID})\n  AND m.type = 'VMEM'\nGROUP BY e.name, m.type\nORDER BY 1",
+          "rawSql": "with memory as (\n  SELECT\n    e.name,\n  --m.type,\n    avg(m.capacity)/(1024*1024) as \"value\",\n    ${VMEM_COST} as \"price\"\n  FROM metric m\n  JOIN entity e ON e.oid = m.entity_oid\n  WHERE\n    $__timeFilter(time)\n    AND entity_oid IN (${VM_OID})\n    AND m.type = 'VMEM'\n  GROUP BY e.name, m.type\n  ORDER BY 1\n)\nselect\n  distinct e.name as \"VM Name\",\n  coalesce(m.value,0) as \"vMem Average (GB)\",\n  m.price as \"GB vMem Price ($)\"\nfrom entity e\nleft outer join memory m on m.name = e.name \nwhere e.oid IN (${VM_OID})\n\n",
           "refId": "B",
           "select": [
             [
@@ -392,7 +324,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.name as \"VM Name\",\n--  m.type,\n  avg(m.consumed)/(1024) as \"Storage Average (GB)\",\n  ${STORAGE_COST} as \"GB Storage Price ($)\"\nFROM metric m\nJOIN entity e ON e.oid = m.entity_oid\nWHERE\n  $__timeFilter(time)\n  AND entity_oid IN (${VM_OID})\n  AND m.type = 'STORAGE_PROVISIONED'\nGROUP BY e.name, m.type\nORDER BY 1",
+          "rawSql": "with storage as (\n  SELECT\n    e.name,\n--  m.type,\n    avg(m.consumed)/(1024) as \"value\",\n    ${STORAGE_COST} as \"price\"\n    FROM metric m\n    JOIN entity e ON e.oid = m.entity_oid\n    WHERE\n    $__timeFilter(time)\n    AND entity_oid IN (${VM_OID})\n    AND m.type = 'STORAGE_PROVISIONED'\n    GROUP BY e.name, m.type\n    ORDER BY 1\n)\nselect\n  distinct e.name as \"VM Name\",\n  coalesce(s.value,0) as \"Storage Average (GB)\",\n  s.price as \"GB Storage Price ($)\"\nfrom entity e\nleft outer join storage s on s.name = e.name \nwhere e.oid IN (${VM_OID})",
           "refId": "C",
           "select": [
             [
@@ -491,10 +423,16 @@
           "id": "organize",
           "options": {
             "excludeByName": {
+              "Average number of vCPU(s) results": false,
+              "Fixed value results": true,
               "GB Storage Price ($)": true,
               "GB Storage Price ($) results": true,
               "GB vMem Price ($)": true,
               "GB vMem Price ($) results": true,
+              "Total vCPU Cost ($)": false,
+              "VM Name results": false,
+              "VM OID": true,
+              "VM OID results": false,
               "vCPU Price ($)": true,
               "vCPU Price ($) results": true
             },
@@ -526,12 +464,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
-            "christophe.sperandio"
+            "All"
           ],
           "value": [
-            "christophe.sperandio"
+            "$__all"
           ]
         },
         "datasource": "Turbo Timescale",
@@ -618,7 +556,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "10",
           "value": "10"
         },
@@ -640,7 +578,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "10",
           "value": "10"
         },
@@ -662,7 +600,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "10",
           "value": "10"
         },
@@ -685,12 +623,12 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "VM Capacity and Cost",
   "uid": "FzQmaDeGz",
-  "version": 16
+  "version": 17
 }
