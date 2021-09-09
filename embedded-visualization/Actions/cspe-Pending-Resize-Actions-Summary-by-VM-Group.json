@@ -16,12 +16,16 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 103,
-  "iteration": 1624909221448,
+  "iteration": 1631198838759,
   "links": [],
   "panels": [
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -37,10 +41,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -78,9 +78,10 @@
           "fields": "/^VM Name$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -118,10 +119,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -159,9 +156,10 @@
           "fields": "/^Difference$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -199,10 +197,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -240,9 +234,10 @@
           "fields": "/^Difference$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -280,10 +275,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -321,9 +312,10 @@
           "fields": "/^Cost$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -362,10 +354,6 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -403,9 +391,10 @@
           "fields": "/^Cost$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -442,6 +431,10 @@
     {
       "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -457,10 +450,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -475,7 +464,7 @@
               }
             ]
           },
-          "unit": "vCPU"
+          "unit": "actions"
         },
         "overrides": []
       },
@@ -498,9 +487,10 @@
           "fields": "/^VM Name$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -588,20 +578,15 @@
                 "id": "mappings",
                 "value": [
                   {
-                    "from": "",
-                    "id": 1,
-                    "text": "Upscale",
-                    "to": "",
-                    "type": 1,
-                    "value": "1"
-                  },
-                  {
-                    "from": "",
-                    "id": 2,
-                    "text": "Downscale",
-                    "to": "",
-                    "type": 1,
-                    "value": "-1"
+                    "options": {
+                      "1": {
+                        "text": "Upscale"
+                      },
+                      "-1": {
+                        "text": "Downscale"
+                      }
+                    },
+                    "type": "value"
                   }
                 ]
               }
@@ -620,7 +605,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -659,10 +644,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -677,7 +658,7 @@
               }
             ]
           },
-          "unit": "vCPU"
+          "unit": " vCPU actions"
         },
         "overrides": []
       },
@@ -700,9 +681,10 @@
           "fields": "/^VM Name$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -740,10 +722,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -758,7 +736,7 @@
               }
             ]
           },
-          "unit": "vCPU"
+          "unit": " vMem actions"
         },
         "overrides": []
       },
@@ -781,9 +759,10 @@
           "fields": "/^VM Name$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -821,10 +800,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -862,9 +837,10 @@
           "fields": "/^Difference$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -902,10 +878,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -943,9 +915,10 @@
           "fields": "/^Difference$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -983,10 +956,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1024,9 +993,10 @@
           "fields": "/^Cost$/",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1065,10 +1035,6 @@
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1106,9 +1072,10 @@
           "fields": "/^Cost$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1143,7 +1110,7 @@
       "type": "stat"
     }
   ],
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1161,6 +1128,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select name\nfrom entity e \nwhere e.\"type\" = 'GROUP'\nand attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\norder by name",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -1174,7 +1142,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1188,6 +1155,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select oid from entity e\nwhere e.\"type\" = 'GROUP'\nand e.attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\nand e.name IN (${GROUP_NAME:sqlstring})\norder by e.name",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": true,
@@ -1201,7 +1169,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1212,6 +1179,7 @@
           "text": "10",
           "value": "10"
         },
+        "description": null,
         "error": null,
         "hide": 0,
         "label": "Cost of a vCPU ($)",
@@ -1233,6 +1201,7 @@
           "text": "20",
           "value": "20"
         },
+        "description": null,
         "error": null,
         "hide": 0,
         "label": "Cost of a vMem GB ($)",
@@ -1260,5 +1229,5 @@
   "timezone": "",
   "title": "Pending Resize Actions Summary by VM Group",
   "uid": "tykl2kknz",
-  "version": 9
+  "version": 11
 }

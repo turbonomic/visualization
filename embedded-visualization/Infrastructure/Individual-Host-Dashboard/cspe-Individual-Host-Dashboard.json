@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 111,
-  "iteration": 1628755083140,
+  "id": 112,
+  "iteration": 1630078592473,
   "links": [
     {
       "icon": "external link",
@@ -31,29 +31,6 @@
   "panels": [
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "gridPos": {
         "h": 8,
         "w": 16,
@@ -65,7 +42,7 @@
         "content": "<center>\n\nThe Host is currently <b>$HOST_STATE</b>.\n<br /><br />\n\n<table>\n    <thead>\n        <tr>\n            <td><b>Name</b></td>\n            <td><b>Cluster</b></td>\n            <td><b>Datacenter</b></td>\n            <td><b>Target Name</b></td>\n            <td><b>Target Type</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST}</td>\n            <td>${HOST_CLUSTER}</td>\n            <td>${HOST_DATACENTER}</td>\n            <td>${TARGET_NAME}</td>\n            <td>${TARGET_TYPE}</td>\n        </tr>\n    </tbody>\n</table>\n<br />\n<table>\n    <thead>\n        <tr>\n            <td><b>Model</b></td>\n            <td><b>Number of CPUs</b></td>\n            <td><b>CPU Model</b></td>\n            <td><b>Quantity of Memory (Gb)</b></td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>${HOST_MODEL}</td>\n            <td>${HOST_NUM_CPUS}</td>\n            <td>${HOST_CPU_MODEL}</td>\n            <td>${HOST_MEMORY_CURGBCAPACITY}</td>\n        </tr>\n    </tbody>\n</table>\n</center>\n\n",
         "mode": "html"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "timeFrom": null,
       "timeShift": null,
       "title": "Host Identity Card",
@@ -77,6 +54,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -106,7 +84,7 @@
       "options": {
         "showHeader": false
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -148,29 +126,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -197,7 +152,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -249,7 +204,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "vCPU & vMem Utilization",
+      "title": "CPU & Mem Utilization",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -295,29 +250,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -344,7 +276,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -443,29 +375,6 @@
       "dashes": false,
       "datasource": "Turbo Timescale",
       "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -492,7 +401,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -591,29 +500,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -640,7 +526,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -738,29 +624,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -787,7 +650,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -885,29 +748,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -934,7 +774,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1032,29 +872,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1081,7 +898,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1179,29 +996,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1228,7 +1022,7 @@
         "alertThreshold": false
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1317,10 +1111,6 @@
             "fixedColor": "red",
             "mode": "fixed"
           },
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1332,20 +1122,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 146
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 3,
@@ -1366,9 +1143,10 @@
           "fields": "/^Description$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1412,10 +1190,6 @@
             "fixedColor": "yellow",
             "mode": "fixed"
           },
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1427,20 +1201,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 146
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 3,
@@ -1461,9 +1222,10 @@
           "fields": "/^Description$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1507,10 +1269,6 @@
             "fixedColor": "red",
             "mode": "fixed"
           },
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1522,20 +1280,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 146
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 3,
@@ -1556,9 +1301,10 @@
           "fields": "/^Description$/",
           "values": false
         },
+        "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1600,6 +1346,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1643,7 +1390,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1685,6 +1432,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1728,7 +1476,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1770,6 +1518,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1813,7 +1562,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1855,6 +1604,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1910,7 +1660,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1950,10 +1700,6 @@
       "datasource": "-- Dashboard --",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": true
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1965,20 +1711,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 632
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -1999,9 +1732,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "panelId": 37,
@@ -2027,6 +1761,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": true
           },
           "mappings": [],
@@ -2127,7 +1862,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -2322,7 +2057,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2336,6 +2071,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select name from entity where type = 'PHYSICAL_MACHINE' order by 1",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -2349,7 +2085,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2363,6 +2098,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select oid from entity where name = '$HOST' and type = 'PHYSICAL_MACHINE' order by last_seen DESC limit 1",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2376,7 +2112,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2390,6 +2125,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT\njsonb_array_elements(attrs->'targets')->>'type'\nFROM entity\nWHERE oid = $HOST_OID",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2403,7 +2139,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2417,6 +2152,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT\njsonb_array_elements(attrs->'targets')->>'name'\nFROM entity\nWHERE oid = $HOST_OID",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2430,7 +2166,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2444,6 +2179,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT\njsonb_array_elements(attrs->'targets')->>'category'\nFROM entity\nWHERE oid = $HOST_OID",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2457,7 +2193,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2471,6 +2206,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT\nCASE WHEN int_value::entity_state = 'POWERED_ON' THEN 'Powered On' \nELSE 'Powered Off'\nEND\nFROM historical_entity_attrs\nWHERE entity_oid = $HOST_OID\nAND type = 'ENTITY_STATE'\nORDER by time DESC limit 1",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2484,7 +2220,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2498,6 +2233,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select e.\"name\" \nfrom \"scope\" s\njoin entity e on e.oid = s.scoped_oid \nwhere seed_oid = $HOST_OID\nand scoped_type = 'COMPUTE_CLUSTER'\nand finish > now()",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2511,7 +2247,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2525,6 +2260,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select e.\"name\" \nfrom \"scope\" s\njoin entity e on e.oid = s.scoped_oid \nwhere seed_oid = $HOST_OID\nand scoped_type = 'DATACENTER'\nand finish > now()",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2538,7 +2274,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2552,6 +2287,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select attrs->>'model' from entity e where oid = $HOST_OID",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2565,7 +2301,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2579,6 +2314,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select attrs->>'cpu_model' from entity e where oid = $HOST_OID",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2592,7 +2328,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2606,6 +2341,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select attrs->>'num_cpus' from entity e where oid = $HOST_OID",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2619,7 +2355,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2633,6 +2368,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "select round(capacity/1024/1024) from metric\nwhere entity_oid = $HOST_OID\nand type = 'MEM'\nORDER by time DESC limit 1",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -2646,7 +2382,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2660,6 +2395,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Individual Host Dashboard",
-  "uid": "mfPeteGnk",
-  "version": 6
+  "uid": "h6IVbG47z",
+  "version": 2
 }
