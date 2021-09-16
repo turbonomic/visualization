@@ -1,0 +1,124 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 117,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings/mo"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  pa.recommendation_time as \"Recommendation Time\",\n  INITCAP(pa.\"type\"::text) as \"Action Type\",\n  e.name as \"Entity Name\",\n  CASE\n    WHEN e.\"type\" = 'VIRTUAL_MACHINE' THEN 'Virtual Machine'\n    WHEN e.\"type\" = 'VIRTUAL_VOLUME' THEN 'Virtual Volume'\n    ELSE 'Unknown'\n  END as \"Entity Type\",\n  e.attrs->>'vendor_id' as \"Vendor ID\",\n  pa.description as \"Description\",\n  pa.savings as \"Savings/mo\"\nFROM pending_action pa\nJOIN entity e ON e.\"oid\" = pa.target_entity_id \nWHERE\n  $__timeFilter(pa.recommendation_time)\n  AND e.environment = 'CLOUD'\n  AND e.\"type\" IN ('VIRTUAL_MACHINE', 'VIRTUAL_VOLUME')\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Actions",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Cloud Pending Actions",
+  "uid": "VI1rQlSnk",
+  "version": 2
+}
