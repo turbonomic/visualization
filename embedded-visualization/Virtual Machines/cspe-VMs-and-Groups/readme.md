@@ -1,0 +1,1 @@
+![image](../../resources/images/CSPE-VMs-and-Groups-1.png)

@@ -1,0 +1,112 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 118,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select distinct\n\tevm.name as \"VM Name\",\n\tevh.name as \"Host Name\",\n\tevc.name as \"Cluster Name\",\n\tevg.name as \"Group Name\"\nfrom entity evm\njoin \"scope\" sh on sh.seed_oid = evm.oid and sh.scoped_type = 'PHYSICAL_MACHINE'\njoin entity evh on sh.scoped_oid = evh.\"oid\" and evh.last_seen > now()\njoin \"scope\" sc on sc.seed_oid = evm.oid and sc.scoped_type = 'COMPUTE_CLUSTER'\njoin entity evc on sc.scoped_oid = evc.\"oid\" and evc.last_seen > now()\njoin \"scope\" sg on sg.seed_oid = evm.oid and sg.scoped_type = 'GROUP'\njoin entity evg on sg.scoped_oid = evg.\"oid\" and evg.last_seen > now()\nwhere evm.\"type\" = 'VIRTUAL_MACHINE'\nand evm.environment = 'ON_PREM'\nand evm.last_seen > now()\nand sh.finish > now()\nand sc.finish > now()\nand sg.finish > now()\norder by evm.name, evg.name",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "VMs and Groups List",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "",
+  "title": "VMs and Groups",
+  "uid": "_VTjmTOnz",
+  "version": 2
+}
