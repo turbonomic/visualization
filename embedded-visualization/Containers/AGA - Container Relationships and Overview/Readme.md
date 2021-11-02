@@ -6,4 +6,5 @@
  ###### 4. Datastore (Storage) Stats | Cluster Storage Stats
  ###### 5. IOPS | Latency (TimeSeries Stats)
 
-### ![Screen Shot 2021-11-02 at 9 27 31 AM](https://user-images.githubusercontent.com/84854976/139856903-5229c824-f209-42fc-98b2-d8f87bdf2b42.png)
+### ![Screen Shot 2021-11-02 at 9 42 33 AM](https://user-images.githubusercontent.com/84854976/139859868-baa574c6-19dd-4689-905f-d3d1c501417b.png)
+### ![Screen Shot 2021-11-02 at 9 42 41 AM](https://user-images.githubusercontent.com/84854976/139859937-25f630e2-a6fe-4212-aadb-dd07a5d90448.png)
