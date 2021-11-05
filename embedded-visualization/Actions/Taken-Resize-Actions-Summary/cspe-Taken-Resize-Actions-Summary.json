@@ -16,16 +16,12 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 94,
-  "iteration": 1631200171125,
+  "iteration": 1634808996036,
   "links": [],
   "panels": [
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -509,10 +505,6 @@
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -768,7 +760,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring})\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ec.\"name\" as \"Cluster Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring})\njoin entity ec on ec.oid = s.seed_oid\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1385,5 +1377,5 @@
   "timezone": "",
   "title": "Taken Resize Actions Summary",
   "uid": "U2GYCteMk",
-  "version": 4
+  "version": 5
 }
