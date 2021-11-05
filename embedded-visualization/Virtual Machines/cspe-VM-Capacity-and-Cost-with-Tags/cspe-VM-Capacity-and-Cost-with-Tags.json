@@ -1,0 +1,649 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 143,
+  "iteration": 1636111353284,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "-- Dashboard --",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/Cost/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/\\(GB\\)/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Cost ($)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "panelId": 2,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Information",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "VM Name"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total vCPU Cost ($)",
+            "binary": {
+              "left": "Average number of vCPU(s) results",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "vCPU Price ($) results"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total vMem Cost ($)",
+            "binary": {
+              "left": "vMem Average (GB) results",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "GB vMem Price ($) results"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Storage Cost ($)",
+            "binary": {
+              "left": "Storage Average (GB) results",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "GB Storage Price ($) results"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Cost ($)",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "Total vCPU Cost ($)",
+                "Total vMem Cost ($)",
+                "Total Storage Cost ($)"
+              ],
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "GB Storage Price ($)": true,
+              "GB Storage Price ($) results": true,
+              "GB vMem Price ($)": true,
+              "GB vMem Price ($) results": true,
+              "vCPU Price ($)": true,
+              "vCPU Price ($) results": true
+            },
+            "indexByName": {
+              "Average number of vCPU(s) results": 1,
+              "GB Storage Price ($) results": 8,
+              "GB vMem Price ($) results": 5,
+              "Storage Average (GB) results": 7,
+              "Total Cost ($)": 10,
+              "Total Storage Cost ($)": 9,
+              "Total vCPU Cost ($)": 3,
+              "Total vMem Cost ($)": 6,
+              "VM Name": 0,
+              "vCPU Price ($) results": 2,
+              "vMem Average (GB) results": 4
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VM Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 198
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tags"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 331
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 2,
+      "options": {
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH last_num_cpus AS\n(\n  select\n  \tdistinct on (e.oid)\n  \te.oid,\n  \te.name,\n  \t(e.attrs->>'num_cpus')::integer as \"num_cpus\",\n  \t(e.attrs->>'tags')::text as \"tags\"\n  from entity e\n  where\n  \te.\"type\" = 'VIRTUAL_MACHINE'\n    AND e.oid IN (${VM_OID})\n  order by e.oid, e.last_seen DESC\n),\navg_num_cpu as\n(\n\tselect\n\t\thea.entity_oid as oid,\n\t\tavg(hea.int_value) as \"num_cpus\"\n\tfrom historical_entity_attrs hea\n\tWHERE\n  \t\t$__timeFilter(hea.time)\n  \t    AND hea.type = 'NUM_VCPU'\n        AND hea.entity_oid IN (${VM_OID})\n  \tgroup by hea.entity_oid \n)\nSELECT\n    lnc.name as \"VM Name\",\n    lnc.tags as \"Tags\",\n    coalesce(a.num_cpus, lnc.num_cpus) as \"Average number of vCPU(s)\",\n    ${VCPU_COST} as \"vCPU Price ($)\"\nfrom last_num_cpus lnc\nleft join avg_num_cpu a on a.oid = lnc.oid\norder by lnc.name ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with memory as (\n  SELECT\n    e.name,\n  --m.type,\n    avg(m.capacity)/(1024*1024) as \"value\",\n    ${VMEM_COST} as \"price\"\n  FROM metric m\n  JOIN entity e ON e.oid = m.entity_oid\n  WHERE\n    $__timeFilter(time)\n    AND entity_oid IN (${VM_OID})\n    AND m.type = 'VMEM'\n  GROUP BY e.name, m.type\n  ORDER BY 1\n)\nselect\n  distinct e.name as \"VM Name\",\n  coalesce(m.value,0) as \"vMem Average (GB)\",\n  m.price as \"GB vMem Price ($)\"\nfrom entity e\nleft outer join memory m on m.name = e.name \nwhere e.oid IN (${VM_OID})\n\n",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with storage as (\n  SELECT\n    e.name,\n--  m.type,\n    avg(m.consumed)/(1024) as \"value\",\n    ${STORAGE_COST} as \"price\"\n    FROM metric m\n    JOIN entity e ON e.oid = m.entity_oid\n    WHERE\n    $__timeFilter(time)\n    AND entity_oid IN (${VM_OID})\n    AND m.type = 'STORAGE_PROVISIONED'\n    GROUP BY e.name, m.type\n    ORDER BY 1\n)\nselect\n  distinct e.name as \"VM Name\",\n  coalesce(s.value,0) as \"Storage Average (GB)\",\n  s.price as \"GB Storage Price ($)\"\nfrom entity e\nleft outer join storage s on s.name = e.name \nwhere e.oid IN (${VM_OID})",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "VM Capacity",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "VM Name"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total vCPU Cost ($)",
+            "binary": {
+              "left": "Average number of vCPU(s) results",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "vCPU Price ($) results"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total vMem Cost ($)",
+            "binary": {
+              "left": "vMem Average (GB) results",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "GB vMem Price ($) results"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Storage Cost ($)",
+            "binary": {
+              "left": "Storage Average (GB) results",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "GB Storage Price ($) results"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Cost ($)",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "Total vCPU Cost ($)",
+                "Total vMem Cost ($)",
+                "Total Storage Cost ($)"
+              ],
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Average number of vCPU(s) results": false,
+              "Fixed value results": true,
+              "GB Storage Price ($)": true,
+              "GB Storage Price ($) results": true,
+              "GB vMem Price ($)": true,
+              "GB vMem Price ($) results": true,
+              "Total vCPU Cost ($)": false,
+              "VM Name results": false,
+              "VM OID": true,
+              "VM OID results": false,
+              "vCPU Price ($)": true,
+              "vCPU Price ($) results": true
+            },
+            "indexByName": {
+              "Average number of vCPU(s) results": 2,
+              "GB Storage Price ($) results": 9,
+              "GB vMem Price ($) results": 6,
+              "Storage Average (GB) results": 8,
+              "Tags results": 1,
+              "Total Cost ($)": 11,
+              "Total Storage Cost ($)": 10,
+              "Total vCPU Cost ($)": 4,
+              "Total vMem Cost ($)": 7,
+              "VM Name": 0,
+              "vCPU Price ($) results": 3,
+              "vMem Average (GB) results": 5
+            },
+            "renameByName": {
+              "Tags results": "Tags"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select name from entity where \"type\" = 'GROUP' order by name",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Group Name",
+        "multi": true,
+        "name": "GROUP_NAME",
+        "options": [],
+        "query": "select name from entity where \"type\" = 'GROUP' order by name",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "GROUP_OID",
+        "options": [],
+        "query": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "VM_OID",
+        "options": [],
+        "query": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Cost of a vCPU ($)",
+        "name": "VCPU_COST",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Cost of a vMem GB ($)",
+        "name": "VMEM_COST",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "10",
+          "value": "10"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "label": "Cost of a Storage GB ($)",
+        "name": "STORAGE_COST",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "VM Capacity and Cost with Tags",
+  "uid": "eQIBL_Fnz",
+  "version": 1
+}
