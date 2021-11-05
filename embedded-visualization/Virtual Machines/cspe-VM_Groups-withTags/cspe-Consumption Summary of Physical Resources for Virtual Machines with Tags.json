@@ -1,0 +1,893 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Average consumption of physical resources for a group of virtual machines.\nOnly on-prem VMs are represented in the panel.",
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 101,
+  "iteration": 1636118281082,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "$DB",
+      "description": "The Capacity and Used figures are averages over the time window. The VM count indicates the number of unique VMs that have been part of the group over the time window and that provide information about the specific resource. Only on-prem VMs are represented in the panel.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Capacity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Units"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH consumed_metrics AS (\n  SELECT m.time, m.entity_oid, coalesce(m.consumed, 0.0) as value, m.type as metric_type\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE m.time  BETWEEN $__timeFrom() AND $__timeTo()\n     AND m.time BETWEEN s.from_time and s.to_time\n     AND m.type IN ('CPU', 'MEM', 'STORAGE_AMOUNT', 'STORAGE_ACCESS')\n     AND m.provider_oid IS NOT NULL\n     AND s.oid = m.entity_oid\n     AND e.oid = m.entity_oid\n     AND e.environment = 'ON_PREM'\n),\ntime_entity_consumed_sums AS (\n  SELECT time, entity_oid, metric_type, sum(value) as value\n  FROM consumed_metrics\n  GROUP BY 1, 2, 3\n),\ndaily_avg_consumed_metrics as (\n  SELECT\n    date_trunc('day', m.time) as \"time\",\n    m.entity_oid,\n    metric_type,\n    avg(m.value) as value\n  FROM time_entity_consumed_sums m\n  GROUP BY 1, 2, 3\n),\ndaily_consumed AS (\n  SELECT\n    metric_type as type,\n    m.time,\n    sum(m.value) as consumed,\n    count(entity_oid) AS numConsumers\n  FROM daily_avg_consumed_metrics m\n  GROUP BY 1,2\n),\ncapacity_metrics as (\n  SELECT\n    date_trunc('day', m.time) AS \"time\",\n    m.type,\n    s.e_type as entityType,\n    m.entity_oid,\n    avg(coalesce(m.capacity, 0.0)) AS capacity\n  FROM metric m,\n    scope_to_types($__timeFrom(), $__timeTo(), ARRAY['PHYSICAL_MACHINE', 'STORAGE']::entity_type[], ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.type in ('CPU', 'MEM', 'STORAGE_AMOUNT', 'STORAGE_ACCESS')\n    AND m.provider_oid IS NULL\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.entity_oid = e.oid\n    AND e.environment = 'ON_PREM'\n  GROUP BY 1, 2, 3, 4\n),\ndaily_capacity AS (\n  SELECT type, time, SUM(capacity) as capacity\n  FROM capacity_metrics\n  GROUP BY 1, 2\n)\nSELECT\n  CASE\n    WHEN con.type = 'STORAGE_AMOUNT' THEN 'Storage Usage'\n    WHEN con.type = 'CPU' THEN 'CPU Usage'\n    WHEN con.type = 'MEM' THEN 'Memory Usage'\n    WHEN con.type = 'STORAGE_ACCESS' THEN 'Storage Access - IOPS'\n  END::text AS \"Resource\",\n  CASE\n    WHEN con.type = 'STORAGE_AMOUNT' THEN ROUND(AVG(cap.capacity)::numeric / 1024 / 1000 , 2)\n    WHEN con.type = 'CPU' THEN ROUND(AVG(cap.capacity)::numeric, 2)\n    WHEN con.type = 'MEM' THEN ROUND(AVG(cap.capacity)::numeric / 1024 / 1024 / 1000, 2)\n    ELSE AVG(capacity)\n  END :: numeric as \"Capacity\",\n  CASE\n    WHEN con.type = 'STORAGE_AMOUNT' THEN ROUND(AVG(con.consumed)::numeric / 1024 / 1000, 2)\n    WHEN con.type = 'CPU' THEN ROUND(AVG(con.consumed)::numeric, 2)\n    WHEN con.type = 'MEM' THEN ROUND(AVG(con.consumed)::numeric / 1024 / 1024 / 1000, 2)\n    WHEN con.type = 'STORAGE_ACCESS' THEN ROUND(AVG(con.consumed)::numeric, 2)\n    ELSE AVG(consumed)\n  END :: numeric as \"Used\",\n  CASE\n    WHEN con.type = 'STORAGE_AMOUNT' THEN 'TiB'\n    WHEN con.type = 'CPU' THEN 'MHz'\n    WHEN con.type = 'MEM' THEN 'TiB'\n    WHEN con.type = 'STORAGE_ACCESS' THEN 'IOPS'\n    ELSE '-'\n  END as \"Units\",\n  ROUND(AVG(numConsumers), 0) as \"VM Count\"\nFROM daily_consumed AS con FULL OUTER JOIN daily_capacity AS cap USING (type)\nGROUP BY 1, con.type\nORDER BY CASE con.type WHEN 'CPU' then 1\n  WHEN 'MEM' THEN 2\n  WHEN 'STORAGE_AMOUNT' THEN 3\n  WHEN 'STORAGE_ACCESS' THEN 4 ELSE 5\nEND;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "action_spec",
+          "timeColumn": "first_seen",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total Resource Summary",
+      "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$DB",
+      "description": "Average CPU usage measurement.\nOnly on-prem VMs are represented in the panel.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "hiddenSeries": false,
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    m.type as metric_type,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type = 'CPU'\n    AND m.provider_oid IS NOT NULL\n    AND s.oid = m.entity_oid\n    AND m.entity_oid = e.oid\n    AND e.environment = 'ON_PREM'\n), results AS (\n  SELECT time, sum(value) AS sum\n  FROM metrics_data\n  GROUP BY 1\n), moving_average AS (\n  SELECT time, avg(sum) OVER (ORDER BY time RANGE BETWEEN INTERVAL '1 day' PRECEDING AND CURRENT ROW) AS ma\n  FROM results\n)\nSELECT\n  r.time, r.sum AS \"CPU Usage\", ma.ma AS \"1-Day Moving Average\"\nFROM results r JOIN moving_average ma USING (time)\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "current"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "metric",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1300",
+          "format": "none",
+          "label": "MHz",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1301",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$DB",
+      "description": "Average memory usage measurement.\nOnly on-prem VMs are represented in the panel.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "hiddenSeries": false,
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    m.type as metric_type,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(),  'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type = 'MEM'\n    AND m.provider_oid IS NOT NULL\n    AND m.entity_oid = e.oid\n    AND e.environment = 'ON_PREM'\n), results AS (\n  SELECT time, sum(value) AS sum\n  FROM metrics_data\n  GROUP BY 1\n), moving_average AS (\n  SELECT time, avg(sum) OVER (ORDER BY time RANGE BETWEEN INTERVAL '1 day' PRECEDING AND CURRENT ROW) AS ma\n  FROM results\n)\nSELECT\n  r.time, r.sum AS \"Mem Usage\", ma.ma AS \"1-Day Moving Average\"\nFROM results r JOIN moving_average ma USING (time)\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "current"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "metric",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Mem Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1219",
+          "format": "kbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1220",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$DB",
+      "description": "Average storage used measurement.\nOnly on-prem VMs are represented in the panel.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(),  'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type = 'STORAGE_AMOUNT'\n    AND m.provider_oid IS NOT NULL\n    AND m.entity_oid = e.oid\n    AND e.environment = 'ON_PREM'\n), results AS (\n  SELECT time, sum(value) AS sum\n  FROM metrics_data\n  GROUP BY 1\n), moving_average AS (\n  SELECT time, avg(sum) OVER (ORDER BY time RANGE BETWEEN INTERVAL '1 day' PRECEDING AND CURRENT ROW) AS ma\n  FROM results\n)\nSELECT\n  r.time, r.sum AS \"Storage Used\", ma.ma AS \"1-Day Moving Average\"\nFROM results r JOIN moving_average ma USING (time)\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "current"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "metric",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Storage Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1386",
+          "format": "mbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1387",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$DB",
+      "description": "Average storage IOPS measurement.\nOnly on-prem VMs are represented in the panel.",
+      "fieldConfig": {
+        "defaults": {
+          "links": []
+        },
+        "overrides": []
+      },
+      "fill": 0,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 3,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.0.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    m.type as metric_type,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(),  'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type = 'STORAGE_ACCESS'\n    AND m.provider_oid IS NOT NULL\n    AND m.entity_oid = e.oid\n    AND e.environment = 'ON_PREM'\n), results AS (\n  SELECT time, sum(value) AS sum\n  FROM metrics_data\n  GROUP BY 1\n), moving_average AS (\n  SELECT time, avg(sum) OVER (ORDER BY time RANGE BETWEEN INTERVAL '1 day' PRECEDING AND CURRENT ROW) AS ma\n  FROM results\n)\nSELECT\n  r.time, r.sum AS \"Storage Access - IOPS\", ma.ma AS \"1-Day Moving Average\"\nFROM results r JOIN moving_average ma USING (time)\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "current"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "metric",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Storage Access - IOPS",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:1480",
+          "format": "none",
+          "label": "IOPS",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:1481",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "datasource": "$DB",
+      "description": "Average measurements for each VM in the selected group.\nOnly on-prem VMs are represented in the panel.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "unit",
+                "value": "time: YYYY-MM-DD HH:mm:ss"
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Memory"
+              },
+              {
+                "id": "unit",
+                "value": "kbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IOPS"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "hertz"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 10,
+      "options": {
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "VM Name"
+          }
+        ]
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    e.name as entity_name,\n    (e.attrs->>'tags')::text as entity_tags,\n    m.type as metric_type,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(),  'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type IN ('CPU', 'MEM', 'STORAGE_AMOUNT', 'STORAGE_ACCESS')\n    AND m.provider_oid IS NOT NULL\n    AND s.oid = m.entity_oid\n    AND e.oid = m.entity_oid\n    AND e.environment = 'ON_PREM'\n), time_entity_sums AS (\n  SELECT time, entity_oid, entity_name, entity_tags, metric_type,  sum(value) as value\n  FROM metrics_data\n  GROUP BY 1, 2, 3, 4, 5\n)\nSELECT\n  m.entity_name as \"VM Name\",\n  -- scale to hertz since mhz is not a unit handled by grafana\n  m.entity_tags as \"Tags\",\n  avg(m.value*1000000) FILTER (WHERE m.metric_type = 'CPU') AS \"CPU\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'MEM') AS \"Mem\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'STORAGE_AMOUNT') AS \"Storage\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'STORAGE_ACCESS') AS \"IOPS\"\nFROM time_entity_sums m\nGROUP BY m.entity_oid, m.entity_name, m.entity_tags\nORDER BY m.entity_name, m.entity_oid",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "current"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "metric",
+          "timeColumn": "\"time\"",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Virtual Machine Resource Usage",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "Turbo Timescale",
+          "value": "Turbo Timescale"
+        },
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "DB",
+        "options": [],
+        "query": "postgres",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "allValue": 0,
+        "current": {
+          "selected": true,
+          "text": [
+            "ACE",
+            "ACE Master Cloud",
+            "ACE Pro",
+            "Active Classes",
+            "Advanced Training",
+            "ahmed.samir",
+            "alexander.nish",
+            "alexey.stokes",
+            "Alex-TestVM-Folder",
+            "AllHosts"
+          ],
+          "value": [
+            "285146087633969",
+            "285146087633851",
+            "285146087633870",
+            "285146087633976",
+            "285146087633845",
+            "285160653325680",
+            "284658154577490",
+            "284658154576544",
+            "285099856534779",
+            "285090222316960"
+          ]
+        },
+        "datasource": "$DB",
+        "definition": "WITH candidates AS (\n  SELECT oid, name\n  FROM entity\n  WHERE type IN ('GROUP', 'COMPUTE_CLUSTER')\n    AND attrs -> 'member_types' ?| array['VIRTUAL_MACHINE', 'PHYSICAL_MACHINE']\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n)\nSELECT DISTINCT\n  g.name AS __text,\n  g.oid AS __value\nFROM\n  candidates g,\n  entity e,\n  scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE',\n    (SELECT array_agg(oid) FROM candidates)::bigint[], false) AS s\nWHERE\n  s.seed = g.oid\n  AND s.oid = e.oid\n  AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n  AND e.environment = 'ON_PREM'",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "Group",
+        "options": [],
+        "query": "WITH candidates AS (\n  SELECT oid, name\n  FROM entity\n  WHERE type IN ('GROUP', 'COMPUTE_CLUSTER')\n    AND attrs -> 'member_types' ?| array['VIRTUAL_MACHINE', 'PHYSICAL_MACHINE']\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n)\nSELECT DISTINCT\n  g.name AS __text,\n  g.oid AS __value\nFROM\n  candidates g,\n  entity e,\n  scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE',\n    (SELECT array_agg(oid) FROM candidates)::bigint[], false) AS s\nWHERE\n  s.seed = g.oid\n  AND s.oid = e.oid\n  AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n  AND e.environment = 'ON_PREM'",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1d",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Consumption Summary of Physical Resources for Virtual Machines with Tags",
+  "uid": "ZyXIllK7k",
+  "version": 19
+}
