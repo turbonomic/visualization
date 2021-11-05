@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 101,
-  "iteration": 1636118281082,
+  "id": 144,
+  "iteration": 1636129426949,
   "links": [],
   "panels": [
     {
@@ -753,7 +753,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    e.name as entity_name,\n    (e.attrs->>'tags')::text as entity_tags,\n    m.type as metric_type,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(),  'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type IN ('CPU', 'MEM', 'STORAGE_AMOUNT', 'STORAGE_ACCESS')\n    AND m.provider_oid IS NOT NULL\n    AND s.oid = m.entity_oid\n    AND e.oid = m.entity_oid\n    AND e.environment = 'ON_PREM'\n), time_entity_sums AS (\n  SELECT time, entity_oid, entity_name, entity_tags, metric_type,  sum(value) as value\n  FROM metrics_data\n  GROUP BY 1, 2, 3, 4, 5\n)\nSELECT\n  m.entity_name as \"VM Name\",\n  -- scale to hertz since mhz is not a unit handled by grafana\n  m.entity_tags as \"Tags\",\n  avg(m.value*1000000) FILTER (WHERE m.metric_type = 'CPU') AS \"CPU\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'MEM') AS \"Mem\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'STORAGE_AMOUNT') AS \"Storage\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'STORAGE_ACCESS') AS \"IOPS\"\nFROM time_entity_sums m\nGROUP BY m.entity_oid, m.entity_name, m.entity_tags\nORDER BY m.entity_name, m.entity_oid",
+          "rawSql": "WITH metrics_data AS (\n  SELECT\n    m.time,\n    m.entity_oid,\n    e.name as entity_name,\n    replace(translate((e.attrs->>'tags')::text, '{}[]\"', ''), ',', ' --- ') as entity_tags,\n    m.type as metric_type,\n    coalesce(m.consumed, 0.0) as value\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(),  'VIRTUAL_MACHINE', ARRAY[${Group}]::bigint[], '${Group:raw}' = '0') s,\n    entity e\n  WHERE\n    m.time BETWEEN $__timeFrom() AND $__timeTo()\n    AND m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type IN ('CPU', 'MEM', 'STORAGE_AMOUNT', 'STORAGE_ACCESS')\n    AND m.provider_oid IS NOT NULL\n    AND s.oid = m.entity_oid\n    AND e.oid = m.entity_oid\n    AND e.environment = 'ON_PREM'\n), time_entity_sums AS (\n  SELECT time, entity_oid, entity_name, entity_tags, metric_type,  sum(value) as value\n  FROM metrics_data\n  GROUP BY 1, 2, 3, 4, 5\n)\nSELECT\n  m.entity_name as \"VM Name\",\n  -- scale to hertz since mhz is not a unit handled by grafana\n  m.entity_tags as \"Tags\",\n  avg(m.value*1000000) FILTER (WHERE m.metric_type = 'CPU') AS \"CPU\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'MEM') AS \"Mem\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'STORAGE_AMOUNT') AS \"Storage\",\n  avg(m.value) FILTER (WHERE m.metric_type = 'STORAGE_ACCESS') AS \"IOPS\"\nFROM time_entity_sums m\nGROUP BY m.entity_oid, m.entity_name, m.entity_tags\nORDER BY m.entity_name, m.entity_oid",
           "refId": "A",
           "select": [
             [
@@ -821,31 +821,9 @@
       {
         "allValue": 0,
         "current": {
-          "selected": true,
-          "text": [
-            "ACE",
-            "ACE Master Cloud",
-            "ACE Pro",
-            "Active Classes",
-            "Advanced Training",
-            "ahmed.samir",
-            "alexander.nish",
-            "alexey.stokes",
-            "Alex-TestVM-Folder",
-            "AllHosts"
-          ],
-          "value": [
-            "285146087633969",
-            "285146087633851",
-            "285146087633870",
-            "285146087633976",
-            "285146087633845",
-            "285160653325680",
-            "284658154577490",
-            "284658154576544",
-            "285099856534779",
-            "285090222316960"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "$DB",
         "definition": "WITH candidates AS (\n  SELECT oid, name\n  FROM entity\n  WHERE type IN ('GROUP', 'COMPUTE_CLUSTER')\n    AND attrs -> 'member_types' ?| array['VIRTUAL_MACHINE', 'PHYSICAL_MACHINE']\n    AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n)\nSELECT DISTINCT\n  g.name AS __text,\n  g.oid AS __value\nFROM\n  candidates g,\n  entity e,\n  scope_to($__timeFrom(), $__timeTo(), 'VIRTUAL_MACHINE',\n    (SELECT array_agg(oid) FROM candidates)::bigint[], false) AS s\nWHERE\n  s.seed = g.oid\n  AND s.oid = e.oid\n  AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n  AND e.environment = 'ON_PREM'",
@@ -888,6 +866,6 @@
   },
   "timezone": "",
   "title": "Consumption Summary of Physical Resources for Virtual Machines with Tags",
-  "uid": "ZyXIllK7k",
-  "version": 19
+  "uid": "6aB-8lF7z",
+  "version": 7
 }
