@@ -108,7 +108,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Total Successfull Resize Actions",
+      "title": "Total Successful Resize Actions",
       "type": "stat"
     },
     {
@@ -513,7 +513,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Successfully Completed Resize Actions",
+      "title": "Total Successful Resize Actions",
       "type": "stat"
     },
     {
@@ -1312,5 +1312,5 @@
   "timezone": "",
   "title": "Taken On-Prem Resize Actions Summary by VM Group",
   "uid": "ggoOkTp7z",
-  "version": 34
+  "version": 38
 }
