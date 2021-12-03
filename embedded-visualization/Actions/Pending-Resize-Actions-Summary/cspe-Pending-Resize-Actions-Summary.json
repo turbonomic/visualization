@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 80,
-  "iteration": 1634809150119,
+  "id": 129,
+  "iteration": 1638536076552,
   "links": [],
   "panels": [
     {
@@ -607,6 +607,28 @@
                 "value": 189
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unit"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "KB": {
+                        "index": 0,
+                        "text": "GB"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -628,7 +650,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ec.\"name\" as \"Cluster Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM pending_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\njoin entity ec on ec.oid = s.seed_oid\nwhere\na.\"type\" = 'RESIZE' AND\ne.environment = 'ON_PREM' AND\ne.\"type\" = 'VIRTUAL_MACHINE'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ec.\"name\" as \"Cluster Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)/1024/1024\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM pending_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\njoin entity ec on ec.oid = s.seed_oid\nwhere\na.\"type\" = 'RESIZE' AND\ne.environment = 'ON_PREM' AND\ne.\"type\" = 'VIRTUAL_MACHINE'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1243,7 +1265,7 @@
     "hidden": true
   },
   "timezone": "",
-  "title": "Pending Resize Actions Summary",
-  "uid": "3NU2CIqGk",
-  "version": 14
+  "title": "Pending Resize Actions Summary - Cluster",
+  "uid": "oORk3ihnk",
+  "version": 5
 }
