@@ -12,11 +12,12 @@
       }
     ]
   },
+  "description": "",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "id": 130,
-  "iteration": 1638577613390,
+  "iteration": 1638578859972,
   "links": [],
   "panels": [
     {
@@ -319,7 +320,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Headroom per Cluster",
+      "title": "Headroom per Cluster (as of today)",
       "transformations": [],
       "type": "table"
     }
@@ -439,6 +440,7 @@
     "to": "now"
   },
   "timepicker": {
+    "hidden": true,
     "refresh_intervals": [
       "10s",
       "30s",
@@ -454,5 +456,5 @@
   "timezone": "",
   "title": "Cluster Headroom",
   "uid": "eWMw3ihnz",
-  "version": 12
+  "version": 23
 }
