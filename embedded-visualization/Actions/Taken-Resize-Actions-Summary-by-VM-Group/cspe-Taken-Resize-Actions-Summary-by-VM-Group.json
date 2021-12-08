@@ -15,17 +15,13 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 104,
-  "iteration": 1631200044580,
+  "id": 147,
+  "iteration": 1638987407524,
   "links": [],
   "panels": [
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -124,12 +120,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -166,7 +162,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -202,12 +198,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -224,7 +220,7 @@
       "id": 4,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
@@ -244,7 +240,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -280,12 +276,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -322,7 +318,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -359,12 +355,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -381,7 +377,7 @@
       "id": 13,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
@@ -401,7 +397,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -509,10 +505,6 @@
     {
       "collapsed": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -537,12 +529,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
           },
-          "unit": "actions"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -620,7 +612,7 @@
               }
             ]
           },
-          "unit": "actions"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -768,7 +760,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.final_state = 'SUCCEEDED' OR '${ONLY_SUCCEEDED}' = 'Yes')\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -805,16 +797,16 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "green",
                 "value": 0
               }
             ]
           },
-          "unit": "actions"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -847,7 +839,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%')\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -883,16 +875,16 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "green",
                 "value": 0
               }
             ]
           },
-          "unit": "actions"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -925,7 +917,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%')\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -961,12 +953,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -1003,7 +995,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1039,12 +1031,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -1061,7 +1053,7 @@
       "id": 8,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
@@ -1081,7 +1073,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1117,12 +1109,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -1159,7 +1151,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1196,12 +1188,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "green",
                 "value": null
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           },
@@ -1218,7 +1210,7 @@
       "id": 11,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
@@ -1238,7 +1230,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  DISTINCT e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1330,6 +1322,37 @@
         "useTags": false
       },
       {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "Yes",
+          "value": "Yes"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Show only succeeded actions",
+        "multi": false,
+        "name": "ONLY_SUCCEEDED",
+        "options": [
+          {
+            "selected": true,
+            "text": "Yes",
+            "value": "Yes"
+          },
+          {
+            "selected": false,
+            "text": "No",
+            "value": "No"
+          }
+        ],
+        "query": "Yes, No",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
         "current": {
           "selected": false,
           "text": "20",
@@ -1384,6 +1407,6 @@
   },
   "timezone": "",
   "title": "Taken Resize Actions Summary by VM Group",
-  "uid": "H4fDJkk7k",
-  "version": 6
+  "uid": "eFNS502nk",
+  "version": 4
 }
