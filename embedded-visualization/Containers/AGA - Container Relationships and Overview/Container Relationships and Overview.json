@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 48,
-  "iteration": 1635861027536,
+  "id": 72,
+  "iteration": 1636568537309,
   "links": [],
   "panels": [
     {
@@ -65,7 +65,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT distinct scoped_oid AS cnt_oid\n      ,vm.name AS \"VM Name\"\n  from scope s\n  JOIN entity vm on vm.oid = s.seed_oid\n  where s.scoped_type = 'CONTAINER'\n   and vm.type = 'VIRTUAL_MACHINE'\n   and (start, finish) overlaps ($__timeFrom(), $__timeTo())\n   and (first_seen, last_seen) overlaps ($__timeFrom(), $__timeTo())",
+          "rawSql": "SELECT distinct scoped_oid AS cnt_oid\n      ,vm.name AS \"VM Name\"\n      ,attrs ->> 'guest_os_name' as \"VM Guest OS\"\n  from scope s\n  JOIN entity vm on vm.oid = s.seed_oid\n  where s.scoped_type = 'CONTAINER'\n   and vm.type = 'VIRTUAL_MACHINE'\n   and (start, finish) overlaps ($__timeFrom(), $__timeTo())\n   and (first_seen, last_seen) overlaps ($__timeFrom(), $__timeTo())",
           "refId": "A",
           "select": [
             [
@@ -249,11 +249,12 @@
               "cnt_oid": true
             },
             "indexByName": {
-              "COMPUTE CLUSTER results": 6,
+              "COMPUTE CLUSTER results": 7,
               "CONTAINER CLUSTER results": 3,
               "Container Name results": 1,
-              "PM Name results": 5,
+              "PM Name results": 6,
               "Pod Name results": 2,
+              "VM Guest OS results": 5,
               "VM Name results": 4,
               "cnt_oid": 0
             },
@@ -263,6 +264,7 @@
               "Container Name results": "Container",
               "PM Name results": "Physical Machine",
               "Pod Name results": "Container Pod",
+              "VM Guest OS results": "Guest OS",
               "VM Name results": "Virtual Machine"
             }
           }
@@ -564,6 +566,22 @@
                 "value": 265
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Datastore Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 592
+              },
+              {
+                "id": "unit",
+                "value": "none"
+              }
+            ]
           }
         ]
       },
@@ -585,7 +603,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid\n \t\t   , g.oid as cluster_oid\n \t\t   , g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tand (s.scoped_oid in ($Cluster))\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n group by 1,2,3\n ),\n \n pm_stats as (\n \tselect pm_oid\n \t\t  , AVG(cpu_used) as cpu_used\n \t\t  , MAX(cpu_used) as cpu_max\n      , AVG(mem_used) as mem_used\n      , MAX(mem_used) as mem_max\n \t\t  , percentile_cont(.95) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_95\n      , percentile_cont(.95) WITHIN GROUP (ORDER BY mem_used) as mem_percentile_95\n \t\t  , avg(cpu_capacity) as cpu_capacity\n      , avg(mem_capacity) as mem_capacity\n \tfrom \n\t \t(select entity_oid as pm_oid\n\t \t      ,max(current) filter (where type = 'CPU') as cpu_used\n\t \t      ,max(capacity) filter (where type = 'CPU') as cpu_capacity\n          ,max(current) filter (where type = 'MEM') as mem_used\n          ,max(capacity) filter (where type = 'MEM') as mem_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type in ('CPU', 'MEM')\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n    group by entity_oid, time\n\t \t ) as data\n\t group by 1\n )\n \n select cluster_name as \"Cluster Name\"\n       ,avg(cpu_max)/nullif(avg(cpu_capacity),0) as \"CPU Util Max\"\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util Avg\"\n       ,avg(cpu_percentile_95)/nullif(avg(cpu_capacity), 0) as \"CPU Util 95%\"\n       ,avg(mem_max)/nullif(avg(mem_capacity),0) as \"Mem Util Max\"\n       ,avg(mem_used)/nullif(avg(mem_capacity),0) as \"Mem Util Avg\"\n       ,avg(mem_percentile_95)/nullif(avg(mem_capacity), 0) as \"Mem Util 95%\"\n   from hosts_by_cluster, pm_stats\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   group by 1\n        ",
+          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid\n \t\t   , g.oid as cluster_oid\n \t\t   , g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tand (s.scoped_oid in ($Cluster))\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n group by 1,2,3\n ),\n \n pm_stats as (\n \tselect pm_oid\n \t\t  , AVG(cpu_used) as cpu_used\n \t\t  , MAX(cpu_used) as cpu_max\n      , AVG(mem_used) as mem_used\n      , MAX(mem_used) as mem_max\n \t\t  , percentile_cont(.95) WITHIN GROUP (ORDER BY cpu_used) as cpu_percentile_95\n      , percentile_cont(.95) WITHIN GROUP (ORDER BY mem_used) as mem_percentile_95\n \t\t  , avg(cpu_capacity) as cpu_capacity\n      , avg(mem_capacity) as mem_capacity\n \tfrom \n\t \t(select entity_oid as pm_oid\n\t \t      ,max(current) filter (where type = 'CPU') as cpu_used\n\t \t      ,max(capacity) filter (where type = 'CPU') as cpu_capacity\n          ,max(current) filter (where type = 'MEM') as mem_used\n          ,max(capacity) filter (where type = 'MEM') as mem_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type in ('CPU', 'MEM')\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n    group by entity_oid, time\n\t \t ) as data\n\t group by 1\n ),\n \n ds_stats as (\n    SELECT seed_oid as cluster_oid,\n           count(distinct scoped_oid) as ds_count\n      FROM scope \n     WHERE seed_oid in (select distinct cluster_oid from hosts_by_cluster)\n       AND scoped_type = 'STORAGE'\n       AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n     GROUP BY 1\n)\n \n select cluster_name as \"Cluster Name\"\n       ,max(ds_count) as \"Datastore Count\"\n       ,avg(cpu_max)/nullif(avg(cpu_capacity),0) as \"CPU Util Max\"\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util Avg\"\n       ,avg(cpu_percentile_95)/nullif(avg(cpu_capacity), 0) as \"CPU Util 95%\"\n       ,avg(mem_max)/nullif(avg(mem_capacity),0) as \"Mem Util Max\"\n       ,avg(mem_used)/nullif(avg(mem_capacity),0) as \"Mem Util Avg\"\n       ,avg(mem_percentile_95)/nullif(avg(mem_capacity), 0) as \"Mem Util 95%\"\n   from hosts_by_cluster \n   join pm_stats on pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   join ds_stats on ds_stats.cluster_oid = hosts_by_cluster.cluster_oid\n   group by 1\n        ",
           "refId": "A",
           "select": [
             [
@@ -856,6 +874,18 @@
                 "value": 298
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Max Used (MHz)"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 203
+              }
+            ]
           }
         ]
       },
@@ -882,7 +912,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name,\n        (e.attrs ->> 'num_cpus')::numeric as cpus,\n        (e.attrs ->> 'model') as hostmodel,\n        (e.attrs ->> 'cpu_model') as h_cpu_model\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       hostmodel as \"Host Model\",\n       h_cpu_model as \"CPU Architecture / SKU\",\n       cpus as \"CPU Cores\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "rawSql": "-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name,\n        (e.attrs ->> 'num_cpus')::numeric as cpus,\n        (e.attrs ->> 'model') as hostmodel,\n        (e.attrs ->> 'cpu_model') as h_cpu_model\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_stats as (\n    SELECT seed_oid as pm_oid,\n           count(distinct scoped_oid) as ds_count\n      FROM scope \n     WHERE seed_oid in (select distinct pm_oid from pms_by_cluster)\n       AND scoped_type = 'STORAGE'\n       AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n     GROUP BY 1\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       hostmodel as \"Host Model\",\n       h_cpu_model as \"CPU Architecture / SKU\",\n       cpus as \"CPU Cores\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\",\n       ds_count as \"Datastore Count\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n  JOIN ds_stats on ds_stats.pm_oid = pms_by_cluster.pm_oid\n;",
           "refId": "A",
           "select": [
             [
@@ -998,7 +1028,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name,\n        e.attrs ->> 'guest_os_name' as guest_os\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       guest_os as \"Guest OS\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
           "refId": "A",
           "select": [
             [
@@ -1457,7 +1487,7 @@
     ]
   },
   "timezone": "",
-  "title": "Container Datacenter and Cluster Dashboard",
-  "uid": "AltGG2D7k",
-  "version": 11
+  "title": "Container Datacenter and Cluster Dashboard 2.0",
+  "uid": "AltGG2D7kf",
+  "version": 8
 }

@@ -12,15 +12,17 @@
       }
     ]
   },
+  "description": "",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 87,
-  "iteration": 1629470154413,
+  "id": 130,
+  "iteration": 1638578859972,
   "links": [],
   "panels": [
     {
       "datasource": "$DB",
+      "description": "Clusters with CPU, Mem or Storage Headroom based on Percentile, Desired Capacity and HA settings.\nRed = Critical and Attention Needed ASAP\nOrange = Warning and Address ASAP before becoming Critical\nYellow = Minor Risk best to address so it doesn't get worse",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -35,10 +37,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
@@ -115,6 +113,168 @@
                 "value": "hertz"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Headroom VMs"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 174
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Headroom VMs"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "to": 20
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 21,
+                      "result": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "to": 40
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 41,
+                      "result": {
+                        "color": "yellow",
+                        "index": 2
+                      },
+                      "to": 50
+                    },
+                    "type": "range"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Headroom VMs"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "to": 20
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 21,
+                      "result": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "to": 40
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 41,
+                      "result": {
+                        "color": "yellow",
+                        "index": 2
+                      },
+                      "to": 50
+                    },
+                    "type": "range"
+                  }
+                ]
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Headroom VMs"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-background-solid"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "color": "red",
+                        "index": 0
+                      },
+                      "to": 20
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 21,
+                      "result": {
+                        "color": "orange",
+                        "index": 1
+                      },
+                      "to": 40
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 41,
+                      "result": {
+                        "color": "yellow",
+                        "index": 2
+                      },
+                      "to": 50
+                    },
+                    "type": "range"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -160,11 +320,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Headroom Per Cluster",
+      "title": "Headroom per Cluster (as of today)",
       "transformations": [],
       "type": "table"
     }
   ],
+  "refresh": "",
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
@@ -231,7 +392,7 @@
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
+        "label": "Desired Capacity",
         "multi": false,
         "name": "DesiredCapacity",
         "options": [],
@@ -279,6 +440,7 @@
     "to": "now"
   },
   "timepicker": {
+    "hidden": true,
     "refresh_intervals": [
       "10s",
       "30s",
@@ -292,7 +454,7 @@
     ]
   },
   "timezone": "",
-  "title": "Cluster Headroom2",
-  "uid": "cluster_headroom2",
-  "version": 1
+  "title": "Cluster Headroom",
+  "uid": "eWMw3ihnz",
+  "version": 23
 }

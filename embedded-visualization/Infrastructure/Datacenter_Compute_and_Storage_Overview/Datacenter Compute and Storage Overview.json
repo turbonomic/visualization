@@ -16,8 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 63,
-  "iteration": 1623249534434,
+  "id": 106,
+  "iteration": 1636729719876,
   "links": [],
   "panels": [
     {
@@ -26,6 +26,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -93,7 +94,7 @@
       "options": {
         "showHeader": true
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -137,24 +138,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "percentunit"
         },
         "overrides": [
@@ -222,7 +205,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -236,7 +219,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n pm_stats as (\n \tselect entity_oid as pm_oid\n\t \t      ,current as cpu_used\n\t \t      ,capacity as cpu_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'CPU'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util\"\n   from hosts_by_cluster, pm_stats\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   group by 1, 2\n   ORDER BY 1, 2\n        ",
+          "rawSql": "with hosts_by_cluster as (\r\n \tselect e.oid as pm_oid,\r\n \t\t   g.oid as cluster_oid,\r\n \t\t   g.name as cluster_name\r\n \tfrom entity as e\r\n \tjoin scope s on s.seed_oid = e.oid\r\n \tjoin entity g on g.oid = s.scoped_oid \r\n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\r\n \tand e.type = 'PHYSICAL_MACHINE'\r\n \tand g.type = 'COMPUTE_CLUSTER'\r\n \tAND g.oid in ($Cluster)\r\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\r\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\r\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\r\n ),\r\n \r\n pm_stats as (\r\n \tselect entity_oid as pm_oid\r\n\t \t      ,current as cpu_used\r\n\t \t      ,capacity as cpu_capacity\r\n\t \t      ,time\r\n\t \t  from metric\r\n\t \t  where type = 'CPU'\r\n\t \t  and consumed is null\r\n\t \t  and $__timeFilter(time)\r\n )\r\n \r\n select cluster_name as \"Cluster Name\"\r\n       ,time\r\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util\"\r\n   from hosts_by_cluster, pm_stats\r\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\r\n   group by 1, 2\r\n   ORDER BY time asc \r\n        ",
           "refId": "A",
           "select": [
             [
@@ -307,6 +290,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "decimals": 2,
@@ -351,7 +335,7 @@
       "options": {
         "showHeader": true
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -395,24 +379,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "percentunit"
         },
         "overrides": [
@@ -480,7 +446,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -494,7 +460,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n pm_stats as (\n \tselect entity_oid as pm_oid\n\t \t      ,current as cpu_used\n\t \t      ,capacity as cpu_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'MEM'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n\t \t  and entity_type = 'PHYSICAL_MACHINE'\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util\"\n   from hosts_by_cluster, pm_stats\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   group by 1, 2\n   ORDER BY 1, 2\n        ",
+          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as pm_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'PHYSICAL_MACHINE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n pm_stats as (\n \tselect entity_oid as pm_oid\n\t \t      ,current as cpu_used\n\t \t      ,capacity as cpu_capacity\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'MEM'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n\t \t  and entity_type = 'PHYSICAL_MACHINE'\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(cpu_used)/nullif(avg(cpu_capacity),0) as \"CPU Util\"\n   from hosts_by_cluster, pm_stats\n   where pm_stats.pm_oid = hosts_by_cluster.pm_oid\n   group by 1, 2\n   ORDER BY time asc\n        ",
           "refId": "A",
           "select": [
             [
@@ -565,6 +531,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "decimals": 2,
@@ -650,7 +617,7 @@
           }
         ]
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -693,6 +660,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -760,7 +728,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -804,24 +772,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "ms"
         },
         "overrides": [
@@ -889,7 +839,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -903,7 +853,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as ds_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'STORAGE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n ds_stats as (\n \tselect entity_oid as ds_oid\n\t \t      ,current as stor_latency_used\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'STORAGE_LATENCY'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(stor_latency_used) as \"Storage Latency Util\"\n   from hosts_by_cluster, ds_stats\n   where ds_stats.ds_oid = hosts_by_cluster.ds_oid\n   group by 1, 2\n   ORDER BY 1, 2\n        ",
+          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as ds_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'STORAGE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n ds_stats as (\n \tselect entity_oid as ds_oid\n\t \t      ,current as stor_latency_used\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'STORAGE_LATENCY'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(stor_latency_used) as \"Storage Latency Util\"\n   from hosts_by_cluster, ds_stats\n   where ds_stats.ds_oid = hosts_by_cluster.ds_oid\n   group by 1, 2\n   ORDER BY time asc\n        ",
           "refId": "A",
           "select": [
             [
@@ -976,24 +926,6 @@
       "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "iops"
         },
         "overrides": [
@@ -1061,7 +993,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1075,7 +1007,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as ds_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'STORAGE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n ds_stats as (\n \tselect entity_oid as ds_oid\n\t \t      ,current as stor_iops_used\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'STORAGE_ACCESS'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(stor_iops_used) as \"Storage IOPS\"\n   from hosts_by_cluster, ds_stats\n   where ds_stats.ds_oid = hosts_by_cluster.ds_oid\n   group by 1, 2\n   ORDER BY 1, 2\n        ",
+          "rawSql": "with hosts_by_cluster as (\n \tselect e.oid as ds_oid,\n \t\t   g.oid as cluster_oid,\n \t\t   g.name as cluster_name\n \tfrom entity as e\n \tjoin scope s on s.seed_oid = e.oid\n \tjoin entity g on g.oid = s.scoped_oid \n \twhere s.scoped_type = 'COMPUTE_CLUSTER'\n \tand e.type = 'STORAGE'\n \tand g.type = 'COMPUTE_CLUSTER'\n \tAND g.oid in ($Cluster)\n \tand (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n \tand (e.first_seen, g.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ),\n \n ds_stats as (\n \tselect entity_oid as ds_oid\n\t \t      ,current as stor_iops_used\n\t \t      ,time\n\t \t  from metric\n\t \t  where type = 'STORAGE_ACCESS'\n\t \t  and consumed is null\n\t \t  and $__timeFilter(time)\n )\n \n select cluster_name as \"Cluster Name\"\n       ,time\n       ,avg(stor_iops_used) as \"Storage IOPS\"\n   from hosts_by_cluster, ds_stats\n   where ds_stats.ds_oid = hosts_by_cluster.ds_oid\n   group by 1, 2\n   ORDER BY time asc\n        ",
           "refId": "A",
           "select": [
             [
@@ -1146,6 +1078,7 @@
         "defaults": {
           "custom": {
             "align": null,
+            "displayMode": "auto",
             "filterable": false
           },
           "mappings": [],
@@ -1225,7 +1158,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
           "format": "table",
@@ -1263,7 +1196,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1281,6 +1214,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT DISTINCT name as __text\n             ,oid as __value\n   FROM entity\n WHERE type = 'DATACENTER'\nAND (first_seen, last_seen) overlaps ($__timeFrom(), $__timeTo())\nORDER BY 1",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -1294,7 +1228,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1312,6 +1245,7 @@
         },
         "datasource": "Turbo Timescale",
         "definition": "SELECT DISTINCT name as __text\n            ,oid as __value\n   FROM entity e\n   JOIN scope s on s.seed_oid = e.oid\n WHERE e.type = 'COMPUTE_CLUSTER'\n  AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n  and s.scoped_type = 'DATACENTER'\n  and s.scoped_oid in ($Datacenter)",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -1325,7 +1259,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -1333,7 +1266,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1352,6 +1285,6 @@
   },
   "timezone": "",
   "title": "Datacenter Compute and Storage Overview",
-  "uid": "FOcML6XMz",
+  "uid": "nnQuPOc7z",
   "version": 3
 }
