@@ -1,0 +1,228 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 170,
+  "iteration": 1639591135765,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vCPU Average Utilization"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select \n  distinct e.oid as \"VM OID\",\n  e.name as \"VM Name\",\n  e.attrs->>'num_cpus' as \"Number of vCPU(s)\",\n  coalesce(avg(m.utilization), 0) as \"vCPU Average Utilization\"\nfrom entity e\njoin metric m on m.entity_type = 'VIRTUAL_MACHINE' and m.entity_oid = e.oid\nwhere e.environment = 'ON_PREM'\nand e.type = 'VIRTUAL_MACHINE'\nand e.oid IN (${VM_OID})\nand e.last_seen > now()\nand m.type = 'VCPU'\nand m.provider_oid is null\nand $__timeFilter(m.time)\ngroup by e.oid, m.entity_oid\norder by e.name",
+          "refId": "num_cpus",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "VM Capacity",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "VM OID": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select name from entity where \"type\" = 'GROUP' order by name",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Group Name",
+        "multi": true,
+        "name": "GROUP_NAME",
+        "options": [],
+        "query": "select name from entity where \"type\" = 'GROUP' order by name",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "GROUP_OID",
+        "options": [],
+        "query": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "Turbo Timescale",
+        "definition": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "VM_OID",
+        "options": [],
+        "query": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "VM CPU Utilization",
+  "uid": "iLE9Nmo7z",
+  "version": 4
+}
