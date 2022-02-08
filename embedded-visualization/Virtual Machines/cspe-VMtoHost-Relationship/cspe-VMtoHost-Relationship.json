@@ -1,4 +1,47 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.3.2"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -8,19 +51,29 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
-  "graphTooltip": 1,
-  "id": 174,
-  "iteration": 1640255529870,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1644342235646,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -69,19 +122,30 @@
       "id": 3,
       "interval": "1d",
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 1,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "queryType": "randomWalk",
           "rawQuery": true,
-          "rawSql": "select\n\tdistinct\n\t--date_trunc('day', mvm.time) as \"Time\",\n\tto_char(mvm.time, 'YYYY-MM-DD') as \"Day\",\n\t-- mvm.entity_oid,\n\tevm.name as \"VM Name\",\n\t-- mvm.provider_oid\n\tepm.name as \"Host Name\"\nfrom\n\tmetric mvm\n\tjoin entity evm on mvm.entity_oid = evm.oid\n\tjoin entity epm on mvm.provider_oid = epm.oid\nwhere \n\tmvm.\"entity_type\" = 'VIRTUAL_MACHINE'\n\tand mvm.\"type\" = 'CPU'\n\tand epm.\"type\" = 'PHYSICAL_MACHINE'\n\tand $__timeFilter(mvm.\"time\")\n\tand epm.oid IN (${PM_OIDS})\norder by \"VM Name\" asc, \"Day\" asc",
+          "rawSql": "select\n\tdistinct\n\t--date_trunc('day', mvm.time) as \"Time\",\n\tto_char(mvm.time, 'YYYY-MM-DD') as \"Day\",\n\t-- mvm.entity_oid,\n\tevm.name as \"VM Name\",\n\t-- mvm.provider_oid\n\tepm.name as \"Host Name\"\nfrom\n\tmetric mvm\n\tjoin entity evm on mvm.entity_oid = evm.oid and evm.attrs->>'state' = 'POWERED_ON'\n\tjoin entity epm on mvm.provider_oid = epm.oid\nwhere \n\tmvm.\"entity_type\" = 'VIRTUAL_MACHINE'\n\tand mvm.\"type\" = 'CPU'\n\tand epm.\"type\" = 'PHYSICAL_MACHINE'\n\tand $__timeFilter(mvm.\"time\")\n\tand epm.oid IN (${PM_OID})\norder by \"VM Name\" asc, \"Day\" asc",
           "refId": "PHYSICAL_MACHINE",
           "select": [
             [
@@ -105,12 +169,14 @@
           ]
         }
       ],
-      "timeShift": null,
       "title": "VM to Host relationship",
       "type": "table"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -158,49 +224,30 @@
       },
       "id": 5,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 1,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
-          "format": "table",
-          "group": [],
-          "hide": true,
-          "metricColumn": "none",
-          "queryType": "randomWalk",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  e.name as \"Host Name\",\n  s.scoped_oid as \"Host OID\"\nfrom scope s\njoin entity e on e.oid = s.scoped_oid\nwhere s.seed_oid IN (${GROUP_OID})\nand s.scoped_type = 'PHYSICAL_MACHINE'",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT distinct\n  s.seed_oid as \"Host OID\",\n  e.name as \"Host Name\",\n  count(e.name) as \"VM Count\",\n  avg((e.attrs->>'num_cpus')::integer) as \"Num CPUs\"\nfrom scope s\njoin entity e on e.oid = s.seed_oid\nwhere (\n  -- s.seed_oid IN (${GROUP_OID})\n  -- or\n  s.seed_oid IN (select scoped_oid from scope s where s.seed_oid IN (${GROUP_OID}) and s.scoped_type = 'PHYSICAL_MACHINE')\n)\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand s.\"finish\" > now()\ngroup by s.seed_oid, e.name",
+          "rawSql": "SELECT distinct\n  s.seed_oid as \"Host OID\",\n  e.name as \"Host Name\",\n  count(e.name) as \"VM Count\",\n  avg((e.attrs->>'num_cpus')::integer) as \"Num CPUs\"\nfrom scope s\njoin entity e on e.oid = s.seed_oid\njoin entity evm on evm.oid = s.scoped_oid and evm.attrs->>'state' = 'POWERED_ON'\nwhere (\n  -- s.seed_oid IN (${GROUP_OID})\n  -- or\n  s.seed_oid IN (${PM_OID})\n)\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand s.\"finish\" > now()\nand e.type = 'PHYSICAL_MACHINE'\ngroup by s.seed_oid, e.name",
           "refId": "B",
           "select": [
             [
@@ -224,12 +271,16 @@
           ]
         },
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.entity_oid as \"Host OID\",\n  avg(m.capacity)/1024/1024 as \"Mem Quantity (GB)\"\nFROM metric m\nWHERE\n  $__timeFilter(m.time)\n  and m.\"type\" = 'MEM'\n  and m.entity_oid IN (select scoped_oid from scope s where s.seed_oid IN (${GROUP_OID}) and s.scoped_type = 'PHYSICAL_MACHINE')\ngroup by m.entity_oid",
+          "rawSql": "SELECT\n  m.entity_oid as \"Host OID\",\n  avg(m.capacity)/1024/1024 as \"Mem Quantity (GB)\"\nFROM metric m\nWHERE\n  $__timeFilter(m.time)\n  and m.\"type\" = 'MEM'\n  and m.entity_oid IN (${PM_OID})\ngroup by m.entity_oid",
           "refId": "C",
           "select": [
             [
@@ -273,7 +324,10 @@
       "type": "table"
     },
     {
-      "datasource": "-- Dashboard --",
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -301,7 +355,7 @@
       "id": 11,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -314,7 +368,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "panelId": 5,
@@ -326,7 +380,10 @@
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -400,11 +457,15 @@
       },
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n\tdistinct\n\tmvm.time as \"time\",\n\tepm.name as \"Host Name\",\n\tcount(evm.name) as \"Number of VMs\"\nfrom\n\tmetric mvm\n\tjoin entity evm on mvm.entity_oid = evm.oid\n\tjoin entity epm on mvm.provider_oid = epm.oid\nwhere \n\tmvm.\"entity_type\" = 'VIRTUAL_MACHINE'\n\tand mvm.\"type\" = 'CPU'\n\tand epm.\"type\" = 'PHYSICAL_MACHINE'\n\tand $__timeFilter(mvm.\"time\")\n\tand epm.oid IN (${PM_OIDS})\ngroup by mvm.time, epm.name\norder by \"time\" asc, epm.name asc",
+          "rawSql": "select\n\tdistinct\n\tmvm.time as \"time\",\n\tepm.name as \"Host Name\",\n\tcount(evm.name) as \"Number of VMs\"\nfrom\n\tmetric mvm\n\tjoin entity evm on mvm.entity_oid = evm.oid and evm.attrs->>'state' = 'POWERED_ON'\n\tjoin entity epm on mvm.provider_oid = epm.oid\nwhere \n\tmvm.\"entity_type\" = 'VIRTUAL_MACHINE'\n\tand mvm.\"type\" = 'CPU'\n\tand epm.\"type\" = 'PHYSICAL_MACHINE'\n\tand $__timeFilter(mvm.\"time\")\n\tand epm.oid IN (${PM_OID})\ngroup by mvm.time, epm.name\norder by \"time\" asc, epm.name asc",
           "refId": "A",
           "select": [
             [
@@ -432,7 +493,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "-- Dashboard --",
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -511,81 +575,25 @@
       "type": "timeseries"
     }
   ],
-  "schemaVersion": 30,
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "HawthorneSales/EDUDEMO",
-          "value": "HawthorneSales/EDUDEMO"
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "datasource": "Turbo Timescale",
-        "definition": "select distinct \n e.name\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.last_seen > now()\norder by e.name asc",
-        "description": null,
-        "error": null,
+        "definition": "select distinct \ne.name as \"__text\",\ne.oid as \"__value\"\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.last_seen > now()\norder by e.name asc",
         "hide": 0,
-        "includeAll": false,
-        "label": "Host Group",
-        "multi": false,
-        "name": "GROUP_NAME",
-        "options": [],
-        "query": "select distinct \n e.name\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.last_seen > now()\norder by e.name asc",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "285146092494602",
-          "value": "285146092494602"
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "select distinct \n e.oid\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.name = '${GROUP_NAME}'\nand e.last_seen > now()",
-        "description": "",
-        "error": null,
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "GROUP_OID",
-        "options": [],
-        "query": "select distinct \n e.oid\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.name = '${GROUP_NAME}'\nand e.last_seen > now()",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Turbo Timescale",
-        "definition": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid = '${GROUP_OID}'\nand s.scoped_type = 'VIRTUAL_MACHINE'",
-        "description": null,
-        "error": null,
-        "hide": 2,
         "includeAll": true,
-        "label": null,
+        "label": "Host Group",
         "multi": true,
-        "name": "VM_OIDS",
+        "name": "GROUP",
         "options": [],
-        "query": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid = '${GROUP_OID}'\nand s.scoped_type = 'VIRTUAL_MACHINE'",
+        "query": "select distinct \ne.name as \"__text\",\ne.oid as \"__value\"\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.last_seen > now()\norder by e.name asc",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -593,27 +601,18 @@
         "type": "query"
       },
       {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "datasource": "Turbo Timescale",
-        "definition": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid = '${GROUP_OID}'\nand s.scoped_type = 'PHYSICAL_MACHINE'",
-        "description": null,
-        "error": null,
+        "definition": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid IN (${GROUP})\nand s.scoped_type = 'PHYSICAL_MACHINE'\nand s.finish > now()",
         "hide": 2,
         "includeAll": true,
-        "label": null,
         "multi": true,
-        "name": "PM_OIDS",
+        "name": "PM_OID",
         "options": [],
-        "query": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid = '${GROUP_OID}'\nand s.scoped_type = 'PHYSICAL_MACHINE'",
+        "query": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid IN (${GROUP})\nand s.scoped_type = 'PHYSICAL_MACHINE'\nand s.finish > now()",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -629,6 +628,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "VM to Host Relationship",
-  "uid": "w2WynEonk",
-  "version": 3
+  "uid": "rprV6T-7z",
+  "version": 1,
+  "weekStart": ""
 }
