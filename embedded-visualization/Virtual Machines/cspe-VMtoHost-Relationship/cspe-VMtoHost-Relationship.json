@@ -1,47 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_TURBO_TIMESCALE",
-      "label": "Turbo Timescale",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "postgres",
-      "pluginName": "PostgreSQL"
-    }
-  ],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.3.2"
-    },
-    {
-      "type": "datasource",
-      "id": "postgres",
-      "name": "PostgreSQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -64,15 +21,15 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1644342235646,
+  "id": 177,
+  "iteration": 1644614744801,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
+        "uid": "Turbo Timescale"
       },
       "fieldConfig": {
         "defaults": {
@@ -138,7 +95,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
+            "uid": "Turbo Timescale"
           },
           "format": "table",
           "group": [],
@@ -175,7 +132,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
+        "uid": "6pv52Y4Gk"
       },
       "fieldConfig": {
         "defaults": {
@@ -187,6 +144,7 @@
             "displayMode": "auto"
           },
           "mappings": [],
+          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -231,7 +189,7 @@
           ],
           "show": false
         },
-        "frameIndex": 1,
+        "frameIndex": 0,
         "showHeader": true,
         "sortBy": []
       },
@@ -240,14 +198,47 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
+            "uid": "6pv52Y4Gk"
           },
           "format": "table",
           "group": [],
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT distinct\n  s.seed_oid as \"Host OID\",\n  e.name as \"Host Name\",\n  count(e.name) as \"VM Count\",\n  avg((e.attrs->>'num_cpus')::integer) as \"Num CPUs\"\nfrom scope s\njoin entity e on e.oid = s.seed_oid\njoin entity evm on evm.oid = s.scoped_oid and evm.attrs->>'state' = 'POWERED_ON'\nwhere (\n  -- s.seed_oid IN (${GROUP_OID})\n  -- or\n  s.seed_oid IN (${PM_OID})\n)\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand s.\"finish\" > now()\nand e.type = 'PHYSICAL_MACHINE'\ngroup by s.seed_oid, e.name",
+          "rawSql": "SELECT distinct\n  e.oid as \"Host OID\",\n  e.name as \"Host Name\",\n  avg((e.attrs->>'num_cpus')::integer) as \"Num CPUs\"\nfrom entity e\nwhere\n\te.type = 'PHYSICAL_MACHINE'\n\tand e.oid in (${PM_OID})\ngroup by e.oid",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "Turbo Timescale"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT distinct\n  s.seed_oid as \"Host OID\",\n  count(e.name) as \"VM Count\"\nfrom scope s\njoin entity e on e.oid = s.seed_oid\njoin entity evm on evm.oid = s.scoped_oid and evm.attrs->>'state' = 'POWERED_ON'\nwhere (\n  s.seed_oid IN (${PM_OID})\n)\nand s.scoped_type = 'VIRTUAL_MACHINE'\nand s.\"finish\" > now()\nand e.type = 'PHYSICAL_MACHINE'\ngroup by s.seed_oid, e.name",
           "refId": "B",
           "select": [
             [
@@ -273,7 +264,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
+            "uid": "Turbo Timescale"
           },
           "format": "table",
           "group": [],
@@ -382,7 +373,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
+        "uid": "Turbo Timescale"
       },
       "fieldConfig": {
         "defaults": {
@@ -459,7 +450,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
+            "uid": "Turbo Timescale"
           },
           "format": "time_series",
           "group": [],
@@ -581,10 +572,14 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TURBO_TIMESCALE}"
+          "uid": "Turbo Timescale"
         },
         "definition": "select distinct \ne.name as \"__text\",\ne.oid as \"__value\"\nfrom entity e \nwhere \n(\n(e.\"type\" = 'GROUP' and e.attrs->'member_types' ? 'PHYSICAL_MACHINE')\nor e.\"type\" = 'COMPUTE_CLUSTER'\n)\nand e.last_seen > now()\norder by e.name asc",
         "hide": 0,
@@ -601,10 +596,14 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "postgres",
-          "uid": "${DS_TURBO_TIMESCALE}"
+          "uid": "Turbo Timescale"
         },
         "definition": "select distinct scoped_oid \nfrom \"scope\" s \nwhere s.seed_oid IN (${GROUP})\nand s.scoped_type = 'PHYSICAL_MACHINE'\nand s.finish > now()",
         "hide": 2,
@@ -629,6 +628,6 @@
   "timezone": "",
   "title": "VM to Host Relationship",
   "uid": "rprV6T-7z",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
