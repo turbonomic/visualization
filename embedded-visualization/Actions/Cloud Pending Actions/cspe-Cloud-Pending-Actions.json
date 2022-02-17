@@ -8,18 +8,28 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 117,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "6pv52Y4Gk"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -57,6 +67,18 @@
                 "value": "currencyUSD"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Account Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 261
+              }
+            ]
           }
         ]
       },
@@ -68,17 +90,28 @@
       },
       "id": 2,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "6pv52Y4Gk"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  pa.recommendation_time as \"Recommendation Time\",\n  INITCAP(pa.\"type\"::text) as \"Action Type\",\n  e.name as \"Entity Name\",\n  CASE\n    WHEN e.\"type\" = 'VIRTUAL_MACHINE' THEN 'Virtual Machine'\n    WHEN e.\"type\" = 'VIRTUAL_VOLUME' THEN 'Virtual Volume'\n    ELSE 'Unknown'\n  END as \"Entity Type\",\n  e.attrs->>'vendor_id' as \"Vendor ID\",\n  pa.description as \"Description\",\n  pa.savings as \"Savings/mo\"\nFROM pending_action pa\nJOIN entity e ON e.\"oid\" = pa.target_entity_id \nWHERE\n  $__timeFilter(pa.recommendation_time)\n  AND e.environment = 'CLOUD'\n  AND e.\"type\" IN ('VIRTUAL_MACHINE', 'VIRTUAL_VOLUME')\nORDER BY 1",
+          "rawSql": "SELECT\n  pa.recommendation_time as \"Recommendation Time\",\n  INITCAP(pa.\"type\"::text) as \"Action Type\",\n  e.name as \"Entity Name\",\n  CASE\n    WHEN e.\"type\" = 'VIRTUAL_MACHINE' THEN 'Virtual Machine'\n    WHEN e.\"type\" = 'VIRTUAL_VOLUME' THEN 'Virtual Volume'\n    ELSE 'Unknown'\n  END as \"Entity Type\",\n  ea.name as \"Account Name\",\n  jsonb_array_elements(e.attrs->'targets')->>'type' as \" Account Type\",\n  e.attrs->>'vendor_id' as \"Vendor ID\",\n  pa.description as \"Description\",\n  pa.savings as \"Savings/mo\"\nFROM pending_action pa\nJOIN entity e ON e.\"oid\" = pa.target_entity_id\nJOIN scope s on s.seed_oid = e.oid and s.finish > now()\nJOIN entity ea ON s.scoped_oid = ea.oid and ea.last_seen > now()\nWHERE\n  $__timeFilter(pa.recommendation_time)\n  AND e.environment = 'CLOUD'\n  AND e.\"type\" IN ('VIRTUAL_MACHINE', 'VIRTUAL_VOLUME')\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -106,7 +139,7 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 30,
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -120,5 +153,6 @@
   "timezone": "",
   "title": "Cloud Pending Actions",
   "uid": "VI1rQlSnk",
-  "version": 2
+  "version": 5,
+  "weekStart": ""
 }
