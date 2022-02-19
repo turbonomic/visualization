@@ -8,20 +8,26 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 127,
-  "iteration": 1638320094884,
+  "id": 137,
+  "iteration": 1645237012375,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -34,7 +40,10 @@
       "type": "row"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -77,7 +86,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -106,13 +115,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total Successful Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -155,7 +165,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -184,13 +194,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Completed vCPU Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -237,7 +248,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -266,13 +277,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total vCPU Removed",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -315,7 +327,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -344,13 +356,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total vMem Removed",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -394,7 +407,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -423,13 +436,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total vMem cost difference",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -472,7 +486,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -501,13 +515,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Completed vMem Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -550,7 +565,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -579,13 +594,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total vCPU Added",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -628,7 +644,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -657,13 +673,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total vMem Added",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -706,7 +723,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -735,14 +752,11 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total vCPU cost difference",
       "type": "stat"
     },
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -755,7 +769,10 @@
       "type": "row"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -798,7 +815,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -827,20 +844,20 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total Successful Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "custom": {
-            "align": null,
             "displayMode": "auto",
             "filterable": true
           },
@@ -948,17 +965,28 @@
       },
       "id": 2,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "azHZCGNMz"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)/1024/1024\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)/1024/1024\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\",\n  TO_CHAR(a.acceptance_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Executed\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID:sqlstring})\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -980,14 +1008,15 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Successfully Completed Resize Actions (group selected above)",
       "transformations": [],
       "type": "table"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1030,7 +1059,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1059,13 +1088,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Completed vCPU Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1108,7 +1138,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1137,13 +1167,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Completed vMem Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1186,7 +1217,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1215,13 +1246,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "vCPU Added",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1264,7 +1296,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1293,13 +1325,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "vCPU Removed",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1342,7 +1375,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1371,13 +1404,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "vMem Added",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1420,7 +1454,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1449,13 +1483,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "vMem Removed",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1498,7 +1533,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1527,13 +1562,14 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "vCPU cost difference",
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "azHZCGNMz"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1577,7 +1613,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1606,33 +1642,31 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "vMem cost difference",
       "type": "stat"
     }
   ],
   "refresh": "",
-  "schemaVersion": 30,
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
-            "All_VM"
+            "All"
           ],
           "value": [
-            "All_VM"
+            "$__all"
           ]
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "azHZCGNMz"
+        },
         "definition": "select name\nfrom entity e \nwhere e.\"type\" = 'GROUP'\nand attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\norder by name",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Group",
@@ -1650,16 +1684,16 @@
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "azHZCGNMz"
+        },
         "definition": "select oid from entity e\nwhere e.\"type\" = 'GROUP'\nand e.attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\nand e.name IN (${GROUP_NAME:sqlstring})\norder by e.name",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Group OID",
@@ -1682,8 +1716,6 @@
           "text": "20",
           "value": "20"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Cost of a vCPU ($)",
         "name": "VCPU_COST",
@@ -1704,8 +1736,6 @@
           "text": "10",
           "value": "10"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Cost of a vMem GB ($)",
         "name": "VMEM_COST",
@@ -1723,7 +1753,7 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -1731,6 +1761,7 @@
   },
   "timezone": "",
   "title": "Taken On-Prem Resize Actions Summary by VM Group",
-  "uid": "ggoOkTp7z",
-  "version": 61
+  "uid": "ggoOkTp7a",
+  "version": 3,
+  "weekStart": ""
 }
