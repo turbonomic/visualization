@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 137,
-  "iteration": 1645237012375,
+  "id": 142,
+  "iteration": 1645825483458,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -42,7 +42,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -121,7 +121,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -200,7 +200,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "description": "",
       "fieldConfig": {
@@ -283,7 +283,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -362,7 +362,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "description": "",
       "fieldConfig": {
@@ -442,7 +442,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -521,7 +521,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -600,7 +600,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -679,7 +679,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -771,7 +771,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -850,7 +850,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -980,7 +980,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "azHZCGNMz"
+            "uid": "irPDqMNMz"
           },
           "format": "table",
           "group": [],
@@ -1015,7 +1015,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1094,7 +1094,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1173,7 +1173,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1252,7 +1252,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1331,7 +1331,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1410,7 +1410,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1489,7 +1489,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "fieldConfig": {
         "defaults": {
@@ -1568,7 +1568,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "azHZCGNMz"
+        "uid": "irPDqMNMz"
       },
       "description": "",
       "fieldConfig": {
@@ -1654,17 +1654,13 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "postgres",
-          "uid": "azHZCGNMz"
+          "uid": "irPDqMNMz"
         },
         "definition": "select name\nfrom entity e \nwhere e.\"type\" = 'GROUP'\nand attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\norder by name",
         "hide": 0,
@@ -1691,7 +1687,7 @@
         },
         "datasource": {
           "type": "postgres",
-          "uid": "azHZCGNMz"
+          "uid": "irPDqMNMz"
         },
         "definition": "select oid from entity e\nwhere e.\"type\" = 'GROUP'\nand e.attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\nand e.name IN (${GROUP_NAME:sqlstring})\norder by e.name",
         "hide": 2,
@@ -1753,7 +1749,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -1761,7 +1757,7 @@
   },
   "timezone": "",
   "title": "Taken On-Prem Resize Actions Summary by VM Group",
-  "uid": "ggoOkTp7a",
+  "uid": "ggoOkTp7z",
   "version": 3,
   "weekStart": ""
 }
