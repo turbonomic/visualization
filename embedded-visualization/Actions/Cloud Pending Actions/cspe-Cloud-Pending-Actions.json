@@ -8,28 +8,18 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "fiscalYearStartMonth": 0,
+  "gnetId": null,
   "graphTooltip": 0,
-  "id": 117,
+  "id": 42,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "6pv52Y4Gk"
-      },
+      "datasource": "Turbo Timescale",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -67,18 +57,6 @@
                 "value": "currencyUSD"
               }
             ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Account Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 261
-              }
-            ]
           }
         ]
       },
@@ -90,23 +68,12 @@
       },
       "id": 2,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "6pv52Y4Gk"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -139,7 +106,7 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 33,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -152,7 +119,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Cloud Pending Actions",
-  "uid": "VI1rQlSnk",
-  "version": 5,
-  "weekStart": ""
+  "uid": "q0IypLYnk",
+  "version": 1
 }
