@@ -1,0 +1,294 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.3.2"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings/mo"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AWS Volume ID"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1128
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Resize info"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 585
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 767
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Scale Info"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 768
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Action Type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "From"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 126
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Resize Details"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1065
+              },
+              {
+                "id": "decimals"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "To"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Difference"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  pa.action_oid as \"id\",\n  pa.recommendation_time as \"Recommendation Time\",\n  INITCAP(pa.\"type\"::text) as \"Action Type\",\n  pa.target_entity_id as \"target_object_uuid\",\n  e.name as \"Target VM\",\n  pa.category as \"Action Category\",\n  pa.severity as \"Action Severity\",\n  CASE\n    WHEN e.\"type\" = 'VIRTUAL_MACHINE' THEN 'Virtual Machine'\n    WHEN e.\"type\" = 'VIRTUAL_VOLUME' THEN 'Virtual Volume'\n    ELSE 'Unknown'\n  END as \"Entity Type\",\n\n  pa.description as \"Description\",\n \n  CASE WHEN pa.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN pa.description like '%VCPU%'\n    THEN (pa.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (pa.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END  as \"From\",\n    CASE WHEN pa.description like '%VCPU%'\n    THEN (pa.attrs->'resizeInfo'->'VCPU'->>'to')::float\n    ELSE (pa.attrs->'resizeInfo'->'VMEM'->>'to')::float\n    END  as \"To\",\n   \n   CASE WHEN pa.description like '%VCPU%'\n    THEN (pa.attrs->'resizeInfo'->'VCPU'->>'to')::float - (pa.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE (pa.attrs->'resizeInfo'->'VMEM'->>'to')::float - (pa.attrs->'resizeInfo'->'VMEM'->>'from')::float\n    END as \"Difference\",\n\n  \n  pa.savings   as \"Savings\",\n  pa.attrs->'resizeInfo' as \"Resize Details\"\nFROM pending_action pa\nJOIN entity e ON e.\"oid\" = pa.target_entity_id \nWHERE\n  $__timeFilter(pa.recommendation_time)\n  AND e.environment = 'ON_PREM'\n   AND e.\"type\" = 'VIRTUAL_MACHINE'\n  AND pa.\"type\" = 'RESIZE'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "VM Actions",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 33,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Pending Virtual Machine Actions On-Prem",
+  "uid": "FqConocoDnk",
+  "version": 15,
+  "weekStart": ""
+}
