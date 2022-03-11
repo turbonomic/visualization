@@ -1,0 +1,1299 @@
+guid: b68e0e9f-7937-40c6-9ebf-91293af93d25
+pinboard:
+  name: TurboSELab - OnPrem Summary Exporter
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: Actions Executed
+      description: Last 30 Days
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      search_query: "[TIME].'last 43200 minutes' [RELATED_TYPE].compute_cluster [DESCRIPTION] [ACTIONSTATE] = 'succeeded' [EXPLANATION] [ACTIONTYPE] [TIME] [TIME].detailed [RELATED_TYPE] [ACTIONCATEGORY] [TIME] [TIME].daily sort by [TIME] [TIME].detailed unique count [OID]"
+      answer_columns:
+      - name: DESCRIPTION
+      - name: Unique Number of OID
+      - name: Day(TIME)
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+      - name: TIME
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - Day(TIME)
+          "y":
+          - Unique Number of OID
+          color:
+          - ACTIONTYPE
+          - ACTIONCATEGORY
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"isZoomed\": false,\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": false},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": false}}],\"axisProperties\": [{\"id\": \"34550990-d175-47f5-acbd-81fc1956567d\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"name\": \"# Actions\",\"isOpposite\": false}},{\"id\": \"18a2c466-cfcb-49cf-8c84-dfdc8c9b9460\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(TIME)\"],\"name\": \"Date\"}}],\"systemSeriesColors\": [{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_2
+    answer:
+      name: Actions Executed
+      description: Last 30 Days
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      search_query: "[TIME].'last 43200 minutes' [RELATED_TYPE].compute_cluster [DESCRIPTION] [ACTIONSTATE] = 'succeeded' [EXPLANATION] [ACTIONTYPE] [TIME] [TIME].detailed [RELATED_TYPE] [ACTIONCATEGORY] [TIME] [TIME].daily sort by [TIME] [TIME].detailed unique count [OID]"
+      answer_columns:
+      - name: DESCRIPTION
+      - name: Unique Number of OID
+      - name: Day(TIME)
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+      - name: TIME
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - ACTIONTYPE
+          - ACTIONCATEGORY
+          "y":
+          - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"isZoomed\": false,\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"c68eaffe-8d40-47da-9ff9-175591146c3b\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"e6d0f9e0-5a52-4f3d-8e47-8d6333b9f6f6\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"ACTIONTYPE\",\"ACTIONCATEGORY\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#C26232\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#FFCCB3\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#FF8142\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#D1C0FB\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#049160\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#9BE5CB\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#06BF7F\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#FDE9AF\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#FCC838\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#369FAA\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#B5ECF2\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#48D1E0\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#71A1F4\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#2359B6\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#ABC7F9\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_3
+    answer:
+      name: Actions Executed by Risk
+      description: Last 30 Days
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else if ( [ACTIONTYPE] = 'move' and contains ( [EXPLANATION] , 'efficiency' ) ) then 'efficiency improvement' else [EXPLANATION]"
+      search_query: "[TIME].'last 43200 minutes' [RELATED_TYPE].compute_cluster [DESCRIPTION] [ACTIONSTATE] = 'succeeded' [EXPLANATION] [ACTIONTYPE] [TIME] [TIME].detailed [RELATED_TYPE] [ACTIONCATEGORY] [TIME] [TIME].daily unique count [OID] [RESIZEINFO_COMMODITYTYPE] [ExplanationFormatted] sort by [TIME] [TIME].detailed descending"
+      answer_columns:
+      - name: DESCRIPTION
+      - name: RESIZEINFO_COMMODITYTYPE
+      - name: Unique Number of OID
+      - name: Day(TIME)
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+      - name: TIME
+      - name: ExplanationFormatted
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: RESIZEINFO_COMMODITYTYPE
+          show_headline: false
+        - column_id: ExplanationFormatted
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - RESIZEINFO_COMMODITYTYPE
+        - ExplanationFormatted
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: RESIZEINFO_COMMODITYTYPE
+        - column_id: ExplanationFormatted
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - Day(TIME)
+          "y":
+          - Unique Number of OID
+          color:
+          - ACTIONTYPE
+          - ExplanationFormatted
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"visibleSeriesNames\": [\"move, compliance\",\"move, cpu congestion\",\"move, cpu, mem congestion\",\"move, cpu, q2 vcpu congestion\",\"move, cpu, q4 vcpu congestion\",\"move, cpu, q8 vcpu congestion\",\"move, io throughput congestion\",\"move, io throughput, mem congestion\",\"move, improve overall performance\",\"move, mem congestion\",\"move, mem, cpu congestion\",\"move, mem, q16 vcpu congestion\",\"move, mem, q2 vcpu congestion\",\"move, mem, q4 vcpu congestion\",\"move, mem, q8 vcpu congestion\",\"move, q16 vcpu congestion\",\"move, q16 vcpu, cpu congestion\",\"move, q2 vcpu congestion\",\"move, q2 vcpu, mem congestion\",\"move, q4 vcpu congestion\",\"move, q4 vcpu, cpu congestion\",\"move, q4 vcpu, mem congestion\",\"move, q8 vcpu congestion\",\"move, q8 vcpu, cpu congestion\",\"move, q8 vcpu, io throughput congestion\",\"move, q8 vcpu, mem congestion\",\"move, hp-dl5100.demo.vmturbo.com can be suspended to improve efficiency\",\"move, hp-dl5107.demo.vmturbo.com can be suspended to improve efficiency\",\"move, hp-dl5110.demo.vmturbo.com can be suspended to improve efficiency\",\"move, hp-dl5112.demo.turbonomic.com can be suspended to improve efficiency\",\"move, hp-dl5113.demo.turbonomic.com can be suspended to improve efficiency\",\"move, hp-dl5115.demo.turbonomic.com can be suspended to improve efficiency\",\"move, hp-dl598.demo.vmturbo.com can be suspended to improve efficiency\",\"move, hp-dl599.demo.vmturbo.com can be suspended to improve efficiency\",\"move, hp-dl599.demo.vmturbo.com is not available\",\"resize, vcpu congestion\",\"resize, vcpu underutilized\",\"resize, vmem congestion\",\"resize, vmem underutilized\",\"move, efficiency improvement\"],\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": false},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": false}}],\"axisProperties\": [{\"id\": \"f76c12a6-0b00-4c75-bf97-1badaf998a43\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"fc2c941d-6ee5-4e64-86bf-172d6e9163e1\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(TIME)\"]}}],\"systemSeriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#C26232\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#FFCCB3\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#FF8142\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#D1C0FB\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#049160\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#9BE5CB\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#06BF7F\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#FDE9AF\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#FCC838\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#369FAA\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#B5ECF2\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#48D1E0\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#71A1F4\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#2359B6\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#ABC7F9\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, \\\"rak_classic\\\" doesn't comply with \\\"generate storage action (temp)\\\"\",\"color\": \"#049160\"},{\"serieName\": \"move, out of compliance\",\"color\": \"#049160\"},{\"serieName\": \"move, compliance\",\"color\": \"#049160\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu, q2 vcpu congestion\",\"color\": \"#F04152\"},{\"serieName\": \"move, cpu, q4 vcpu congestion\",\"color\": \"#2F3947\"},{\"serieName\": \"move, cpu, q8 vcpu congestion\",\"color\": \"#A2ACBA\"},{\"serieName\": \"move, io throughput, mem congestion\",\"color\": \"#BEC6D0\"},{\"serieName\": \"move, mem, q16 vcpu congestion\",\"color\": \"#C26232\"},{\"serieName\": \"move, mem, q2 vcpu congestion\",\"color\": \"#FFCCB3\"},{\"serieName\": \"move, mem, q4 vcpu congestion\",\"color\": \"#FF8142\"},{\"serieName\": \"move, mem, q8 vcpu congestion\",\"color\": \"#422E75\"},{\"serieName\": \"move, q16 vcpu congestion\",\"color\": \"#6A4ABA\"},{\"serieName\": \"move, q16 vcpu, cpu congestion\",\"color\": \"#D1C0FB\"},{\"serieName\": \"move, q2 vcpu, mem congestion\",\"color\": \"#9BE5CB\"},{\"serieName\": \"move, q4 vcpu, mem congestion\",\"color\": \"#22636B\"},{\"serieName\": \"move, q8 vcpu, io throughput congestion\",\"color\": \"#ABC7F9\"},{\"serieName\": \"move, q8 vcpu, mem congestion\",\"color\": \"#F47E89\"},{\"serieName\": \"move, hp-dl5100.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#B6313E\"},{\"serieName\": \"move, hp-dl5107.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#F9B3B9\"},{\"serieName\": \"move, hp-dl5110.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#F04152\"},{\"serieName\": \"move, hp-dl5112.demo.turbonomic.com can be suspended to improve efficiency\",\"color\": \"#2F3947\"},{\"serieName\": \"move, hp-dl5113.demo.turbonomic.com can be suspended to improve efficiency\",\"color\": \"#A2ACBA\"},{\"serieName\": \"move, hp-dl5115.demo.turbonomic.com can be suspended to improve efficiency\",\"color\": \"#47515F\"},{\"serieName\": \"move, hp-dl598.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#BEC6D0\"},{\"serieName\": \"move, hp-dl599.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#747E8C\"},{\"serieName\": \"move, hp-dl599.demo.vmturbo.com is not available\",\"color\": \"#7A3D1F\"},{\"serieName\": \"resize, vcpu underutilized\",\"color\": \"#C26232\"},{\"serieName\": \"resize, vmem underutilized\",\"color\": \"#FF8142\"},{\"serieName\": \"move, efficiency improvement\",\"color\": \"#FFA97E\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_4
+    answer:
+      name: Actions Executed by Risk
+      description: Last 30 Days
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else if ( [ACTIONTYPE] = 'move' and contains ( [EXPLANATION] , 'efficiency' ) ) then 'efficiency improvement' else [EXPLANATION]"
+      search_query: "[TIME].'last 43200 minutes' [RELATED_TYPE].compute_cluster [DESCRIPTION] [ACTIONSTATE] = 'succeeded' [EXPLANATION] [ACTIONTYPE] [TIME] [TIME].detailed [RELATED_TYPE] [ACTIONCATEGORY] [TIME] [TIME].daily unique count [OID] [RESIZEINFO_COMMODITYTYPE] [ExplanationFormatted] sort by unique count [OID] descending"
+      answer_columns:
+      - name: DESCRIPTION
+      - name: RESIZEINFO_COMMODITYTYPE
+      - name: Unique Number of OID
+      - name: Day(TIME)
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+      - name: TIME
+      - name: ExplanationFormatted
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: RESIZEINFO_COMMODITYTYPE
+          show_headline: false
+        - column_id: ExplanationFormatted
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - RESIZEINFO_COMMODITYTYPE
+        - ExplanationFormatted
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: RESIZEINFO_COMMODITYTYPE
+        - column_id: ExplanationFormatted
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - ACTIONTYPE
+          - ExplanationFormatted
+          "y":
+          - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"d1d11ced-7300-4e06-a351-6af5caec1c46\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"8b48364b-98cc-48d8-964b-e3cca5d6a3de\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"ExplanationFormatted\",\"ACTIONTYPE\"]}}],\"systemSeriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, \\\"Rak_Classic\\\" doesn't comply with \\\"Generate Storage Action (Temp)\\\"\",\"color\": \"#049160\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, COMPLIANCE\",\"color\": \"#049160\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"move, hp-dl5110.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#2F3947\"},{\"serieName\": \"move, hp-dl599.demo.vmturbo.com is not available\",\"color\": \"#A2ACBA\"},{\"serieName\": \"move, hp-dl5112.demo.turbonomic.com can be suspended to improve efficiency\",\"color\": \"#47515F\"},{\"serieName\": \"move, hp-dl598.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#BEC6D0\"},{\"serieName\": \"move, hp-dl5100.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#7A3D1F\"},{\"serieName\": \"move, hp-dl5107.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#FFA97E\"},{\"serieName\": \"resize, vcpu underutilized\",\"color\": \"#FF8142\"},{\"serieName\": \"resize, vmem underutilized\",\"color\": \"#6A4ABA\"},{\"serieName\": \"move, hp-dl5115.demo.turbonomic.com can be suspended to improve efficiency\",\"color\": \"#D1C0FB\"},{\"serieName\": \"move, hp-dl599.demo.vmturbo.com can be suspended to improve efficiency\",\"color\": \"#049160\"},{\"serieName\": \"move, q16 vcpu congestion\",\"color\": \"#9BE5CB\"},{\"serieName\": \"move, q4 vcpu, mem congestion\",\"color\": \"#FDE9AF\"},{\"serieName\": \"move, q8 vcpu, mem congestion\",\"color\": \"#22636B\"},{\"serieName\": \"move, hp-dl5113.demo.turbonomic.com can be suspended to improve efficiency\",\"color\": \"#ABC7F9\"},{\"serieName\": \"move, mem, q8 vcpu congestion\",\"color\": \"#F47E89\"},{\"serieName\": \"move, mem, q4 vcpu congestion\",\"color\": \"#B6313E\"},{\"serieName\": \"move, mem, q16 vcpu congestion\",\"color\": \"#F9B3B9\"},{\"serieName\": \"move, cpu, q4 vcpu congestion\",\"color\": \"#2F3947\"},{\"serieName\": \"move, q8 vcpu, io throughput congestion\",\"color\": \"#A2ACBA\"},{\"serieName\": \"move, mem, q2 vcpu congestion\",\"color\": \"#47515F\"},{\"serieName\": \"move, cpu, q2 vcpu congestion\",\"color\": \"#BEC6D0\"},{\"serieName\": \"move, q16 vcpu, cpu congestion\",\"color\": \"#747E8C\"},{\"serieName\": \"move, io throughput, mem congestion\",\"color\": \"#7A3D1F\"},{\"serieName\": \"move, q2 vcpu, mem congestion\",\"color\": \"#FFA97E\"},{\"serieName\": \"move, compliance\",\"color\": \"#C26232\"},{\"serieName\": \"move, cpu, q8 vcpu congestion\",\"color\": \"#FFCCB3\"},{\"serieName\": \"move, efficiency improvement\",\"color\": \"#D1C0FB\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_5
+    answer:
+      name: Resources Allocated & Reclaimed
+      description: "vMem (GBs) & vCPU allocated (+) & reclaimed (-), Last 30 Days"
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else [EXPLANATION]"
+      - id: Showback
+        name: Showback
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = 'vmem' ) then ( [ResourceChange] * 10 ) else ( [ResourceChange] * 50 )"
+      - id: ResourceChange
+        name: ResourceChange
+        expr: "[DesiredSize] - [CurrentSize]"
+      - id: CurrentSize
+        name: CurrentSize
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = 'vmem' ) then ( [RESIZEINFO_OLDCAPACITY] / 1048576 ) else [RESIZEINFO_OLDCAPACITY]"
+      - id: DesiredSize
+        name: DesiredSize
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = \"vmem\" ) then ( [RESIZEINFO_NEWCAPACITY] / 1048576 ) else [RESIZEINFO_NEWCAPACITY]"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::TIME].'last 43200 minutes' [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE].compute_cluster [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] = 'succeeded' [T8CSECTRLLAB_ACTIONS_1::EXPLANATION] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE].resize [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONCATEGORY] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily unique count [T8CSECTRLLAB_ACTIONS_1::OID] [T8CSECTRLLAB_ACTIONS_1::RESIZEINFO_COMMODITYTYPE] [ExplanationFormatted] [CurrentSize] [DesiredSize] [ResourceChange] [Showback] sort by [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily"
+      answer_columns:
+      - name: Total DesiredSize
+      - name: Unique Number of OID
+      - name: Total CurrentSize
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: TIME
+      - name: Total Showback
+      - name: DESCRIPTION
+      - name: RESIZEINFO_COMMODITYTYPE
+      - name: Day(TIME)
+      - name: RELATED_TYPE
+      - name: Total ResourceChange
+      - name: ACTIONCATEGORY
+      - name: ExplanationFormatted
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: RESIZEINFO_COMMODITYTYPE
+          show_headline: false
+        - column_id: ExplanationFormatted
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total CurrentSize
+          show_headline: false
+        - column_id: Total DesiredSize
+          show_headline: false
+        - column_id: Total ResourceChange
+          show_headline: false
+        - column_id: Total Showback
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - RESIZEINFO_COMMODITYTYPE
+        - ExplanationFormatted
+        - Unique Number of OID
+        - Total CurrentSize
+        - Total DesiredSize
+        - Total ResourceChange
+        - Total Showback
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"Total CurrentSize\",\"Total DesiredSize\",\"Total ResourceChange\",\"Total Showback\",\"ExplanationFormatted\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\",\"RESIZEINFO_COMMODITYTYPE\",\"EXPLANATION\",\"Unique Number of OID\"]}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: RESIZEINFO_COMMODITYTYPE
+        - column_id: ExplanationFormatted
+        - column_id: Unique Number of OID
+        - column_id: Total CurrentSize
+        - column_id: Total DesiredSize
+        - column_id: Total ResourceChange
+        - column_id: Total Showback
+        axis_configs:
+        - x:
+          - Day(TIME)
+          "y":
+          - Total ResourceChange
+          color:
+          - RESIZEINFO_COMMODITYTYPE
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {}},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total ResourceChange\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"b513e5c6-ebc9-4da0-960d-6abdbdde27b3\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total ResourceChange\"],\"name\": \"Resource Change (GBs | vCPUs)\",\"isOpposite\": false}},{\"id\": \"93cc474b-3a71-4e15-82d9-ff55546f6a42\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(TIME)\"],\"name\": \"Date\"}}],\"seriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"Total CurrentSize\",\"color\": \"#FCC838\"},{\"serieName\": \"Total DesiredSize\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total ResourceChange\",\"color\": \"#2E75F0\"},{\"serieName\": \"vcpu\",\"color\": \"#ffa97e\"},{\"serieName\": \"vmem\",\"color\": \"#abc7f9\"}],\"systemSeriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"Total CurrentSize\",\"color\": \"#FCC838\"},{\"serieName\": \"Total DesiredSize\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total ResourceChange\",\"color\": \"#2E75F0\"},{\"serieName\": \"vmem\",\"color\": \"#48D1E0\"},{\"serieName\": \"vcpu\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_6
+    answer:
+      name: Actions Executed & Labor Hours Saved
+      description: Month To Date
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else [EXPLANATION]"
+      - id: Labor Saved (hrs)
+        name: Labor Saved (hrs)
+        expr: "if ( [ActionTypeFormatted] = 'host move' ) then .25 else if ( [ActionTypeFormatted] = 'storage move' and [ACTIONCATEGORY] = 'compliance' ) then .25 else if ( [ActionTypeFormatted] = 'storage move' ) then 1 else if ( [ACTIONTYPE] = 'activate' ) then 2 else if ( [ACTIONTYPE] = 'deactivate' ) then 2 else if ( [ActionTypeFormatted] = 'vm resize' ) then 1 else 1"
+      - id: ActionTypeFormatted
+        name: ActionTypeFormatted
+        expr: "if ( [ACTIONTYPE] = 'move' and [MOVEINFO_DESTINATIONENTITYTYPE] = 'physical_machine' ) then ( 'host move' ) else if ( [ACTIONTYPE] = 'move' and [MOVEINFO_DESTINATIONENTITYTYPE] = 'storage' ) then ( 'storage move' ) else if ( [ACTIONTYPE] = 'activate' and [TARGET_TYPE] = 'physical_machine' ) then ( 'host start' ) else if ( [ACTIONTYPE] = 'deactivate' and [TARGET_TYPE] = 'physical_machine' ) then ( 'host suspend' ) else if ( [ACTIONTYPE] = 'resize' and [TARGET_TYPE] = 'virtual_machine' ) then ( 'vm resize' ) else [ACTIONTYPE]"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE].compute_cluster [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] = 'succeeded' [T8CSECTRLLAB_ACTIONS_1::EXPLANATION] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONCATEGORY] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily sort by [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed unique count [T8CSECTRLLAB_ACTIONS_1::OID] [ActionTypeFormatted] [Labor Saved (hrs)] [ExplanationFormatted] [T8CSECTRLLAB_ACTIONS_1::TIME].'this month'"
+      answer_columns:
+      - name: DESCRIPTION
+      - name: Unique Number of OID
+        custom_name: '# Actions'
+        format:
+          category: NUMBER
+          numberFormatConfig:
+            unit: NONE
+            decimals: 0.0
+            negativeValueFormat: PREFIX_DASH
+            toSeparateThousands: true
+          isCategoryEditable: true
+      - name: Day(TIME)
+        custom_name: Date
+      - name: ACTIONTYPE
+      - name: ActionTypeFormatted
+        custom_name: Type
+      - name: EXPLANATION
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+        custom_name: Category
+      - name: ExplanationFormatted
+        custom_name: Risk
+      - name: TIME
+      - name: Total Labor Saved (hrs)
+        custom_name: Labor Saved (hrs)
+        format:
+          category: NUMBER
+          numberFormatConfig:
+            unit: NONE
+            decimals: 2.0
+            negativeValueFormat: PREFIX_DASH
+            toSeparateThousands: true
+          isCategoryEditable: true
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: ActionTypeFormatted
+          show_headline: false
+        - column_id: ExplanationFormatted
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total Labor Saved (hrs)
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - ActionTypeFormatted
+        - ExplanationFormatted
+        - Unique Number of OID
+        - Total Labor Saved (hrs)
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: ActionTypeFormatted
+        - column_id: ExplanationFormatted
+        - column_id: Unique Number of OID
+        - column_id: Total Labor Saved (hrs)
+        axis_configs:
+        - x:
+          - ActionTypeFormatted
+          - Day(TIME)
+          - ExplanationFormatted
+          "y":
+          - Unique Number of OID
+          - Total Labor Saved (hrs)
+        - "y":
+          - Unique Number of OID
+          - Total Labor Saved (hrs)
+        - x:
+          - ActionTypeFormatted
+          "y":
+          - Unique Number of OID
+          - Total Labor Saved (hrs)
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {}},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"640def9a-5ab4-4114-9e1e-a0b3dee970d7\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"809af8f5-d60b-4d92-a605-dd4c7ff1ec17\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Labor Saved (hrs)\"],\"isOpposite\": true}},{\"id\": \"4b3c957c-c7d6-472f-a32a-84f14faee608\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"ActionTypeFormatted\",\"ExplanationFormatted\",\"Day(TIME)\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#C26232\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#FFCCB3\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#FF8142\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#D1C0FB\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#049160\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#9BE5CB\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#06BF7F\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#FDE9AF\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#FCC838\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#369FAA\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#B5ECF2\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#48D1E0\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#71A1F4\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#2359B6\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#ABC7F9\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, COMPLIANCE\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_7
+    answer:
+      name: Executed Resizes & Showback
+      description: "vMem (GBs) & vCPU allocated (+) & reclaimed (-), Last 30 Days"
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else [EXPLANATION]"
+      - id: Showback
+        name: Showback
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = 'vmem' ) then ( [ResourceChange] * 10 ) else ( [ResourceChange] * 50 )"
+      - id: ResourceChange
+        name: ResourceChange
+        expr: "[DesiredSize] - [CurrentSize]"
+      - id: CurrentSize
+        name: CurrentSize
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = 'vmem' ) then ( [RESIZEINFO_OLDCAPACITY] / 1048576 ) else [RESIZEINFO_OLDCAPACITY]"
+      - id: DesiredSize
+        name: DesiredSize
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = \"vmem\" ) then ( [RESIZEINFO_NEWCAPACITY] / 1048576 ) else [RESIZEINFO_NEWCAPACITY]"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::TIME].'last 43200 minutes' [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE].compute_cluster [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] = 'succeeded' [T8CSECTRLLAB_ACTIONS_1::EXPLANATION] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE].resize [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONCATEGORY] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily unique count [T8CSECTRLLAB_ACTIONS_1::OID] [T8CSECTRLLAB_ACTIONS_1::RESIZEINFO_COMMODITYTYPE] [ExplanationFormatted] [CurrentSize] [DesiredSize] [ResourceChange] [Showback] sort by [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily [T8CSECTRLLAB_ACTIONS_1::RELATED_NAME] [T8CSECTRLLAB_ACTIONS_1::TARGET_NAME]"
+      answer_columns:
+      - name: Total DesiredSize
+        custom_name: After Size
+      - name: Unique Number of OID
+        custom_name: '# Actions'
+      - name: Total CurrentSize
+        custom_name: Before Size
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_NAME
+        custom_name: Cluster
+      - name: TIME
+      - name: Total Showback
+        custom_name: Cost
+      - name: DESCRIPTION
+      - name: RESIZEINFO_COMMODITYTYPE
+        custom_name: Resource
+      - name: Day(TIME)
+        custom_name: Date
+      - name: RELATED_TYPE
+        custom_name: All
+      - name: Total ResourceChange
+        custom_name: Change
+      - name: TARGET_NAME
+        custom_name: VM
+      - name: ACTIONCATEGORY
+      - name: ExplanationFormatted
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: RESIZEINFO_COMMODITYTYPE
+          show_headline: false
+        - column_id: ExplanationFormatted
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total CurrentSize
+          show_headline: false
+        - column_id: Total DesiredSize
+          show_headline: false
+        - column_id: Total ResourceChange
+          show_headline: false
+        - column_id: Total Showback
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - RESIZEINFO_COMMODITYTYPE
+        - ExplanationFormatted
+        - RELATED_NAME
+        - TARGET_NAME
+        - Unique Number of OID
+        - Total CurrentSize
+        - Total DesiredSize
+        - Total ResourceChange
+        - Total Showback
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"Total CurrentSize\",\"Total DesiredSize\",\"Total ResourceChange\",\"Total Showback\",\"ExplanationFormatted\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\",\"RESIZEINFO_COMMODITYTYPE\",\"EXPLANATION\",\"Unique Number of OID\"]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: RESIZEINFO_COMMODITYTYPE
+        - column_id: ExplanationFormatted
+        - column_id: RELATED_NAME
+        - column_id: TARGET_NAME
+        - column_id: Unique Number of OID
+        - column_id: Total CurrentSize
+        - column_id: Total DesiredSize
+        - column_id: Total ResourceChange
+        - column_id: Total Showback
+        axis_configs:
+        - x:
+          - RELATED_NAME
+          - Day(TIME)
+          - TARGET_NAME
+          "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+          color:
+          - RESIZEINFO_COMMODITYTYPE
+        - "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+        - x:
+          - RELATED_NAME
+          "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+        - "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+          color:
+          - RESIZEINFO_COMMODITYTYPE
+        - x:
+          - RELATED_NAME
+          "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+          color:
+          - RESIZEINFO_COMMODITYTYPE
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {}},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"EXPLANATION\",\"columnProperty\": {}},{\"columnId\": \"ACTIONTYPE\",\"columnProperty\": {}},{\"columnId\": \"TIME\",\"columnProperty\": {}},{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"ACTIONCATEGORY\",\"columnProperty\": {}},{\"columnId\": \"Day(TIME)\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total ResourceChange\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"b8a6760d-0e29-4d2b-ad1b-95387852c642\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"d240f0e3-5cf4-43e3-83d3-b211e30ca00d\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TARGET_NAME\",\"RELATED_NAME\",\"Day(TIME)\"]}},{\"id\": \"d8a34eab-b310-4957-bbb0-c5418a902633\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total CurrentSize\"],\"isOpposite\": true}},{\"id\": \"1101a937-c7a3-465c-9bb1-3cafbb3e2d0a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total DesiredSize\"],\"isOpposite\": true}},{\"id\": \"ff1f9ecb-b7b1-473f-8eee-8f26a5f64373\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total ResourceChange\"],\"isOpposite\": true}},{\"id\": \"ac401cab-e15b-414f-b013-d55da03d188a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Showback\"],\"isOpposite\": true}}],\"seriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"Total CurrentSize\",\"color\": \"#FCC838\"},{\"serieName\": \"Total DesiredSize\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total ResourceChange\",\"color\": \"#2E75F0\"},{\"serieName\": \"vcpu\",\"color\": \"#ffa97e\"},{\"serieName\": \"vmem\",\"color\": \"#abc7f9\"}],\"systemSeriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"Total CurrentSize\",\"color\": \"#FCC838\"},{\"serieName\": \"Total DesiredSize\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total ResourceChange\",\"color\": \"#2E75F0\"},{\"serieName\": \"vmem\",\"color\": \"#48D1E0\"},{\"serieName\": \"vcpu\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_8
+    answer:
+      name: Delete Actions by Size
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: Disk Size (gb)
+        name: Disk Size (gb)
+        expr: "[DELETEINFO_FILESIZE] / 1024"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[ACTIONSTATE] = 'ready' [TIME].'last 25 minutes' [OID] [DESCRIPTION] [ACTIONTYPE] = 'delete' [EXPLANATION] = 'idle or non-productive' [DELETEINFO_FILEPATH] top 100 sort by [DELETEINFO_FILESIZE] [DELETEINFO_UNIT] [RELATED_NAME] [RELATED_TYPE] = 'disk_array' [TARGET_NAME] [Disk Size (gb)] [TIME] [TIME].detailed [LatestActions] sort by [Disk Size (gb)] descending"
+      answer_columns:
+      - name: Total DELETEINFO_FILESIZE
+      - name: Total Disk Size (gb)
+      - name: TIME
+      - name: RELATED_NAME
+      - name: TARGET_NAME
+      - name: DESCRIPTION
+      - name: DELETEINFO_UNIT
+      - name: LatestActions
+      - name: OID
+      - name: DELETEINFO_FILEPATH
+      table:
+        table_columns:
+        - column_id: OID
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: DELETEINFO_FILEPATH
+          show_headline: false
+        - column_id: DELETEINFO_UNIT
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: LatestActions
+          show_headline: false
+        - column_id: Total DELETEINFO_FILESIZE
+          show_headline: false
+        - column_id: Total Disk Size (gb)
+          show_headline: false
+        ordered_column_ids:
+        - OID
+        - DESCRIPTION
+        - DELETEINFO_FILEPATH
+        - DELETEINFO_UNIT
+        - RELATED_NAME
+        - TARGET_NAME
+        - TIME
+        - LatestActions
+        - Total DELETEINFO_FILESIZE
+        - Total Disk Size (gb)
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"OID\",\"width\": 159.0},{\"columnId\": \"DESCRIPTION\",\"width\": 358.0},{\"columnId\": \"DELETEINFO_FILEPATH\",\"width\": 211.0},{\"columnId\": \"RELATED_NAME\",\"width\": 285.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 180.0},{\"columnId\": \"Total DELETEINFO_FILESIZE\",\"width\": 230.0}],\"wrapTableHeader\": true}"
+      chart:
+        type: TREEMAP
+        chart_columns:
+        - column_id: OID
+        - column_id: DESCRIPTION
+        - column_id: DELETEINFO_FILEPATH
+        - column_id: DELETEINFO_UNIT
+        - column_id: RELATED_NAME
+        - column_id: TARGET_NAME
+        - column_id: TIME
+        - column_id: LatestActions
+        - column_id: Total DELETEINFO_FILESIZE
+        - column_id: Total Disk Size (gb)
+        axis_configs:
+        - x:
+          - TARGET_NAME
+          - DELETEINFO_FILEPATH
+          "y":
+          - Total Disk Size (gb)
+          size: Total DELETEINFO_FILESIZE
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"OID\",\"columnProperty\": {}},{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"DELETEINFO_FILEPATH\",\"columnProperty\": {}},{\"columnId\": \"DELETEINFO_UNIT\",\"columnProperty\": {}},{\"columnId\": \"Total DELETEINFO_FILESIZE\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"c616cff1-a693-4e81-b878-8f93cba8f4bc\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Disk Size (gb)\"],\"isOpposite\": false}},{\"id\": \"6de1f9fa-27d7-4749-9e58-28e1d3d8e9ef\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TARGET_NAME\",\"DELETEINFO_FILEPATH\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Total DELETEINFO_FILESIZE\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total Disk Size (gb)\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_9
+    answer:
+      name: Storage Waste
+      description: "Cost: $15/gb"
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      - id: Showback
+        name: Showback
+        expr: "[Disk Size (gb)] * 15"
+      - id: Disk Size (gb)
+        name: Disk Size (gb)
+        expr: "[DELETEINFO_FILESIZE] / 1024"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] = 'ready' [T8CSECTRLLAB_ACTIONS_1::TIME].'last 25 minutes' [T8CSECTRLLAB_ACTIONS_1::OID] [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] = 'delete' [T8CSECTRLLAB_ACTIONS_1::EXPLANATION] = 'idle or non-productive' [T8CSECTRLLAB_ACTIONS_1::DELETEINFO_FILEPATH] [T8CSECTRLLAB_ACTIONS_1::DELETEINFO_UNIT] [T8CSECTRLLAB_ACTIONS_1::RELATED_NAME] [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] = 'disk_array' [T8CSECTRLLAB_ACTIONS_1::TARGET_NAME] [Disk Size (gb)] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [LatestActions] = true sort by [Disk Size (gb)] descending unique count [T8CSECTRLLAB_ACTIONS_1::OID] [Showback] [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE]"
+      answer_columns:
+      - name: Total Disk Size (gb)
+        custom_name: Disk Size (gb)
+      - name: TIME
+      - name: RELATED_NAME
+      - name: TARGET_NAME
+        custom_name: Datastore
+      - name: DESCRIPTION
+      - name: Total Showback
+        custom_name: Cost
+      - name: DELETEINFO_UNIT
+      - name: RELATED_TYPE
+        custom_name: Storage
+      - name: OID
+      - name: Unique Number of OID
+        custom_name: '# Actions'
+      - name: DELETEINFO_FILEPATH
+        custom_name: Filename
+      table:
+        table_columns:
+        - column_id: OID
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: DELETEINFO_FILEPATH
+          show_headline: false
+        - column_id: DELETEINFO_UNIT
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: Total Disk Size (gb)
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total Showback
+          show_headline: false
+        ordered_column_ids:
+        - OID
+        - DESCRIPTION
+        - DELETEINFO_FILEPATH
+        - DELETEINFO_UNIT
+        - RELATED_NAME
+        - TARGET_NAME
+        - TIME
+        - RELATED_TYPE
+        - Total Disk Size (gb)
+        - Unique Number of OID
+        - Total Showback
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"OID\",\"width\": 159.0},{\"columnId\": \"DESCRIPTION\",\"width\": 358.0},{\"columnId\": \"DELETEINFO_FILEPATH\",\"width\": 211.0},{\"columnId\": \"RELATED_NAME\",\"width\": 285.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 180.0},{\"columnId\": \"92463cbd-fc0d-4ef6-95c0-1ba23ed34551\",\"width\": 230.0}],\"wrapTableHeader\": true}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: OID
+        - column_id: DESCRIPTION
+        - column_id: DELETEINFO_FILEPATH
+        - column_id: DELETEINFO_UNIT
+        - column_id: RELATED_NAME
+        - column_id: TARGET_NAME
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: Total Disk Size (gb)
+        - column_id: Unique Number of OID
+        - column_id: Total Showback
+        axis_configs:
+        - x:
+          - RELATED_TYPE
+          - TARGET_NAME
+          - DELETEINFO_FILEPATH
+          "y":
+          - Unique Number of OID
+          - Total Disk Size (gb)
+          - Total Showback
+        - "y":
+          - Unique Number of OID
+          - Total Disk Size (gb)
+          - Total Showback
+        - x:
+          - RELATED_TYPE
+          "y":
+          - Unique Number of OID
+          - Total Disk Size (gb)
+          - Total Showback
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {\"rowExpandedPaths\": [{\"paths\": [\"DISK_ARRAY\"]}]}}},\"columnProperties\": [{\"columnId\": \"OID\",\"columnProperty\": {}},{\"columnId\": \"DESCRIPTION\",\"columnProperty\": {}},{\"columnId\": \"DELETEINFO_FILEPATH\",\"columnProperty\": {}},{\"columnId\": \"DELETEINFO_UNIT\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"4eb8e256-fea5-4967-9184-30c8bd5199b2\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"72d13cc4-4943-44d9-85ad-7ab174fe937f\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Disk Size (gb)\"],\"isOpposite\": true}},{\"id\": \"98249b84-2ccd-4744-9ac2-563a309db1f4\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Showback\"],\"isOpposite\": true}},{\"id\": \"3d29146e-9584-42bc-a910-1153899c2355\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"RELATED_TYPE\",\"TARGET_NAME\",\"DELETEINFO_FILEPATH\"]}}],\"systemSeriesColors\": [{\"serieName\": \"92463cbd-fc0d-4ef6-95c0-1ba23ed34551\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total Disk Size (gb)\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_10
+    answer:
+      name: Pending Actions
+      description: By Type & Category
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[TIME].'last 20 minutes' [RELATED_TYPE].compute_cluster [DESCRIPTION] [ACTIONSTATE] = 'ready' [TIME] [EXPLANATION] [ACTIONTYPE] [TIME] [TIME].detailed [RELATED_TYPE] [ACTIONCATEGORY] [TIME] [TIME].daily unique count [OID] [LatestActions] = true sort by unique count [OID] descending [TARGET_TYPE]"
+      answer_columns:
+      - name: DESCRIPTION
+      - name: TARGET_TYPE
+      - name: Unique Number of OID
+        format:
+          category: NUMBER
+          numberFormatConfig:
+            unit: NONE
+            decimals: 0.0
+            negativeValueFormat: PREFIX_DASH
+            toSeparateThousands: true
+          isCategoryEditable: true
+      - name: Day(TIME)
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+      - name: TIME
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - TIME
+        - EXPLANATION
+        - ACTIONTYPE
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - TARGET_TYPE
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0},{\"columnId\": \"TIME\",\"width\": 202.23866271972656}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: TARGET_TYPE
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - ACTIONTYPE
+          - TARGET_TYPE
+          - ACTIONCATEGORY
+          "y":
+          - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"b80db94b-6af3-4640-9355-02df2d491734\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"045be581-24f0-4d77-b24e-8b5157422408\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"ACTIONTYPE\",\"TARGET_TYPE\",\"ACTIONCATEGORY\"]}}],\"systemSeriesColors\": [{\"serieName\": \"move, efficiency_improvement\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, efficiency_improvement\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"delete, efficiency_improvement\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, virtual_machine, efficiency_improvement\",\"color\": \"#56D3A8\"},{\"serieName\": \"delete, storage, efficiency_improvement\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, virtual_machine, performance_assurance\",\"color\": \"#FCD977\"},{\"serieName\": \"resize, application_component, efficiency_improvement\",\"color\": \"#FCC838\"},{\"serieName\": \"move, virtual_machine, prevention\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, container_spec, efficiency_improvement\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, workload_controller, efficiency_improvement\",\"color\": \"#71A1F4\"},{\"serieName\": \"move, virtual_machine, efficiency_improvement\",\"color\": \"#2E75F0\"},{\"serieName\": \"resize, container_spec, performance_assurance\",\"color\": \"#B094F8\"},{\"serieName\": \"resize, workload_controller, performance_assurance\",\"color\": \"#8C62F5\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_11
+    answer:
+      name: Pending Actions
+      description: By Type & Risk
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else if ( [ACTIONTYPE] = 'move' and contains ( [EXPLANATION] , 'efficiency' ) ) then 'efficiency improvement' else [EXPLANATION]"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[TIME].'last 20 minutes' [RELATED_TYPE].compute_cluster [DESCRIPTION] [ACTIONSTATE] = 'ready' [TIME] [EXPLANATION] [ACTIONTYPE] [TIME] [TIME].detailed [RELATED_TYPE] [ACTIONCATEGORY] [TIME] [TIME].daily unique count [OID] [LatestActions] = true sort by unique count [OID] descending [TARGET_TYPE] [ExplanationFormatted] [RESIZEINFO_COMMODITYTYPE]"
+      answer_columns:
+      - name: Unique Number of OID
+        format:
+          category: NUMBER
+          numberFormatConfig:
+            unit: NONE
+            decimals: 0.0
+            negativeValueFormat: PREFIX_DASH
+            toSeparateThousands: true
+          isCategoryEditable: true
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: TIME
+      - name: DESCRIPTION
+      - name: TARGET_TYPE
+      - name: RESIZEINFO_COMMODITYTYPE
+      - name: Day(TIME)
+      - name: RELATED_TYPE
+      - name: ACTIONCATEGORY
+      - name: ExplanationFormatted
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: EXPLANATION
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: ACTIONCATEGORY
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: ExplanationFormatted
+          show_headline: false
+        - column_id: RESIZEINFO_COMMODITYTYPE
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - DESCRIPTION
+        - TIME
+        - EXPLANATION
+        - ACTIONTYPE
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - TARGET_TYPE
+        - ExplanationFormatted
+        - RESIZEINFO_COMMODITYTYPE
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0},{\"columnId\": \"TIME\",\"width\": 202.23866271972656}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"EXPLANATION\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\"]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: TARGET_TYPE
+        - column_id: ExplanationFormatted
+        - column_id: RESIZEINFO_COMMODITYTYPE
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - ACTIONTYPE
+          - ExplanationFormatted
+          "y":
+          - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"2f76502d-a686-41b0-ba5d-c233ca460b1b\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"dd6af768-791d-4a3a-8cc3-b7f16aa45e53\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"ACTIONTYPE\",\"ExplanationFormatted\"]}}],\"systemSeriesColors\": [{\"serieName\": \"move, efficiency_improvement\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, efficiency_improvement\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"delete, efficiency_improvement\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, virtual_machine, efficiency_improvement\",\"color\": \"#56D3A8\"},{\"serieName\": \"delete, storage, efficiency_improvement\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, virtual_machine, performance_assurance\",\"color\": \"#FCD977\"},{\"serieName\": \"resize, application_component, efficiency_improvement\",\"color\": \"#FCC838\"},{\"serieName\": \"move, virtual_machine, prevention\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, container_spec, efficiency_improvement\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, workload_controller, efficiency_improvement\",\"color\": \"#71A1F4\"},{\"serieName\": \"move, virtual_machine, efficiency_improvement\",\"color\": \"#2E75F0\"},{\"serieName\": \"resize, container_spec, performance_assurance\",\"color\": \"#B094F8\"},{\"serieName\": \"resize, workload_controller, performance_assurance\",\"color\": \"#8C62F5\"},{\"serieName\": \"resize\",\"color\": \"#FCC838\"},{\"serieName\": \"delete\",\"color\": \"#48D1E0\"},{\"serieName\": \"move\",\"color\": \"#2E75F0\"},{\"serieName\": \"delete, idle or non-productive\",\"color\": \"#B094F8\"},{\"serieName\": \"resize, vcpu underutilized\",\"color\": \"#8C62F5\"},{\"serieName\": \"resize, vmem underutilized\",\"color\": \"#56D3A8\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, heap underutilized\",\"color\": \"#FCD977\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#FCC838\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, vcpu_request underutilized\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, vmem_request underutilized\",\"color\": \"#71A1F4\"},{\"serieName\": \"move, efficiency improvement\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_12
+    answer:
+      name: Pending Resizes & Showback
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: ExplanationFormatted
+        name: ExplanationFormatted
+        expr: "if ( [ACTIONTYPE] = 'resize' ) then if ( [ACTIONCATEGORY] = 'performance_assurance' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" congestion\" ) ) else if ( [ACTIONCATEGORY] = 'efficiency_improvement' ) then ( concat ( [RESIZEINFO_COMMODITYTYPE] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [ACTIONTYPE] = 'move' and [ACTIONCATEGORY] = 'compliance' ) then ( [ACTIONCATEGORY] ) else [EXPLANATION]"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      - id: Showback
+        name: Showback
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = 'vmem' ) then ( [ResourceChange] * 10 ) else if ( contains ( [ResizeCommodityFormatted] , '(mhz)' ) ) then ( [ResourceChange] * .25 ) else ( [ResourceChange] * 50 )"
+      - id: ResizeCommodityFormatted
+        name: ResizeCommodityFormatted
+        expr: "if ( contains ( [DESCRIPTION] , \"vcpu limit\" ) ) then \"vcpu limit (mhz)\" else if ( contains ( [DESCRIPTION] , \"vmem limit\" ) ) then \"vmem limit (gb)\" else if ( contains ( [DESCRIPTION] , \"mem reservation\" ) ) then \"mem reservation (gb)\" else if ( contains ( [DESCRIPTION] , \"cpu reservation\" ) ) then \"cpu reservation (mhz)\" else if ( contains ( [DESCRIPTION] , \"vcpu\" ) ) then \"vcpu (cores)\" else if ( contains ( [DESCRIPTION] , \"vmem\" ) ) then \"vmem (gb)\" else [RESIZEINFO_COMMODITYTYPE]"
+      - id: ResourceChange
+        name: ResourceChange
+        expr: "[DesiredSize] - [CurrentSize]"
+      - id: CurrentSize
+        name: CurrentSize
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = \"vmem\" ) then ( [RESIZEINFO_OLDCAPACITY] / 1048576 ) else [RESIZEINFO_OLDCAPACITY]"
+      - id: DesiredSize
+        name: DesiredSize
+        expr: "if ( [RESIZEINFO_COMMODITYTYPE] = \"vmem\" ) then ( [RESIZEINFO_NEWCAPACITY] / 1048576 ) else [RESIZEINFO_NEWCAPACITY]"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::TIME].'last 25 minutes' [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE].compute_cluster [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] = 'ready' [T8CSECTRLLAB_ACTIONS_1::EXPLANATION] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE].resize [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] [T8CSECTRLLAB_ACTIONS_1::ACTIONCATEGORY] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily unique count [T8CSECTRLLAB_ACTIONS_1::OID] [T8CSECTRLLAB_ACTIONS_1::RESIZEINFO_COMMODITYTYPE] [ExplanationFormatted] [CurrentSize] [DesiredSize] [ResourceChange] [Showback] sort by [ResourceChange] [T8CSECTRLLAB_ACTIONS_1::RELATED_NAME] [T8CSECTRLLAB_ACTIONS_1::TARGET_NAME] [LatestActions] = true [T8CSECTRLLAB_ACTIONS_1::RESIZEINFO_COMMODITYTYPE] = [T8CSECTRLLAB_ACTIONS_1::RESIZEINFO_COMMODITYTYPE].vcpu [T8CSECTRLLAB_ACTIONS_1::RESIZEINFO_COMMODITYTYPE].vmem [ResizeCommodityFormatted] [T8CSECTRLLAB_ACTIONS_1::TARGET_TYPE] = 'virtual_machine'"
+      answer_columns:
+      - name: Total DesiredSize
+        custom_name: After Size
+      - name: Unique Number of OID
+        custom_name: '# Actions'
+      - name: Total CurrentSize
+        custom_name: Before Size
+      - name: ACTIONTYPE
+      - name: EXPLANATION
+      - name: RELATED_NAME
+        custom_name: Cluster
+      - name: TIME
+      - name: Total Showback
+        custom_name: Cost
+      - name: DESCRIPTION
+      - name: RESIZEINFO_COMMODITYTYPE
+        custom_name: Resource
+      - name: Day(TIME)
+        custom_name: Date
+      - name: RELATED_TYPE
+        custom_name: All
+      - name: Total ResourceChange
+        custom_name: Change
+      - name: ResizeCommodityFormatted
+        custom_name: Resource Type
+      - name: TARGET_NAME
+        custom_name: VM
+      - name: ACTIONCATEGORY
+      - name: ExplanationFormatted
+      table:
+        table_columns:
+        - column_id: DESCRIPTION
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: EXPLANATION
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: ACTIONTYPE
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: TIME
+          headline_aggregation: MIN-MAX
+        - column_id: RELATED_TYPE
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: ACTIONCATEGORY
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Day(TIME)
+          headline_aggregation: MIN-MAX
+        - column_id: RESIZEINFO_COMMODITYTYPE
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: ExplanationFormatted
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: RELATED_NAME
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: TARGET_NAME
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: ResizeCommodityFormatted
+          headline_aggregation: COUNT_DISTINCT
+        - column_id: Unique Number of OID
+          headline_aggregation: AVERAGE
+        - column_id: Total CurrentSize
+          headline_aggregation: TABLE_AGGR
+        - column_id: Total DesiredSize
+          headline_aggregation: TABLE_AGGR
+        - column_id: Total ResourceChange
+          headline_aggregation: TABLE_AGGR
+        - column_id: Total Showback
+          headline_aggregation: TABLE_AGGR
+        ordered_column_ids:
+        - DESCRIPTION
+        - EXPLANATION
+        - ACTIONTYPE
+        - TIME
+        - RELATED_TYPE
+        - ACTIONCATEGORY
+        - Day(TIME)
+        - RESIZEINFO_COMMODITYTYPE
+        - ExplanationFormatted
+        - RELATED_NAME
+        - TARGET_NAME
+        - ResizeCommodityFormatted
+        - Unique Number of OID
+        - Total CurrentSize
+        - Total DesiredSize
+        - Total ResourceChange
+        - Total Showback
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"EXPLANATION\",\"width\": 326.0},{\"columnId\": \"DESCRIPTION\",\"width\": 520.0},{\"columnId\": \"RELATED_TYPE\",\"width\": 161.0},{\"columnId\": \"229da1be-fefb-48a0-a8ef-50d581c535bc\",\"width\": 233.0},{\"columnId\": \"754b14ab-3a32-4e60-9844-1e74ce6bcb2c\",\"width\": 221.0},{\"columnId\": \"2f196d74-1942-4c69-9eb1-bc28ff9edf73\",\"width\": 242.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"Day(TIME)\",\"DESCRIPTION\",\"Total CurrentSize\",\"Total DesiredSize\",\"Total ResourceChange\",\"Total Showback\",\"ExplanationFormatted\",\"ACTIONTYPE\",\"RELATED_TYPE\",\"ACTIONCATEGORY\",\"RESIZEINFO_COMMODITYTYPE\",\"EXPLANATION\",\"Unique Number of OID\"]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: DESCRIPTION
+        - column_id: EXPLANATION
+        - column_id: ACTIONTYPE
+        - column_id: TIME
+        - column_id: RELATED_TYPE
+        - column_id: ACTIONCATEGORY
+        - column_id: Day(TIME)
+        - column_id: RESIZEINFO_COMMODITYTYPE
+        - column_id: ExplanationFormatted
+        - column_id: RELATED_NAME
+        - column_id: TARGET_NAME
+        - column_id: ResizeCommodityFormatted
+        - column_id: Unique Number of OID
+        - column_id: Total CurrentSize
+        - column_id: Total DesiredSize
+        - column_id: Total ResourceChange
+        - column_id: Total Showback
+        axis_configs:
+        - x:
+          - RELATED_NAME
+          - TARGET_NAME
+          "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+          color:
+          - ResizeCommodityFormatted
+        - "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+        - x:
+          - RELATED_NAME
+          "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+        - "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+          color:
+          - ResizeCommodityFormatted
+        - x:
+          - RELATED_NAME
+          "y":
+          - Unique Number of OID
+          - Total CurrentSize
+          - Total DesiredSize
+          - Total ResourceChange
+          - Total Showback
+          color:
+          - ResizeCommodityFormatted
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {}},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total ResourceChange\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"b8a6760d-0e29-4d2b-ad1b-95387852c642\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"d240f0e3-5cf4-43e3-83d3-b211e30ca00d\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TARGET_NAME\",\"RELATED_NAME\"]}},{\"id\": \"d8a34eab-b310-4957-bbb0-c5418a902633\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total CurrentSize\"],\"isOpposite\": true}},{\"id\": \"1101a937-c7a3-465c-9bb1-3cafbb3e2d0a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total DesiredSize\"],\"isOpposite\": true}},{\"id\": \"ff1f9ecb-b7b1-473f-8eee-8f26a5f64373\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total ResourceChange\"],\"isOpposite\": true}},{\"id\": \"ac401cab-e15b-414f-b013-d55da03d188a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Showback\"],\"isOpposite\": true}}],\"seriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"Total CurrentSize\",\"color\": \"#FCC838\"},{\"serieName\": \"Total DesiredSize\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total ResourceChange\",\"color\": \"#2E75F0\"},{\"serieName\": \"vcpu\",\"color\": \"#ffa97e\"},{\"serieName\": \"vmem\",\"color\": \"#abc7f9\"}],\"systemSeriesColors\": [{\"serieName\": \"move\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, performance_assurance\",\"color\": \"#FCC838\"},{\"serieName\": \"move, prevention\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, performance_assurance\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, PERFORMANCE_ASSURANCE\",\"color\": \"#FCC838\"},{\"serieName\": \"MOVE, PREVENTION\",\"color\": \"#48D1E0\"},{\"serieName\": \"RESIZE, PERFORMANCE_ASSURANCE\",\"color\": \"#2E75F0\"},{\"serieName\": \"cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, cpu congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"move, cpu, mem congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, io throughput congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"move, mem, cpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"move, q2 vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"move, q4 vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"move, q4 vcpu, cpu congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"move, q8 vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, q8 vcpu, cpu congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine Safa's Turbo III\",\"color\": \"#2E75F0\"},{\"serieName\": \"VCPU Congestion in Virtual Machine tess.jewkes-t8c-7.22.4-20200710140740000\",\"color\": \"#C26232\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test01-8.1.4\",\"color\": \"#FFCCB3\"},{\"serieName\": \"VMem Congestion in Virtual Machine Antoine-test02-8.1.4\",\"color\": \"#FF8142\"},{\"serieName\": \"VMem Congestion in Virtual Machine Isabella's 8.1 Instance\",\"color\": \"#6A4ABA\"},{\"serieName\": \"VMem Congestion in Virtual Machine SE-EA\",\"color\": \"#D1C0FB\"},{\"serieName\": \"VMem Congestion in Virtual Machine dbf-OM1\",\"color\": \"#049160\"},{\"serieName\": \"VMem Congestion in Virtual Machine gmReporting-8.1.5\",\"color\": \"#9BE5CB\"},{\"serieName\": \"VMem Congestion in Virtual Machine test-riley\",\"color\": \"#FDE9AF\"},{\"serieName\": \"Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"MOVE, Q8 VCPU Congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"MOVE, Q4 VCPU Congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"MOVE, Mem Congestion\",\"color\": \"#BF982A\"},{\"serieName\": \"RESIZE, VMEM congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"MOVE, Improve overall performance\",\"color\": \"#06BF7F\"},{\"serieName\": \"MOVE, CPU Congestion\",\"color\": \"#B094F8\"},{\"serieName\": \"MOVE, Q2 VCPU Congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"RESIZE, VCPU congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"MOVE, Mem, CPU Congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"MOVE, CPU, Mem Congestion\",\"color\": \"#8C62F5\"},{\"serieName\": \"MOVE, IO Throughput Congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"MOVE, Q4 VCPU, CPU Congestion\",\"color\": \"#82DFE9\"},{\"serieName\": \"MOVE, Q8 VCPU, CPU Congestion\",\"color\": \"#2359B6\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#747E8C\"},{\"serieName\": \"Total CurrentSize\",\"color\": \"#FCC838\"},{\"serieName\": \"Total DesiredSize\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total ResourceChange\",\"color\": \"#2E75F0\"},{\"serieName\": \"vmem\",\"color\": \"#48D1E0\"},{\"serieName\": \"vcpu\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  layout:
+    tiles:
+    - visualization_id: Viz_1
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_2
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_3
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_4
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_6
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_5
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_7
+      size: LARGE_SMALL
+    - visualization_id: Viz_8
+      size: MEDIUM
+    - visualization_id: Viz_9
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_10
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_11
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_12
+      size: LARGE_SMALL
