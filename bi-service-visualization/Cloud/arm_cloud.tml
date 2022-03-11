@@ -1,0 +1,1127 @@
+guid: 61a85047-4d33-45e2-8308-be58db149181
+pinboard:
+  name: TurboSELab - Cloud Summary Exporter
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: Pending Actions & Savings
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      search_query: "[ACTIONSTATE] [ACTIONSTATE].ready [TARGET_NAME] [ACTIONTYPE] unique count [OID] [DESCRIPTION] [TIME] [TIME].detailed [TIME] [TIME].daily [TIME].weekly [RELATED_TYPE] [RELATED_NAME] [TARGET_TYPE] [CloudActionMatch] [CloudActionMatch].true [LatestActions] = true [SavingsPerMonth] [TIME].'last 24 minutes' [SavingsPerMonth] > 0 sort by [SavingsPerMonth] descending"
+      answer_columns:
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        axis_configs:
+        - x:
+          - ACTIONTYPE
+          - TARGET_TYPE
+          "y":
+          - Total SavingsPerMonth
+          - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"9e156c0a-91f5-409f-b71b-30fb9d883188\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"afd246d6-129d-46c7-9ad7-6e15f7714f33\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerMonth\"],\"isOpposite\": true}},{\"id\": \"a7d41b27-cc2b-4335-8ec2-aa785e4fdfd3\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TARGET_TYPE\",\"ACTIONTYPE\"]}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"}],\"systemSeriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#06BF7F\"},{\"serieName\": \"BUY_RI, COMPUTE_TIER\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#48D1E0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_2
+    answer:
+      name: Pending Actions & Savings by Subscription
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      search_query: "[ACTIONSTATE] [ACTIONSTATE].ready [TARGET_NAME] [ACTIONTYPE] unique count [OID] [DESCRIPTION] [TIME] [TIME].detailed [TIME] [TIME].daily [TIME].weekly [RELATED_TYPE] [RELATED_NAME] [TARGET_TYPE] [CloudActionMatch] [LatestActions] = true [SavingsPerMonth] [TIME].'last 24 minutes' [SavingsPerMonth] > 0 [OID] [RELATED_TYPE] = 'business_account' sort by [SavingsPerMonth] descending"
+      answer_columns:
+      - name: OID
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: OID
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - OID
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"RELATED_TYPE\",\"width\": 186.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: OID
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        axis_configs:
+        - x:
+          - RELATED_NAME
+          "y":
+          - Total SavingsPerMonth
+          - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"9e156c0a-91f5-409f-b71b-30fb9d883188\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": false}},{\"id\": \"afd246d6-129d-46c7-9ad7-6e15f7714f33\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerMonth\"],\"isOpposite\": true}},{\"id\": \"a7d41b27-cc2b-4335-8ec2-aa785e4fdfd3\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"RELATED_NAME\"]}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"}],\"systemSeriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"BUY_RI, COMPUTE_TIER\",\"color\": \"#06BF7F\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#FCC838\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE, Product Management SE Demo\",\"color\": \"#06BF7F\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE, Product Management\",\"color\": \"#FCC838\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME, Product Management SE Demo\",\"color\": \"#82DFE9\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME, Product Management\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME, Product Management SE Demo\",\"color\": \"#71A1F4\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME, Product Management\",\"color\": \"#2E75F0\"},{\"serieName\": \"VIRTUAL_MACHINE, Product Management SE Demo\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE, Product Management\",\"color\": \"#FCC838\"},{\"serieName\": \"VIRTUAL_VOLUME, Product Management SE Demo\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME, Product Management\",\"color\": \"#2E75F0\"},{\"serieName\": \"AWS\",\"color\": \"#56D3A8\"},{\"serieName\": \"aws-US East (N. Virginia)\",\"color\": \"#FCD977\"},{\"serieName\": \"aws-us-east-1b\",\"color\": \"#FCC838\"},{\"serieName\": \"AWS EBS\",\"color\": \"#82DFE9\"},{\"serieName\": \"elasticStorageCluster\",\"color\": \"#71A1F4\"},{\"serieName\": \"GP2\",\"color\": \"#2E75F0\"},{\"serieName\": \"EA - Development\",\"color\": \"#06BF7F\"},{\"serieName\": \"Pay-As-You-Go - Product Management\",\"color\": \"#FCC838\"},{\"serieName\": \"Product Management SE Demo\",\"color\": \"#48D1E0\"},{\"serieName\": \"Product Management\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_3
+    answer:
+      name: Savings Achieved YTD
+      description: By Week
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      - id: SavingsPerYear
+        name: SavingsPerYear
+        expr: "[SAVINGSPERHOUR] * 24 * 365"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[ACTIONSTATE] [ACTIONSTATE].succeeded [TARGET_NAME] [ACTIONTYPE] unique count [OID] [DESCRIPTION] [TIME] [TIME].detailed [TIME] [TIME].daily [TIME].weekly [RELATED_TYPE] [RELATED_NAME] [TARGET_TYPE] [CloudActionMatch] [CloudActionMatch].true [SavingsPerMonth] [SavingsPerYear] [TIME].'this year' [TIME] sort by [TIME] [TIME].detailed"
+      answer_columns:
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: Total SavingsPerYear
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        - column_id: Total SavingsPerYear
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        - Total SavingsPerYear
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: WATERFALL
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        - column_id: Total SavingsPerYear
+        axis_configs:
+        - x:
+          - Week(TIME)
+          "y":
+          - Total SavingsPerYear
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerYear\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"a7d41b27-cc2b-4335-8ec2-aa785e4fdfd3\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Week(TIME)\"],\"name\": \"Week Of\"}},{\"id\": \"ffa9d3a6-44a3-4186-8280-675c8a6d2692\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerYear\"],\"format\": {\"category\": \"CURRENCY\",\"currencyFormatConfig\": {\"locale\": \"USD\",\"unit\": \"NONE\",\"decimals\": 0.0,\"toSeparateThousands\": true},\"isCategoryEditable\": true},\"name\": \"Annual Savings\",\"isOpposite\": true}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#06bf7f\"}],\"systemSeriesColors\": [{\"serieName\": \"Unique Number of OID\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#2E75F0\"},{\"serieName\": \"succeeded\",\"color\": \"#FCC838\"},{\"serieName\": \"virtual_volume\",\"color\": \"#2E75F0\"},{\"serieName\": \"virtual_machine\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerYear\",\"color\": \"#06BF7F\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_4
+    answer:
+      name: "Savings Achieved, Week-to-Date"
+      description: By Day
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      - id: SavingsPerYear
+        name: SavingsPerYear
+        expr: "[SAVINGSPERHOUR] * 24 * 365"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[ACTIONSTATE] [ACTIONSTATE].succeeded [TARGET_NAME] [ACTIONTYPE] unique count [OID] [DESCRIPTION] [TIME] [TIME].detailed [TIME] [TIME].daily [TIME].weekly [RELATED_TYPE] [RELATED_NAME] [TARGET_TYPE] [CloudActionMatch] [CloudActionMatch].true [SavingsPerMonth] sort by [TIME] [TIME].detailed [SavingsPerYear] [TIME].'this week'"
+      answer_columns:
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: Total SavingsPerYear
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        - column_id: Total SavingsPerYear
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        - Total SavingsPerYear
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: WATERFALL
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        - column_id: Total SavingsPerYear
+        axis_configs:
+        - x:
+          - Day(TIME)
+          "y":
+          - Total SavingsPerYear
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerYear\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"ffa9d3a6-44a3-4186-8280-675c8a6d2692\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerYear\"],\"format\": {\"category\": \"CURRENCY\",\"currencyFormatConfig\": {\"locale\": \"USD\",\"unit\": \"NONE\",\"decimals\": 0.0,\"toSeparateThousands\": true},\"isCategoryEditable\": true},\"name\": \"Annual Savings\",\"isOpposite\": true}},{\"id\": \"e311243e-0d09-4625-8a4d-4c1207520aa1\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(TIME)\"],\"name\": \"Date\"}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#06bf7f\"}],\"systemSeriesColors\": [{\"serieName\": \"Unique Number of OID\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#2E75F0\"},{\"serieName\": \"succeeded\",\"color\": \"#FCC838\"},{\"serieName\": \"virtual_volume\",\"color\": \"#2E75F0\"},{\"serieName\": \"virtual_machine\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerYear\",\"color\": \"#06BF7F\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_5
+    answer:
+      name: "Missed Savings, Last 30 Days"
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      - id: SavingsPerMonthPer10MinDailyDataPoints
+        name: SavingsPerMonthPer10MinDailyDataPoints
+        expr: "[SAVINGSPERHOUR] * 730 / 144"
+      - id: SavingsPerYear
+        name: SavingsPerYear
+        expr: "[SAVINGSPERHOUR] * 24 * 365"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[ACTIONSTATE] [ACTIONSTATE].ready [TARGET_NAME] [ACTIONTYPE] unique count [OID] [DESCRIPTION] [TIME] [TIME].detailed [TIME] [TIME].daily [TIME].weekly [RELATED_TYPE] [RELATED_NAME] [TARGET_TYPE] [CloudActionMatch] [CloudActionMatch].true [SavingsPerMonth] [SavingsPerYear] [TIME].'last 43200 minutes' [SavingsPerMonthPer10MinDailyDataPoints] sort by [TIME] [TIME].daily"
+      answer_columns:
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: Total SavingsPerYear
+      - name: ACTIONSTATE
+      - name: Total SavingsPerMonthPer10MinDailyDataPoints
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        - column_id: Total SavingsPerYear
+          show_headline: false
+        - column_id: Total SavingsPerMonthPer10MinDailyDataPoints
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        - Total SavingsPerYear
+        - Total SavingsPerMonthPer10MinDailyDataPoints
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        - column_id: Total SavingsPerYear
+        - column_id: Total SavingsPerMonthPer10MinDailyDataPoints
+        axis_configs:
+        - x:
+          - Day(TIME)
+          "y":
+          - Total SavingsPerMonthPer10MinDailyDataPoints
+          color:
+          - ACTIONTYPE
+          - TARGET_TYPE
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"showStackedLabels\": true,\"allLabels\": false},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerYear\",\"columnProperty\": {\"dataLabels\": false}},{\"columnId\": \"Total SavingsPerMonthPer10MinDailyDataPoints\",\"columnProperty\": {\"dataLabels\": false}}],\"axisProperties\": [{\"id\": \"578d8dd3-be8e-4a02-87ac-fcb0fe820dd0\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(TIME)\"],\"name\": \"Date\"}},{\"id\": \"c398d81c-98f6-41b9-9ea6-afd145753b76\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerMonthPer10MinDailyDataPoints\"],\"format\": {\"category\": \"CURRENCY\",\"currencyFormatConfig\": {\"locale\": \"USD\",\"unit\": \"NONE\",\"decimals\": 0.0,\"toSeparateThousands\": true},\"isCategoryEditable\": true},\"name\": \"Monthly Savings\",\"isOpposite\": false}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#06bf7f\"},{\"serieName\": \"Total SavingsPerYear\",\"color\": \"#8C62F5\"},{\"serieName\": \"move\",\"color\": \"#06BF7F\"},{\"serieName\": \"delete\",\"color\": \"#FCC838\"},{\"serieName\": \"scale\",\"color\": \"#48D1E0\"},{\"serieName\": \"buyri\",\"color\": \"#2E75F0\"},{\"serieName\": \"buyri, business_account\",\"color\": \"#2E75F0\"},{\"serieName\": \"delete, virtual_volume\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, virtual_machine\",\"color\": \"#06BF7F\"},{\"serieName\": \"scale, virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"scale, virtual_volume\",\"color\": \"#b094f8\"}],\"systemSeriesColors\": [{\"serieName\": \"Total SavingsPerYear\",\"color\": \"#8C62F5\"},{\"serieName\": \"move\",\"color\": \"#06BF7F\"},{\"serieName\": \"delete\",\"color\": \"#FCC838\"},{\"serieName\": \"scale\",\"color\": \"#48D1E0\"},{\"serieName\": \"buyri\",\"color\": \"#2E75F0\"},{\"serieName\": \"buyri, business_account\",\"color\": \"#2E75F0\"},{\"serieName\": \"delete, virtual_volume\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, virtual_machine\",\"color\": \"#06BF7F\"},{\"serieName\": \"scale, virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"scale, virtual_volume\",\"color\": \"#71A1F4\"},{\"serieName\": \"buy_ri, business_account\",\"color\": \"#82DFE9\"},{\"serieName\": \"buy_ri, compute_tier\",\"color\": \"#71A1F4\"},{\"serieName\": \"scale, database\",\"color\": \"#FCD977\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_6
+    answer:
+      name: Savings Achieved
+      description: All Time
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      - id: SavingsPerYear
+        name: SavingsPerYear
+        expr: "[SAVINGSPERHOUR] * 24 * 365"
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      search_query: "[ACTIONSTATE] [ACTIONSTATE].succeeded [TARGET_NAME] [ACTIONTYPE] unique count [OID] [DESCRIPTION] [TIME] [TIME].detailed [TIME] [TIME].daily [TIME].weekly [RELATED_TYPE] [RELATED_NAME] [TARGET_TYPE] [CloudActionMatch] [CloudActionMatch].true [SavingsPerMonth] [SavingsPerYear] [TIME] [TIME].monthly sort by [TIME] [TIME].monthly descending"
+      answer_columns:
+      - name: Total SavingsPerMonth
+        custom_name: Monthly Savings
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+        custom_name: Action
+      - name: TIME
+      - name: RELATED_NAME
+      - name: Month(TIME)
+        custom_name: Month
+      - name: Day(TIME)
+        custom_name: Day
+      - name: Unique Number of OID
+        custom_name: '# Actions'
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+        custom_name: Entity Type
+      - name: TARGET_NAME
+      - name: Total SavingsPerYear
+        custom_name: Annual Savings
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Month(TIME)
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        - column_id: Total SavingsPerYear
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Month(TIME)
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        - Total SavingsPerYear
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Month(TIME)
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        - column_id: Total SavingsPerYear
+        axis_configs:
+        - x:
+          - Month(TIME)
+          - Day(TIME)
+          - TARGET_TYPE
+          - DESCRIPTION
+          "y":
+          - Unique Number of OID
+          - Total SavingsPerMonth
+          - Total SavingsPerYear
+        - "y":
+          - Unique Number of OID
+          - Total SavingsPerMonth
+          - Total SavingsPerYear
+        - x:
+          - Month(TIME)
+          "y":
+          - Unique Number of OID
+          - Total SavingsPerMonth
+          - Total SavingsPerYear
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {}},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerYear\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"6ea629cb-653b-44c0-bb24-e5971c17d771\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerYear\"],\"isOpposite\": false}},{\"id\": \"90bf6685-61d2-41ab-bcda-6e485a750dcf\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total SavingsPerMonth\"],\"isOpposite\": true}},{\"id\": \"398201e9-1072-4f38-a366-a2747a9eb2b6\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"isOpposite\": true}},{\"id\": \"e5164de8-3a64-4e25-a955-f39d06e47b55\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Month(TIME)\",\"Day(TIME)\",\"TARGET_TYPE\",\"DESCRIPTION\"]}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"},{\"serieName\": \"Unique Number of OID\",\"color\": \"#48D1E0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#06bf7f\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_7
+    answer:
+      name: Top 100 Pending Actions
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      - id: SavingsRank
+        name: SavingsRank
+        expr: "to_integer ( rank ( sum ( [SavingsPerMonth] ) , \"desc\" ) )"
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] [T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE].ready [T8CSECTRLLAB_ACTIONS_1::TARGET_NAME] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] unique count [T8CSECTRLLAB_ACTIONS_1::OID] [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily [T8CSECTRLLAB_ACTIONS_1::TIME].weekly [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] [T8CSECTRLLAB_ACTIONS_1::RELATED_NAME] [T8CSECTRLLAB_ACTIONS_1::TARGET_TYPE] [CloudActionMatch] [CloudActionMatch].true [LatestActions] = true [SavingsPerMonth] [T8CSECTRLLAB_ACTIONS_1::TIME].'last 20 minutes' [SavingsPerMonth] > 0 [SavingsRank] sort by [SavingsRank] [SavingsRank] <= 100"
+      answer_columns:
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: SavingsRank
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        - column_id: SavingsRank
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        - SavingsRank
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: TREEMAP
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        - column_id: SavingsRank
+        axis_configs:
+        - x:
+          - DESCRIPTION
+          "y":
+          - SavingsRank
+          size: Total SavingsPerMonth
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"283ee527-402a-4adc-9868-3b4815bf13d5\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"DESCRIPTION\"]}},{\"id\": \"b9c3cba9-3987-4692-be14-3d27387d88bf\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"SavingsRank\"],\"isOpposite\": false}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"}],\"systemSeriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#FCC838\"},{\"serieName\": \"SavingsRank\",\"color\": \"#06BF7F\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_8
+    answer:
+      name: Top Savings Opportunities by Subscription
+      tables:
+      - id: T8CSECTRLLAB_ACTIONS
+        name: T8CSECTRLLAB_ACTIONS
+      formulas:
+      - id: CloudActionMatch
+        name: CloudActionMatch
+        expr: "if ( ( ( [TARGET_TYPE] = \"virtual_volume\" ) and ( [RELATED_TYPE] = \"storage_tier\" ) ) or ( ( [TARGET_TYPE] = \"virtual_machine\" ) and ( [RELATED_TYPE] = \"compute_tier\" ) ) or ( ( [TARGET_TYPE] = \"database\" ) and ( [RELATED_TYPE] = \"database_tier\" ) ) or ( [ACTIONTYPE] = \"buy_ri\" ) and ( [RELATED_TYPE] = \"service_provider\" ) ) then \"true\" else \"false\""
+      - id: LatestActions
+        name: LatestActions
+        expr: "if ( [TIME] = group_max ( [TIME] ) ) then true else false"
+      - id: SavingsRank
+        name: SavingsRank
+        expr: "to_integer ( rank ( sum ( [SavingsPerMonth] ) , \"desc\" ) )"
+      - id: SavingsPerMonth
+        name: SavingsPerMonth
+        expr: "[SAVINGSPERHOUR] * 730"
+      search_query: "[T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE] [T8CSECTRLLAB_ACTIONS_1::ACTIONSTATE].ready [T8CSECTRLLAB_ACTIONS_1::TARGET_NAME] [T8CSECTRLLAB_ACTIONS_1::ACTIONTYPE] unique count [T8CSECTRLLAB_ACTIONS_1::OID] [T8CSECTRLLAB_ACTIONS_1::DESCRIPTION] [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].detailed [T8CSECTRLLAB_ACTIONS_1::TIME] [T8CSECTRLLAB_ACTIONS_1::TIME].daily [T8CSECTRLLAB_ACTIONS_1::TIME].weekly [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] [T8CSECTRLLAB_ACTIONS_1::RELATED_NAME] [T8CSECTRLLAB_ACTIONS_1::TARGET_TYPE] [CloudActionMatch] [LatestActions] = true [SavingsPerMonth] [T8CSECTRLLAB_ACTIONS_1::TIME].'last 20 minutes' [SavingsPerMonth] > 0 [SavingsRank] sort by [SavingsRank] [SavingsRank] <= 100 [T8CSECTRLLAB_ACTIONS_1::RELATED_TYPE] = 'business_account'"
+      answer_columns:
+      - name: Total SavingsPerMonth
+      - name: ACTIONTYPE
+      - name: CloudActionMatch
+      - name: DESCRIPTION
+      - name: TIME
+      - name: RELATED_NAME
+      - name: SavingsRank
+      - name: Day(TIME)
+      - name: Unique Number of OID
+      - name: RELATED_TYPE
+      - name: TARGET_TYPE
+      - name: TARGET_NAME
+      - name: ACTIONSTATE
+      - name: Week(TIME)
+      table:
+        table_columns:
+        - column_id: ACTIONSTATE
+          show_headline: false
+        - column_id: TARGET_NAME
+          show_headline: false
+        - column_id: ACTIONTYPE
+          show_headline: false
+        - column_id: DESCRIPTION
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Week(TIME)
+          show_headline: false
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TARGET_TYPE
+          show_headline: false
+        - column_id: CloudActionMatch
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        - column_id: Total SavingsPerMonth
+          show_headline: false
+        - column_id: SavingsRank
+          show_headline: false
+        ordered_column_ids:
+        - ACTIONSTATE
+        - TARGET_NAME
+        - ACTIONTYPE
+        - DESCRIPTION
+        - TIME
+        - Day(TIME)
+        - Week(TIME)
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TARGET_TYPE
+        - CloudActionMatch
+        - Unique Number of OID
+        - Total SavingsPerMonth
+        - SavingsRank
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"wrapTableHeader\": true,\"orderedColumnIds\": [\"ACTIONSTATE\",\"TARGET_NAME\",\"TARGET_TYPE\",\"ACTIONTYPE\",\"DESCRIPTION\",\"TIME\",\"Day(TIME)\",\"Week(TIME)\",\"RELATED_TYPE\",\"RELATED_NAME\",\"CloudActionMatch\",\"Unique Number of OID\",\"Total SavingsPerMonth\"]}"
+      chart:
+        type: TREEMAP
+        chart_columns:
+        - column_id: ACTIONSTATE
+        - column_id: TARGET_NAME
+        - column_id: ACTIONTYPE
+        - column_id: DESCRIPTION
+        - column_id: TIME
+        - column_id: Day(TIME)
+        - column_id: Week(TIME)
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TARGET_TYPE
+        - column_id: CloudActionMatch
+        - column_id: Unique Number of OID
+        - column_id: Total SavingsPerMonth
+        - column_id: SavingsRank
+        axis_configs:
+        - x:
+          - RELATED_NAME
+          "y":
+          - SavingsRank
+          size: Total SavingsPerMonth
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {},\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"49512405-eab5-4381-afb8-1ff70dee94a5\",\"columnProperty\": {}},{\"columnId\": \"283007e2-9cf3-4a37-b9b6-05181ee0c09b\",\"columnProperty\": {}},{\"columnId\": \"1ffbaaf7-9769-4967-ad7d-4957c18704c9\",\"columnProperty\": {}},{\"columnId\": \"d223000c-d791-4720-be20-2cd934da88f9\",\"columnProperty\": {}},{\"columnId\": \"af5d6f70-9ee6-42be-a0ae-f59670f4489e\",\"columnProperty\": {}},{\"columnId\": \"c86bf59c-4c43-4391-aa03-8ceb44096ae0\",\"columnProperty\": {}},{\"columnId\": \"1fc8d364-e52f-4973-a926-f023b282518a\",\"columnProperty\": {}},{\"columnId\": \"f95967b6-df57-46dc-9af1-afdafcd27bf9\",\"columnProperty\": {}},{\"columnId\": \"55822789-8991-4ca7-b2bf-8c348424c2ea\",\"columnProperty\": {}},{\"columnId\": \"47761fac-bad9-4386-8705-57d5d5010637\",\"columnProperty\": {}},{\"columnId\": \"1dca8b68-9668-4aa0-915a-959a2a34ff1d\",\"columnProperty\": {}},{\"columnId\": \"7371ce35-c227-48e1-8586-6569fefdc99d\",\"columnProperty\": {}},{\"columnId\": \"4ca6162c-3ca9-4ac0-a850-8b70ab39a203\",\"columnProperty\": {}},{\"columnId\": \"00bf62c7-454f-450a-8f9d-1d48fa319935\",\"columnProperty\": {}},{\"columnId\": \"2df9c17c-7980-4fcf-b0b6-33b492830ed6\",\"columnProperty\": {}},{\"columnId\": \"886cfe61-2425-4064-a457-189a93a1dd68\",\"columnProperty\": {}},{\"columnId\": \"67f646c2-b511-4a0a-b206-f86a480ca610\",\"columnProperty\": {}},{\"columnId\": \"b708aecb-1896-4240-916f-2b1e47d70470\",\"columnProperty\": {}},{\"columnId\": \"8d72c16a-7070-4df6-931d-671ec19b257f\",\"columnProperty\": {}},{\"columnId\": \"690cc7e5-a8fb-4722-8972-1206a9f8caef\",\"columnProperty\": {}},{\"columnId\": \"d8e65e88-1501-45b3-bac0-fa3daec9a460\",\"columnProperty\": {}},{\"columnId\": \"af13b24d-de4c-4070-a37e-c15ad448d3c4\",\"columnProperty\": {}},{\"columnId\": \"8488f00e-11d7-43b8-8bb8-2667614bc0b5\",\"columnProperty\": {}},{\"columnId\": \"0d33a0db-dfe5-41ee-8272-01a547cb0d85\",\"columnProperty\": {}},{\"columnId\": \"f5060740-5982-45f7-94e9-13a6e512c821\",\"columnProperty\": {}},{\"columnId\": \"5076e1a6-6ac0-42e6-bcfc-be04ab520c56\",\"columnProperty\": {}},{\"columnId\": \"28582b79-8ede-4317-b2bb-86e34296ed15\",\"columnProperty\": {}},{\"columnId\": \"9760ca98-d7f6-4144-959e-38bb1b2d7282\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total SavingsPerMonth\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"b9c3cba9-3987-4692-be14-3d27387d88bf\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"SavingsRank\"],\"isOpposite\": false}},{\"id\": \"e3d088ee-3419-447c-bec8-c25df01750d0\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"RELATED_NAME\"]}}],\"seriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#ffa97e\"}],\"systemSeriesColors\": [{\"serieName\": \"DELETE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, STORAGE\",\"color\": \"#06BF7F\"},{\"serieName\": \"READY\",\"color\": \"#06BF7F\"},{\"serieName\": \"VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"DELETE, VIRTUAL_VOLUME\",\"color\": \"#FCC838\"},{\"serieName\": \"SCALE, VIRTUAL_MACHINE\",\"color\": \"#48D1E0\"},{\"serieName\": \"SCALE, VIRTUAL_VOLUME\",\"color\": \"#2E75F0\"},{\"serieName\": \"Total SavingsPerMonth\",\"color\": \"#FCC838\"},{\"serieName\": \"SavingsRank\",\"color\": \"#06BF7F\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_9
+    answer:
+      name: Cloud Entities Trend
+      description: Active entities last 7 days
+      tables:
+      - id: T8CSECTRLLAB_ENTITIES
+        name: T8CSECTRLLAB_ENTITIES
+      search_query: "[RELATED_TYPE] [RELATED_TYPE].service_provider [RELATED_NAME] [TYPE] unique count [OID] [STATE] = 'powered_on' [TIME].'last 10080 minutes' [TIME] [TIME].detailed [TYPE] = [TYPE].virtual_machine [TYPE].virtual_volume [TYPE].container [TYPE].database [TYPE].database_tier [TYPE].database_server sort by [TIME] [TIME].detailed"
+      answer_columns:
+      - name: RELATED_NAME
+      - name: TYPE
+      - name: RELATED_TYPE
+      - name: Unique Number of OID
+      - name: TIME
+      table:
+        table_columns:
+        - column_id: RELATED_TYPE
+          show_headline: false
+        - column_id: RELATED_NAME
+          show_headline: false
+        - column_id: TYPE
+          show_headline: false
+        - column_id: TIME
+          show_headline: false
+        - column_id: Unique Number of OID
+          show_headline: false
+        ordered_column_ids:
+        - RELATED_TYPE
+        - RELATED_NAME
+        - TYPE
+        - TIME
+        - Unique Number of OID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"RELATED_TYPE\",\"width\": 166.0},{\"columnId\": \"RELATED_NAME\",\"width\": 172.0}],\"wrapTableHeader\": true,\"orderedColumnIds\": [\"TIME\",\"RELATED_TYPE\",\"RELATED_NAME\",\"TYPE\",\"Unique Number of OID\"]}"
+      chart:
+        type: LINE
+        chart_columns:
+        - column_id: RELATED_TYPE
+        - column_id: RELATED_NAME
+        - column_id: TYPE
+        - column_id: TIME
+        - column_id: Unique Number of OID
+        axis_configs:
+        - x:
+          - TIME
+          "y":
+          - Unique Number of OID
+          color:
+          - TYPE
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"RELATED_TYPE\",\"columnProperty\": {}},{\"columnId\": \"RELATED_NAME\",\"columnProperty\": {}},{\"columnId\": \"TYPE\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of OID\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"45ca9c64-af44-4c3c-80a2-0f41cef6f646\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of OID\"],\"name\": \"# Powered On Entities\",\"isOpposite\": false}},{\"id\": \"773cad00-f865-47de-9b1f-0cf2a8b827fe\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"TIME\"],\"name\": \"Date\"}}],\"systemSeriesColors\": [{\"serieName\": \"Unique Number of OID\",\"color\": \"#FCC838\"},{\"serieName\": \"database_server\",\"color\": \"#2E75F0\"},{\"serieName\": \"virtual_machine\",\"color\": \"#48D1E0\"},{\"serieName\": \"virtual_volume\",\"color\": \"#FCC838\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_10
+    answer:
+      name: Cloud Services Trend
+      description: Last 30 Days
+      tables:
+      - id: T8CSECTRLLAB_BUSINESSACCOUNTS
+        name: T8CSECTRLLAB_BUSINESSACCOUNTS
+      search_query: "[TIME].detailed [NAME] [EXPENSENAME] average [EXPENSEAMOUNT] [TIME].'last 30 days' sort by [TIME] [TIME].detailed [TIME] [TIME].daily"
+      answer_columns:
+      - name: EXPENSENAME
+      - name: NAME
+      - name: Day(TIME)
+      - name: TIME
+      - name: Average EXPENSEAMOUNT
+      table:
+        table_columns:
+        - column_id: TIME
+          show_headline: false
+        - column_id: NAME
+          show_headline: false
+        - column_id: EXPENSENAME
+          show_headline: false
+        - column_id: Day(TIME)
+          show_headline: false
+        - column_id: Average EXPENSEAMOUNT
+          show_headline: false
+        ordered_column_ids:
+        - TIME
+        - NAME
+        - EXPENSENAME
+        - Day(TIME)
+        - Average EXPENSEAMOUNT
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"3ffa1d6e-cddf-4778-b38a-3b0b03843763\",\"width\": 175.0}],\"wrapTableHeader\": true}"
+      chart:
+        type: LINE
+        chart_columns:
+        - column_id: TIME
+        - column_id: NAME
+        - column_id: EXPENSENAME
+        - column_id: Day(TIME)
+        - column_id: Average EXPENSEAMOUNT
+        axis_configs:
+        - x:
+          - Day(TIME)
+          "y":
+          - Average EXPENSEAMOUNT
+          color:
+          - EXPENSENAME
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"4a727770-abd2-4866-81f9-792169471923\",\"columnProperty\": {}},{\"columnId\": \"28d85cb9-4635-4b12-8c4f-7470b847ea66\",\"columnProperty\": {}},{\"columnId\": \"a3d5964a-1d38-452e-9ae0-d41693934440\",\"columnProperty\": {}},{\"columnId\": \"f662b7bc-76a1-4fd6-a402-8e370976850e\",\"columnProperty\": {}},{\"columnId\": \"a88ddb93-ba61-4a63-b037-e355165d1ac4\",\"columnProperty\": {}},{\"columnId\": \"c0b75d38-dae6-47fe-a98f-33cfbf2941c6\",\"columnProperty\": {}},{\"columnId\": \"62c14f0b-e7c7-4672-993f-0ab3f7997f50\",\"columnProperty\": {}},{\"columnId\": \"b9ff0fb6-50a5-42bb-a042-042f235f7a17\",\"columnProperty\": {}},{\"columnId\": \"3ffa1d6e-cddf-4778-b38a-3b0b03843763\",\"columnProperty\": {}},{\"columnId\": \"05222331-4fc7-4bff-8074-27ee19b81044\",\"columnProperty\": {}},{\"columnId\": \"1efe3efc-645a-4f97-aced-99ec9aff90c9\",\"columnProperty\": {}},{\"columnId\": \"Average EXPENSEAMOUNT\",\"columnProperty\": {\"dataLabels\": false}}],\"axisProperties\": [{\"id\": \"fcfd71cd-0c3a-4f74-87b9-1a89d2d3f6db\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Average EXPENSEAMOUNT\"],\"format\": {\"category\": \"CURRENCY\",\"currencyFormatConfig\": {\"locale\": \"USD\",\"unit\": \"AUTO\",\"decimals\": 2.0,\"toSeparateThousands\": true},\"isCategoryEditable\": true},\"name\": \"Average Cost/hr\",\"isOpposite\": false}},{\"id\": \"c6eadaa3-92dd-4369-b287-ece7ce265552\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(TIME)\"],\"name\": \"Date\"}}],\"systemSeriesColors\": [{\"serieName\": \"Average EXPENSEAMOUNT\",\"color\": \"#8C62F5\"},{\"serieName\": \"aws cost explorer\",\"color\": \"#2E75F0\"},{\"serieName\": \"aws key management service\",\"color\": \"#48D1E0\"},{\"serieName\": \"aws lambda\",\"color\": \"#FCC838\"},{\"serieName\": \"aws systems manager\",\"color\": \"#06BF7F\"},{\"serieName\": \"amazon cloud watch\",\"color\": \"#8C62F5\"},{\"serieName\": \"amazon ec2\",\"color\": \"#FF8142\"},{\"serieName\": \"amazon eks\",\"color\": \"#ABC7F9\"},{\"serieName\": \"amazon rds\",\"color\": \"#B5ECF2\"},{\"serieName\": \"amazon route53\",\"color\": \"#FDE9AF\"},{\"serieName\": \"amazon s3\",\"color\": \"#9BE5CB\"},{\"serieName\": \"amazon vpc\",\"color\": \"#D1C0FB\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_11
+    answer:
+      name: Cloud Services Breakdown
+      description: Last 7 Days
+      tables:
+      - id: T8CSECTRLLAB_BUSINESSACCOUNTS
+        name: T8CSECTRLLAB_BUSINESSACCOUNTS
+      search_query: "[TIME].detailed [NAME] [EXPENSENAME] average [EXPENSEAMOUNT] [TIME].'last 7 days' sort by average [EXPENSEAMOUNT] descending"
+      answer_columns:
+      - name: EXPENSENAME
+      - name: NAME
+      - name: TIME
+      - name: Average EXPENSEAMOUNT
+      table:
+        table_columns:
+        - column_id: TIME
+          show_headline: false
+        - column_id: NAME
+          show_headline: false
+        - column_id: EXPENSENAME
+          show_headline: false
+        - column_id: Average EXPENSEAMOUNT
+          show_headline: false
+        ordered_column_ids:
+        - TIME
+        - NAME
+        - EXPENSENAME
+        - Average EXPENSEAMOUNT
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"3ffa1d6e-cddf-4778-b38a-3b0b03843763\",\"width\": 175.0}],\"wrapTableHeader\": true}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: TIME
+        - column_id: NAME
+        - column_id: EXPENSENAME
+        - column_id: Average EXPENSEAMOUNT
+        axis_configs:
+        - x:
+          - EXPENSENAME
+          "y":
+          - Average EXPENSEAMOUNT
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"4a727770-abd2-4866-81f9-792169471923\",\"columnProperty\": {}},{\"columnId\": \"28d85cb9-4635-4b12-8c4f-7470b847ea66\",\"columnProperty\": {}},{\"columnId\": \"a3d5964a-1d38-452e-9ae0-d41693934440\",\"columnProperty\": {}},{\"columnId\": \"f662b7bc-76a1-4fd6-a402-8e370976850e\",\"columnProperty\": {}},{\"columnId\": \"a88ddb93-ba61-4a63-b037-e355165d1ac4\",\"columnProperty\": {}},{\"columnId\": \"c0b75d38-dae6-47fe-a98f-33cfbf2941c6\",\"columnProperty\": {}},{\"columnId\": \"62c14f0b-e7c7-4672-993f-0ab3f7997f50\",\"columnProperty\": {}},{\"columnId\": \"b9ff0fb6-50a5-42bb-a042-042f235f7a17\",\"columnProperty\": {}},{\"columnId\": \"3ffa1d6e-cddf-4778-b38a-3b0b03843763\",\"columnProperty\": {}},{\"columnId\": \"05222331-4fc7-4bff-8074-27ee19b81044\",\"columnProperty\": {}},{\"columnId\": \"1efe3efc-645a-4f97-aced-99ec9aff90c9\",\"columnProperty\": {}},{\"columnId\": \"Average EXPENSEAMOUNT\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"46456a6a-464a-4127-8afb-c03e61efd206\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Average EXPENSEAMOUNT\"],\"isOpposite\": false}},{\"id\": \"8c64d952-a905-4d3a-a12c-7c3cd5dbadb0\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"EXPENSENAME\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Alan Santos\",\"color\": \"#B094F8\"},{\"serieName\": \"Arbonne\",\"color\": \"#8C62F5\"},{\"serieName\": \"Barbri Group\",\"color\": \"#56D3A8\"},{\"serieName\": \"Eric Gandt\",\"color\": \"#06BF7F\"},{\"serieName\": \"JohnsonAndJohnson\",\"color\": \"#FCD977\"},{\"serieName\": \"Navid1\",\"color\": \"#FCC838\"},{\"serieName\": \"Product Management\",\"color\": \"#369FAA\"},{\"serieName\": \"Product Management SE Demo\",\"color\": \"#82DFE9\"},{\"serieName\": \"Turbonomic Training\",\"color\": \"#48D1E0\"},{\"serieName\": \"Turbonomic Training - ACE Master Cloud\",\"color\": \"#2359B6\"},{\"serieName\": \"William Crary\",\"color\": \"#71A1F4\"},{\"serieName\": \"allscripts\",\"color\": \"#2E75F0\"},{\"serieName\": \"Amazon EC2\",\"color\": \"#B094F8\"},{\"serieName\": \"AWS Cost Explorer\",\"color\": \"#8C62F5\"},{\"serieName\": \"Amazon Cloud Watch\",\"color\": \"#56D3A8\"},{\"serieName\": \"Amazon EKS\",\"color\": \"#06BF7F\"},{\"serieName\": \"Amazon VPC\",\"color\": \"#FCD977\"},{\"serieName\": \"Amazon RDS\",\"color\": \"#FCC838\"},{\"serieName\": \"Amazon S3\",\"color\": \"#82DFE9\"},{\"serieName\": \"AWS Key Management Service\",\"color\": \"#48D1E0\"},{\"serieName\": \"AWS Systems Manager\",\"color\": \"#2359B6\"},{\"serieName\": \"AWS Lambda\",\"color\": \"#71A1F4\"},{\"serieName\": \"Amazon Route53\",\"color\": \"#2E75F0\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  - id: Viz_12
+    answer:
+      name: Cloud Subscription Breakdown
+      description: Last 7 Days
+      tables:
+      - id: T8CSECTRLLAB_BUSINESSACCOUNTS
+        name: T8CSECTRLLAB_BUSINESSACCOUNTS
+      search_query: "[TIME].detailed [NAME] [EXPENSENAME] average [EXPENSEAMOUNT] [TIME].'last 7 days' sort by average [EXPENSEAMOUNT] descending top 250"
+      answer_columns:
+      - name: EXPENSENAME
+      - name: NAME
+      - name: TIME
+      - name: Average EXPENSEAMOUNT
+      table:
+        table_columns:
+        - column_id: TIME
+          show_headline: false
+        - column_id: NAME
+          show_headline: false
+        - column_id: EXPENSENAME
+          show_headline: false
+        - column_id: Average EXPENSEAMOUNT
+          show_headline: false
+        ordered_column_ids:
+        - TIME
+        - NAME
+        - EXPENSENAME
+        - Average EXPENSEAMOUNT
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"3ffa1d6e-cddf-4778-b38a-3b0b03843763\",\"width\": 175.0}],\"wrapTableHeader\": true}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: TIME
+        - column_id: NAME
+        - column_id: EXPENSENAME
+        - column_id: Average EXPENSEAMOUNT
+        axis_configs:
+        - x:
+          - NAME
+          "y":
+          - Average EXPENSEAMOUNT
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT1\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {}},\"columnProperties\": [{\"columnId\": \"4a727770-abd2-4866-81f9-792169471923\",\"columnProperty\": {}},{\"columnId\": \"28d85cb9-4635-4b12-8c4f-7470b847ea66\",\"columnProperty\": {}},{\"columnId\": \"a3d5964a-1d38-452e-9ae0-d41693934440\",\"columnProperty\": {}},{\"columnId\": \"f662b7bc-76a1-4fd6-a402-8e370976850e\",\"columnProperty\": {}},{\"columnId\": \"a88ddb93-ba61-4a63-b037-e355165d1ac4\",\"columnProperty\": {}},{\"columnId\": \"c0b75d38-dae6-47fe-a98f-33cfbf2941c6\",\"columnProperty\": {}},{\"columnId\": \"62c14f0b-e7c7-4672-993f-0ab3f7997f50\",\"columnProperty\": {}},{\"columnId\": \"b9ff0fb6-50a5-42bb-a042-042f235f7a17\",\"columnProperty\": {}},{\"columnId\": \"3ffa1d6e-cddf-4778-b38a-3b0b03843763\",\"columnProperty\": {}},{\"columnId\": \"05222331-4fc7-4bff-8074-27ee19b81044\",\"columnProperty\": {}},{\"columnId\": \"1efe3efc-645a-4f97-aced-99ec9aff90c9\",\"columnProperty\": {}},{\"columnId\": \"Average EXPENSEAMOUNT\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"46456a6a-464a-4127-8afb-c03e61efd206\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Average EXPENSEAMOUNT\"],\"isOpposite\": false}},{\"id\": \"2f553a8e-c2d8-4267-8da7-eb53ec7c44be\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"NAME\"]}}],\"systemSeriesColors\": [{\"serieName\": \"Amazon EC2\",\"color\": \"#B094F8\"},{\"serieName\": \"AWS Cost Explorer\",\"color\": \"#8C62F5\"},{\"serieName\": \"Amazon Cloud Watch\",\"color\": \"#56D3A8\"},{\"serieName\": \"Amazon EKS\",\"color\": \"#06BF7F\"},{\"serieName\": \"Amazon VPC\",\"color\": \"#FCD977\"},{\"serieName\": \"Amazon RDS\",\"color\": \"#FCC838\"},{\"serieName\": \"Amazon S3\",\"color\": \"#82DFE9\"},{\"serieName\": \"AWS Key Management Service\",\"color\": \"#48D1E0\"},{\"serieName\": \"AWS Systems Manager\",\"color\": \"#2359B6\"},{\"serieName\": \"AWS Lambda\",\"color\": \"#71A1F4\"},{\"serieName\": \"Amazon Route53\",\"color\": \"#2E75F0\"},{\"serieName\": \"allscripts\",\"color\": \"#2E75F0\"},{\"serieName\": \"Arbonne\",\"color\": \"#8C62F5\"},{\"serieName\": \"Alan Santos\",\"color\": \"#56D3A8\"},{\"serieName\": \"JohnsonAndJohnson\",\"color\": \"#06BF7F\"},{\"serieName\": \"Product Management SE Demo\",\"color\": \"#FCD977\"},{\"serieName\": \"Eric Gandt\",\"color\": \"#FCC838\"},{\"serieName\": \"Product Management\",\"color\": \"#369FAA\"},{\"serieName\": \"Barbri Group\",\"color\": \"#82DFE9\"},{\"serieName\": \"Navid1\",\"color\": \"#48D1E0\"},{\"serieName\": \"Turbonomic Training\",\"color\": \"#2359B6\"},{\"serieName\": \"William Crary\",\"color\": \"#71A1F4\"},{\"serieName\": \"Turbonomic Training - ACE Master Cloud\",\"color\": \"#B094F8\"}]}"
+      display_mode: CHART_MODE
+      client_state: "{\"version\":\"V2\"}"
+  layout:
+    tiles:
+    - visualization_id: Viz_4
+      size: SMALL
+    - visualization_id: Viz_3
+      size: SMALL
+    - visualization_id: Viz_1
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_6
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_5
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_2
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_8
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_7
+      size: MEDIUM
+    - visualization_id: Viz_9
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_11
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_10
+      size: MEDIUM_SMALL
+    - visualization_id: Viz_12
+      size: MEDIUM_SMALL
