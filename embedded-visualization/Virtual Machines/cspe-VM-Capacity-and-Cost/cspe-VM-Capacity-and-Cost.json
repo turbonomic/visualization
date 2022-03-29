@@ -8,19 +8,29 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 92,
-  "iteration": 1629912212587,
+  "iteration": 1648569912241,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "-- Dashboard --",
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -101,15 +111,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "panelId": 2,
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total Information",
       "transformations": [
         {
@@ -123,10 +131,10 @@
           "options": {
             "alias": "Total vCPU Cost ($)",
             "binary": {
-              "left": "Average number of vCPU(s) results",
+              "left": "Average number of vCPU(s)",
               "operator": "*",
               "reducer": "sum",
-              "right": "vCPU Price ($) results"
+              "right": "vCPU Price ($)"
             },
             "mode": "binary",
             "reduce": {
@@ -139,10 +147,10 @@
           "options": {
             "alias": "Total vMem Cost ($)",
             "binary": {
-              "left": "vMem Average (GB) results",
+              "left": "vMem Average (GB)",
               "operator": "*",
               "reducer": "sum",
-              "right": "GB vMem Price ($) results"
+              "right": "GB vMem Price ($)"
             },
             "mode": "binary",
             "reduce": {
@@ -155,10 +163,10 @@
           "options": {
             "alias": "Total Storage Cost ($)",
             "binary": {
-              "left": "Storage Average (GB) results",
+              "left": "Storage Average (GB)",
               "operator": "*",
               "reducer": "sum",
-              "right": "GB Storage Price ($) results"
+              "right": "GB Storage Price ($)"
             },
             "mode": "binary",
             "reduce": {
@@ -189,6 +197,9 @@
               "GB Storage Price ($) results": true,
               "GB vMem Price ($)": true,
               "GB vMem Price ($) results": true,
+              "Total Storage Cost ($)": true,
+              "Total vCPU Cost ($)": true,
+              "Total vMem Cost ($)": true,
               "vCPU Price ($)": true,
               "vCPU Price ($) results": true
             },
@@ -212,11 +223,13 @@
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "6pv52Y4Gk"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null,
             "displayMode": "auto",
             "filterable": true
           },
@@ -258,11 +271,18 @@
       },
       "id": 2,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 2,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.0.6",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -346,8 +366,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "VM Capacity",
       "transformations": [
         {
@@ -361,10 +379,10 @@
           "options": {
             "alias": "Total vCPU Cost ($)",
             "binary": {
-              "left": "Average number of vCPU(s) results",
+              "left": "Average number of vCPU(s)",
               "operator": "*",
               "reducer": "sum",
-              "right": "vCPU Price ($) results"
+              "right": "vCPU Price ($)"
             },
             "mode": "binary",
             "reduce": {
@@ -377,10 +395,10 @@
           "options": {
             "alias": "Total vMem Cost ($)",
             "binary": {
-              "left": "vMem Average (GB) results",
+              "left": "vMem Average (GB)",
               "operator": "*",
               "reducer": "sum",
-              "right": "GB vMem Price ($) results"
+              "right": "GB vMem Price ($)"
             },
             "mode": "binary",
             "reduce": {
@@ -393,10 +411,10 @@
           "options": {
             "alias": "Total Storage Cost ($)",
             "binary": {
-              "left": "Storage Average (GB) results",
+              "left": "Storage Average (GB)",
               "operator": "*",
               "reducer": "sum",
-              "right": "GB Storage Price ($) results"
+              "right": "GB Storage Price ($)"
             },
             "mode": "binary",
             "reduce": {
@@ -429,7 +447,9 @@
               "GB Storage Price ($) results": true,
               "GB vMem Price ($)": true,
               "GB vMem Price ($) results": true,
-              "Total vCPU Cost ($)": false,
+              "Total Storage Cost ($)": true,
+              "Total vCPU Cost ($)": true,
+              "Total vMem Cost ($)": true,
               "VM Name results": false,
               "VM OID": true,
               "VM OID results": false,
@@ -456,13 +476,12 @@
       "type": "table"
     }
   ],
-  "schemaVersion": 30,
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -472,10 +491,11 @@
             "$__all"
           ]
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "6pv52Y4Gk"
+        },
         "definition": "select name from entity where \"type\" = 'GROUP' order by name",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Group Name",
@@ -493,7 +513,6 @@
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -503,10 +522,11 @@
             "$__all"
           ]
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "6pv52Y4Gk"
+        },
         "definition": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "",
@@ -524,7 +544,6 @@
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -534,10 +553,11 @@
             "$__all"
           ]
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "6pv52Y4Gk"
+        },
         "definition": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
-        "description": null,
-        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "",
@@ -556,12 +576,10 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10",
           "value": "10"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Cost of a vCPU ($)",
         "name": "VCPU_COST",
@@ -578,12 +596,10 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10",
           "value": "10"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Cost of a vMem GB ($)",
         "name": "VMEM_COST",
@@ -600,12 +616,10 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "10",
           "value": "10"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "label": "Cost of a Storage GB ($)",
         "name": "STORAGE_COST",
@@ -623,12 +637,13 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "VM Capacity and Cost",
   "uid": "FzQmaDeGz",
-  "version": 17
+  "version": 18,
+  "weekStart": ""
 }
