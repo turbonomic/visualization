@@ -1,4 +1,41 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.3.2"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -21,8 +58,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 92,
-  "iteration": 1648569912241,
+  "id": null,
+  "iteration": 1648571028594,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -225,11 +262,12 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "6pv52Y4Gk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
           "custom": {
+            "align": "auto",
             "displayMode": "auto",
             "filterable": true
           },
@@ -482,18 +520,10 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "6pv52Y4Gk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select name from entity where \"type\" = 'GROUP' order by name",
         "hide": 0,
@@ -513,18 +543,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "6pv52Y4Gk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
         "hide": 2,
@@ -544,18 +566,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "6pv52Y4Gk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
         "hide": 2,
@@ -637,7 +651,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
