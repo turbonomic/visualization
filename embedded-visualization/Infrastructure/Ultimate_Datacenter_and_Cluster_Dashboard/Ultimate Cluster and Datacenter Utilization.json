@@ -8,25 +8,35 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
   },
   "description": "v.4.4.6",
   "editable": true,
-  "gnetId": null,
+  "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 75,
-  "iteration": 1628523209962,
+  "id": 47,
+  "iteration": 1653667097754,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "description": "",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
+          "color": {
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -54,7 +64,7 @@
       "id": 43,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -64,9 +74,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -97,8 +108,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Scoped Host Counter (within Timescale)",
       "transformations": [
         {
@@ -136,16 +145,16 @@
           }
         }
       ],
+      "transparent": true,
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": "left",
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -162,12 +171,6 @@
           }
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName"
-            },
-            "properties": []
-          },
           {
             "matcher": {
               "id": "byName",
@@ -231,7 +234,7 @@
         ]
       },
       "gridPos": {
-        "h": 12,
+        "h": 19,
         "w": 12,
         "x": 0,
         "y": 3
@@ -247,9 +250,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -280,20 +284,17 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Scoped Datacenter / Cluster Compute and Storage Statistics",
       "transformations": [],
       "type": "bargauge"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -310,12 +311,6 @@
           }
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName"
-            },
-            "properties": []
-          },
           {
             "matcher": {
               "id": "byName",
@@ -355,7 +350,7 @@
         ]
       },
       "gridPos": {
-        "h": 12,
+        "h": 17,
         "w": 12,
         "x": 12,
         "y": 3
@@ -371,9 +366,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -404,101 +400,16 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Global Cluster Compute Utilization Stats",
       "type": "bargauge"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "max": 100,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "rgb(255, 95, 237)",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 88
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 15
-      },
-      "id": 6,
-      "options": {
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "7.3.8",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "-- Datacenter Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\ncluster_stats as (\n    select cluster_name\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT cluster_oid\n                ,cluster_name\n                ,time\n               ,sum(current) FILTER (where type = 'CPU') as cpu_used\n               ,sum(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,sum(current) FILTER (where type = 'MEM') as mem_used\n               ,sum(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n          JOIN pms_by_cluster on pms_by_cluster.pm_oid = metric.entity_oid\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n         GROUP BY 1,2,3) as cluster_stats\n         group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n\n  from cluster_stats\n  ;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Datacenter Cluster Compute Utilization Last Discovered",
-      "type": "gauge"
-    },
-    {
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -515,12 +426,6 @@
           }
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byName"
-            },
-            "properties": []
-          },
           {
             "matcher": {
               "id": "byName",
@@ -587,10 +492,10 @@
         ]
       },
       "gridPos": {
-        "h": 12,
+        "h": 17,
         "w": 12,
         "x": 12,
-        "y": 15
+        "y": 20
       },
       "id": 38,
       "options": {
@@ -603,9 +508,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -636,19 +542,16 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Cluster Compute Utilization Peak Utilization",
       "type": "bargauge"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "max": 100,
           "thresholds": {
@@ -693,14 +596,14 @@
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 22
       },
       "id": 39,
       "options": {
-        "orientation": "horizontal",
+        "orientation": "vertical",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -709,9 +612,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -771,19 +675,335 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Datacenter Cluster Compute Utilization Peak (Percentile)",
       "type": "gauge"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
+          "color": {
+            "mode": "thresholds"
           },
+          "mappings": [],
+          "max": 100,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "rgb(255, 95, 237)",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 88
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 29
+      },
+      "id": 6,
+      "options": {
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "-- Datacenter Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\ncluster_stats as (\n    select cluster_name\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT cluster_oid\n                ,cluster_name\n                ,time\n               ,sum(current) FILTER (where type = 'CPU') as cpu_used\n               ,sum(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,sum(current) FILTER (where type = 'MEM') as mem_used\n               ,sum(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n          JOIN pms_by_cluster on pms_by_cluster.pm_oid = metric.entity_oid\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n         GROUP BY 1,2,3) as cluster_stats\n         group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n\n  from cluster_stats\n  ;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Datacenter Cluster Compute Utilization Last Discovered",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "rgb(151, 255, 0)",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 75
+              },
+              {
+                "color": "rgb(255, 115, 0)",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Capacity (MHz)"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "GHZ"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Capacity"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Avg Used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Max Used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 28,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used\",\n       mem_used_max/1024/1024 as \"Mem Max Used\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Datacenter and Cluster (Compute) Current Stats",
+      "type": "bargauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fill": 4,
+      "fillGradient": 6,
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 12,
+        "y": 37
+      },
+      "hiddenSeries": false,
+      "id": 30,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.3.2",
+      "pointradius": 1,
+      "points": true,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics AS (\n  SELECT m.time, m.current, m.type\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(), 'STORAGE', ARRAY[${Cluster:raw}+0]::bigint[], '${Cluster:raw}' = '0') as s\n  WHERE\n    m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type IN ('STORAGE_ACCESS', 'STORAGE_LATENCY')\n    AND \"time\" BETWEEN $__timeFrom() AND $__timeTo()\n  GROUP BY m.time, m.entity_oid, m.current, m.type\n)\nSELECT\n  m.time,\n  avg(m.current) FILTER (WHERE m.type = 'STORAGE_ACCESS') AS \"IOPS Avg\",\n  avg(m.current) FILTER (WHERE m.type = 'STORAGE_LATENCY') AS \"Latency Avg\"\nFROM metrics m\nGROUP BY m.time\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Storage Access Performance",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:776",
+          "format": "iops",
+          "logBase": 2,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:777",
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fieldConfig": {
+        "defaults": {
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -887,10 +1107,10 @@
         ]
       },
       "gridPos": {
-        "h": 15,
-        "w": 10,
+        "h": 18,
+        "w": 12,
         "x": 0,
-        "y": 27
+        "y": 53
       },
       "id": 22,
       "options": {
@@ -903,9 +1123,10 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showUnfilled": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -936,280 +1157,11 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Datastore Performance and Latency (Visualization)",
       "type": "bargauge"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "fill": 4,
-      "fillGradient": 6,
-      "gridPos": {
-        "h": 15,
-        "w": 14,
-        "x": 10,
-        "y": 27
-      },
-      "hiddenSeries": false,
-      "id": 30,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 2,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.8",
-      "pointradius": 1,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "WITH metrics AS (\n  SELECT m.time, m.current, m.type\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(), 'STORAGE', ARRAY[${Cluster:raw}+0]::bigint[], '${Cluster:raw}' = '0') as s\n  WHERE\n    m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type IN ('STORAGE_ACCESS', 'STORAGE_LATENCY')\n    AND \"time\" BETWEEN $__timeFrom() AND $__timeTo()\n  GROUP BY m.time, m.entity_oid, m.current, m.type\n)\nSELECT\n  m.time,\n  avg(m.current) FILTER (WHERE m.type = 'STORAGE_ACCESS') AS \"IOPS Avg\",\n  avg(m.current) FILTER (WHERE m.type = 'STORAGE_LATENCY') AS \"Latency Avg\"\nFROM metrics m\nGROUP BY m.time\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Storage Access Performance",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "iops",
-          "label": null,
-          "logBase": 2,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgb(151, 255, 0)",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 75
-              },
-              {
-                "color": "rgb(255, 115, 0)",
-                "value": 90
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CPU Capacity (MHz)"
-            },
-            "properties": [
-              {
-                "id": "noValue",
-                "value": "GHZ"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mem Capacity"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "decgbytes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mem Avg Used"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "decgbytes"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Mem Max Used"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "decgbytes"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 15,
-        "w": 10,
-        "x": 0,
-        "y": 42
-      },
-      "id": 28,
-      "options": {
-        "displayMode": "gradient",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "7.3.8",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used\",\n       mem_used_max/1024/1024 as \"Mem Max Used\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Datacenter and Cluster (Compute) Current Stats",
-      "type": "bargauge"
-    },
-    {
-      "cards": {
-        "cardPadding": null,
-        "cardRound": null
-      },
+      "cards": {},
       "color": {
         "cardColor": "rgb(212, 255, 0)",
         "colorScale": "linear",
@@ -1218,35 +1170,15 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
       },
       "gridPos": {
-        "h": 15,
-        "w": 14,
-        "x": 10,
-        "y": 42
+        "h": 18,
+        "w": 12,
+        "x": 12,
+        "y": 53
       },
       "heatmap": {},
       "hideZeroBuckets": true,
@@ -1287,8 +1219,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Storage Access Heatmap",
       "tooltip": {
         "show": true,
@@ -1298,29 +1228,491 @@
       "xAxis": {
         "show": true
       },
-      "xBucketNumber": null,
-      "xBucketSize": null,
       "yAxis": {
-        "decimals": null,
         "format": "short",
         "logBase": 1,
-        "max": null,
-        "min": null,
-        "show": true,
-        "splitFactor": null
+        "show": true
       },
-      "yBucketBound": "auto",
-      "yBucketNumber": null,
-      "yBucketSize": null
+      "yBucketBound": "auto"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
+          "color": {
+            "mode": "thresholds"
           },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Capacity"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Provisioned"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Used "
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Latency Used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Storage Latency Peak"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Iops Used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Iops Peak"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "iops"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 71
+      },
+      "id": 45,
+      "options": {
+        "bucketOffset": 0,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "\n-- Datastore Stats Panel\nwith ds_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as ds_oid,\n        e.name as ds_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_stats as (\n     select ds_oid\n          ,avg(stor_used) as stor_used\n          ,avg(stor_used/stor_capacity) as stor_util\n          ,avg(stor_capacity) as stor_capacity\n          ,avg(stor_provisioned) as stor_provisioned\n    from\n        (SELECT entity_oid as ds_oid\n               ,time\n               ,max(current) FILTER (where type = 'STORAGE_AMOUNT') as stor_used\n               ,max(capacity) FILTER (where type = 'STORAGE_AMOUNT') as stor_capacity\n               ,max(current) FILTER (where type = 'STORAGE_PROVISIONED') as stor_provisioned\n          FROM metric\n         WHERE type in ('STORAGE_AMOUNT', 'STORAGE_PROVISIONED')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'STORAGE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\n\n-- TODO: Update all of the column names below with the new names above\n\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       ds_name as \"Datastore Name\",\n       stor_capacity/1024 as \"Storage Capacity\",\n       stor_provisioned/1024 as \"Storage Provisioned\",\n       stor_used/1024 as \"Storage Used \"\n  from ds_stats\n  join ds_by_cluster on ds_stats.ds_oid = ds_by_cluster.ds_oid\n;\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Datastore Capacity - Histogram",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "custom": {
+            "fillOpacity": 91,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 71
+      },
+      "id": 44,
+      "options": {
+        "bucketOffset": 0,
+        "combine": false,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH metrics AS (\n  SELECT m.time, m.current, m.type\n  FROM metric m,\n    scope_to($__timeFrom(), $__timeTo(), 'STORAGE', ARRAY[${Cluster:raw}+0]::bigint[], '${Cluster:raw}' = '0') as s\n  WHERE\n    m.entity_oid = s.oid\n    AND m.time BETWEEN s.from_time AND s.to_time\n    AND m.type IN ('STORAGE_ACCESS', 'STORAGE_LATENCY')\n    AND \"time\" BETWEEN $__timeFrom() AND $__timeTo()\n  GROUP BY m.time, m.entity_oid, m.current, m.type\n)\nSELECT\n  m.time,\n  avg(m.current) FILTER (WHERE m.type = 'STORAGE_ACCESS') AS \"IOPS Avg\",\n  avg(m.current) FILTER (WHERE m.type = 'STORAGE_LATENCY') AS \"Latency Avg\"\nFROM metrics m\nGROUP BY m.time\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Storage Access and Performance - Histogram",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "$__cell_0",
+          "mappings": [],
+          "max": 100,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "semi-dark-purple",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 83
+      },
+      "id": 36,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "limit": 20,
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\nwhere cpu_util_avg is not null\norder by cpu_util_avg desc\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Top 20 Most Consumed vCPU by Virtual Machine",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "CPU Avg Used (MHz)": true,
+              "CPU Capacity (MHz)": true,
+              "CPU Max Used (MHz)": true,
+              "CPU Max Util (%)": true,
+              "CPU Percentile Util (%)": true,
+              "Cluster Name": true,
+              "Datacenter": true,
+              "Mem Avg Used (GB)": true,
+              "Mem Avg Util (%)": true,
+              "Mem Capacity (GB)": true,
+              "Mem Max Used (GB)": true,
+              "Mem Max Util (%)": true,
+              "Mem Percentile Util (%)": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "$__cell_0",
+          "mappings": [],
+          "max": 100,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "rgb(255, 160, 0)",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 90
+      },
+      "id": 37,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "limit": 20,
+          "values": true
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\nwhere mem_util_avg is not null\norder by mem_util_avg desc\n;",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Top 20 Most Consumed vMem by Virtual Machine",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "CPU Avg Used (MHz)": true,
+              "CPU Avg Util (%)": true,
+              "CPU Capacity (MHz)": true,
+              "CPU Max Used (MHz)": true,
+              "CPU Max Util (%)": true,
+              "CPU Percentile Util (%)": true,
+              "Cluster Name": true,
+              "Datacenter": true,
+              "Mem Avg Used (GB)": true,
+              "Mem Avg Util (%)": false,
+              "Mem Capacity (GB)": true,
+              "Mem Max Used (GB)": true,
+              "Mem Max Util (%)": true,
+              "Mem Percentile Util (%)": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
+      "fieldConfig": {
+        "defaults": {
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1342,12 +1734,12 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 97
       },
       "id": 42,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -1357,9 +1749,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1390,8 +1783,6 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Scoped Virtual Machines Counter (within Timescale)",
       "transformations": [
         {
@@ -1432,278 +1823,15 @@
       "type": "stat"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "displayName": "$__cell_0",
-          "mappings": [],
-          "max": 100,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "semi-dark-purple",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 85
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Host Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 267
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "VM Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 323
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 60
-      },
-      "id": 36,
-      "options": {
-        "displayMode": "gradient",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "limit": 20,
-          "values": true
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "7.3.8",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\nwhere cpu_util_avg is not null\norder by cpu_util_avg desc\n;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Top 20 Most Consumed vCPU by Virtual Machine",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "CPU Avg Used (MHz)": true,
-              "CPU Capacity (MHz)": true,
-              "CPU Max Used (MHz)": true,
-              "CPU Max Util (%)": true,
-              "CPU Percentile Util (%)": true,
-              "Cluster Name": true,
-              "Datacenter": true,
-              "Mem Avg Used (GB)": true,
-              "Mem Avg Util (%)": true,
-              "Mem Capacity (GB)": true,
-              "Mem Max Used (GB)": true,
-              "Mem Max Util (%)": true,
-              "Mem Percentile Util (%)": true
-            },
-            "indexByName": {},
-            "renameByName": {}
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "bargauge"
-    },
-    {
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "displayName": "$__cell_0",
-          "mappings": [],
-          "max": 100,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "rgb(255, 160, 0)",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 85
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Host Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 267
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "VM Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 323
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 67
-      },
-      "id": 37,
-      "options": {
-        "displayMode": "gradient",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "limit": 20,
-          "values": true
-        },
-        "showUnfilled": true
-      },
-      "pluginVersion": "7.3.8",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\nwhere mem_util_avg is not null\norder by mem_util_avg desc\n;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Top 20 Most Consumed vMem by Virtual Machine",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "CPU Avg Used (MHz)": true,
-              "CPU Avg Util (%)": true,
-              "CPU Capacity (MHz)": true,
-              "CPU Max Used (MHz)": true,
-              "CPU Max Util (%)": true,
-              "CPU Percentile Util (%)": true,
-              "Cluster Name": true,
-              "Datacenter": true,
-              "Mem Avg Used (GB)": true,
-              "Mem Avg Util (%)": false,
-              "Mem Capacity (GB)": true,
-              "Mem Max Used (GB)": true,
-              "Mem Max Util (%)": true,
-              "Mem Percentile Util (%)": true
-            },
-            "indexByName": {},
-            "renameByName": {}
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "bargauge"
-    },
-    {
-      "datasource": "Turbo Timescale",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": null,
+            "align": "auto",
+            "displayMode": "auto",
             "filterable": true
           },
           "mappings": [],
@@ -1789,10 +1917,17 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 100
       },
       "id": 2,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": [
           {
@@ -1801,7 +1936,7 @@
           }
         ]
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -1832,17 +1967,19 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Cluster Compute (CPU) Utilization",
       "type": "table"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null,
+            "align": "auto",
+            "displayMode": "auto",
             "filterable": true
           },
           "mappings": [],
@@ -1872,6 +2009,18 @@
                 "value": 298
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Architecture / SKU"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 329
+              }
+            ]
           }
         ]
       },
@@ -1879,10 +2028,17 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 111
       },
       "id": 10,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": [
           {
@@ -1891,14 +2047,14 @@
           }
         ]
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name,\n        (e.attrs ->> 'num_cpus')::numeric as cpus\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       cpus as \"CPU Cores\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "rawSql": "-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name,\n        (e.attrs ->> 'num_cpus')::numeric as cpus,\n        (e.attrs ->> 'model') as hostmodel,\n        (e.attrs ->> 'cpu_model') as h_cpu_model\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       pm_name as \"Host Name\",\n       hostmodel as \"Host Model\",\n       h_cpu_model as \"CPU Architecture / SKU\",\n       cpus as \"CPU Cores\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
           "refId": "A",
           "select": [
             [
@@ -1922,19 +2078,22 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Host Utilization (Compute)",
       "transparent": true,
       "type": "table"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null,
-            "filterable": true
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true,
+            "minWidth": 150
           },
           "mappings": [],
           "thresholds": {
@@ -2044,7 +2203,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 353
+                "value": 294
               }
             ]
           },
@@ -2056,7 +2215,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 375
+                "value": 794
               }
             ]
           },
@@ -2068,7 +2227,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 333
+                "value": 978
               }
             ]
           }
@@ -2078,14 +2237,26 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 95
+        "y": 121
       },
       "id": 32,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Datastore Name"
+          }
+        ]
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -2116,17 +2287,20 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Datastore Performance and Latency (Text)",
+      "transparent": true,
       "type": "table"
     },
     {
-      "datasource": "Turbo Timescale",
+      "datasource": {
+        "type": "postgres",
+        "uid": "wWMLoX6Mk"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "align": null,
+            "align": "auto",
+            "displayMode": "auto",
             "filterable": true
           },
           "mappings": [],
@@ -2176,8 +2350,7 @@
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": null
+                "id": "custom.width"
               }
             ]
           }
@@ -2187,10 +2360,17 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 106
+        "y": 132
       },
       "id": 35,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true,
         "sortBy": [
           {
@@ -2199,7 +2379,7 @@
           }
         ]
       },
-      "pluginVersion": "7.3.8",
+      "pluginVersion": "8.3.2",
       "targets": [
         {
           "format": "table",
@@ -2230,21 +2410,18 @@
           ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Virtual Machine Utilization",
       "transparent": true,
       "type": "table"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 26,
+  "refresh": "",
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -2254,12 +2431,13 @@
             "$__all"
           ]
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "wWMLoX6Mk"
+        },
         "definition": "SELECT DISTINCT name as __text\n             ,oid as __value\n   FROM entity\n WHERE type = 'DATACENTER'\nAND (first_seen, last_seen) overlaps ($__timeFrom(), $__timeTo())\nORDER BY 1",
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": true,
         "name": "Datacenter",
         "options": [],
@@ -2269,32 +2447,23 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {
-          "selected": true,
-          "text": [
-            "Cloud/Development",
-            "Cloud/Physical",
-            "Cloud/Physical2"
-          ],
-          "value": [
-            "284751121845332",
-            "284751121845322",
-            "285130348518784"
-          ]
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
         },
-        "datasource": "Turbo Timescale",
+        "datasource": {
+          "type": "postgres",
+          "uid": "wWMLoX6Mk"
+        },
         "definition": "SELECT DISTINCT name as __text\n            ,oid as __value\n   FROM entity e\n   JOIN scope s on s.seed_oid = e.oid\n WHERE e.type = 'COMPUTE_CLUSTER'\n  AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n  and s.scoped_type = 'DATACENTER'\n  and s.scoped_oid in ($Datacenter)",
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": true,
         "name": "Cluster",
         "options": [],
@@ -2304,7 +2473,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -2331,6 +2499,7 @@
   },
   "timezone": "",
   "title": "Ultimate Cluster and Datacenter Utilization",
-  "uid": "v-wNa3eMz",
-  "version": 100
+  "uid": "mj8iM2v7k",
+  "version": 21,
+  "weekStart": ""
 }
