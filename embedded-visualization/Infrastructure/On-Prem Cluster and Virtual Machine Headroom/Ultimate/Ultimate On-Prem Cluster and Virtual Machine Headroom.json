@@ -23,14 +23,14 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 98,
-  "iteration": 1648221106054,
+  "iteration": 1653666777692,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "postgres",
-        "uid": "wWMLoX6Mk"
+        "uid": "${DB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -256,14 +256,47 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "wWMLoX6Mk"
+            "uid": "${DB}"
           },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with clusters as (\n    SELECT\n        e.name as cluster_name,\n        e.oid as cluster_oid,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'VIRTUAL_MACHINE') as vm_count,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'PHYSICAL_MACHINE') as host_count\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       and e.last_seen > now()\n       and s.scoped_type in ('VIRTUAL_MACHINE', 'PHYSICAL_MACHINE')\n       and s.finish > now()\n  group by 1, 2\n), \n\n\ncluster_stats as (\n    SELECT entity_oid as cluster_oid\n           ,time\n           ,max(current) FILTER (where type = 'CPU_HEADROOM') as cpu_hr\n           ,max(capacity)  FILTER (where type = 'CPU_HEADROOM') as cpu_capacity\n           ,max(current) FILTER (where type = 'MEM_HEADROOM') as mem_hr\n           ,max(capacity)  FILTER (where type = 'MEM_HEADROOM') as mem_capacity\n           ,max(current) FILTER (where type = 'STORAGE_HEADROOM') as stor_hr\n           ,max(capacity)  FILTER (where type = 'STORAGE_HEADROOM') as stor_capacity\n      FROM metric\n     WHERE type in ('CPU_HEADROOM', 'MEM_HEADROOM', 'STORAGE_HEADROOM')\n       --AND $__timeFilter(time)\n       AND time > date_trunc('day', now()) - interval '1 day'\n       AND consumed is null\n       and entity_type = 'COMPUTE_CLUSTER'\n     GROUP BY 1,2\n)\n\nselect time\n      ,SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\"\n      ,SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\"\n      ,time as \"Scoped Time\"\n      ,host_count as \"Current Hosts\"\n      ,vm_count as \"Current VMs\"\n      ,cpu_hr as \"CPU Headroom\"\n      ,mem_hr as \"Mem Headroom\"\n      ,stor_hr as \"Storage Headroom\"\n      ,least(cpu_hr, mem_hr, stor_hr) \"Min Required VM Headroom\"\n  from clusters\n  JOIN cluster_stats on clusters.cluster_oid = cluster_stats.cluster_oid\n",
+          "rawSql": "with clusters as (\n    SELECT\n        e.name as cluster_name,\n        e.oid as cluster_oid,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'PHYSICAL_MACHINE') as host_count\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       and e.last_seen > now()\n       and s.scoped_type = ('PHYSICAL_MACHINE')\n       and s.finish > now()\n  group by 1, 2\n), \n\n\ncluster_stats as (\n    SELECT entity_oid as cluster_oid\n           ,time\n           ,max(current) FILTER (where type = 'CPU_HEADROOM') as cpu_hr\n           ,max(capacity)  FILTER (where type = 'CPU_HEADROOM') as cpu_capacity\n           ,max(current) FILTER (where type = 'MEM_HEADROOM') as mem_hr\n           ,max(capacity)  FILTER (where type = 'MEM_HEADROOM') as mem_capacity\n           ,max(current) FILTER (where type = 'STORAGE_HEADROOM') as stor_hr\n           ,max(capacity)  FILTER (where type = 'STORAGE_HEADROOM') as stor_capacity\n      FROM metric\n     WHERE type in ('CPU_HEADROOM', 'MEM_HEADROOM', 'STORAGE_HEADROOM')\n       --AND $__timeFilter(time)\n       AND time > date_trunc('day', now()) - interval '1 day'\n       AND consumed is null\n       and entity_type = 'COMPUTE_CLUSTER'\n     GROUP BY 1,2\n)\n\nselect time\n      ,SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\"\n      ,SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\"\n      ,clusters.cluster_oid\n      ,time as \"Scoped Time\"\n      ,host_count as \"Current Hosts\"\n      ,cpu_hr as \"CPU Headroom\"\n      ,mem_hr as \"Mem Headroom\"\n      ,stor_hr as \"Storage Headroom\"\n      ,least(cpu_hr, mem_hr, stor_hr) \"Min Required VM Headroom\"\n  from clusters\n  JOIN cluster_stats on clusters.cluster_oid = cluster_stats.cluster_oid",
           "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DB}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with clusters as (\n    SELECT\n        e.oid as cluster_oid,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'VIRTUAL_MACHINE') as vm_count\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       and e.last_seen > now()\n       and s.scoped_type = ('VIRTUAL_MACHINE')\n       and s.finish > now()\n  group by 1\n)\n\nselect cluster_oid\n      ,vm_count as \"Current VMs\"\n  from clusters",
+          "refId": "B",
           "select": [
             [
               {
@@ -289,6 +322,12 @@
       "title": "Cluster Headroom",
       "transformations": [
         {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "cluster_oid"
+          }
+        },
+        {
           "id": "filterFieldsByName",
           "options": {
             "include": {
@@ -311,7 +350,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "wWMLoX6Mk"
+        "uid": "${DB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -393,13 +432,13 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "wWMLoX6Mk"
+            "uid": "${DB}"
           },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as ds_oid,\n        e.name as ds_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n),\n\n\nds_stats as (\n     select ds_oid\n          ,avg(stor_used) as stor_used_avg\n          ,avg(stor_capacity) as stor_capacity \n    from\n        (SELECT entity_oid as ds_oid\n               ,time\n               ,max(current) FILTER (where type = 'STORAGE_AMOUNT') as stor_used\n               ,max(capacity) FILTER (where type = 'STORAGE_AMOUNT') as stor_capacity\n          FROM metric\n         WHERE type in ('STORAGE_AMOUNT')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'STORAGE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(pms_by_cluster.cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(pms_by_cluster.cluster_name, '/', 2) as \"Cluster Name\",\n       sum(cpu_used_avg)/sum(cpu_capacity)*100 as \"CPU Utilization (%)\",\n       sum(mem_used_avg)/sum(mem_capacity)*100 as \"Mem Utilization (%)\",\n       sum(stor_used_avg)/sum(stor_capacity)*100 as \"Storage Utilization (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n  join ds_by_cluster on pms_by_cluster.cluster_oid = ds_by_cluster.cluster_oid\n  join ds_stats on ds_stats.ds_oid = ds_by_cluster.ds_oid\ngroup by 1, 2\n;",
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS (now() - interval '15 min', now())\n       AND (s1.start, s1.finish) OVERLAPS (now() - interval '15 min', now())\n    -- AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    -- AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as ds_oid,\n        e.name as ds_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS (now() - interval '15 min', now())\n       AND (s1.start, s1.finish) OVERLAPS (now() - interval '15 min', now())\n    -- AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    -- AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n        -- AND $__timeFilter(time)\n           and time between now() - interval '15 min' and now()\n           and time >= now() - interval '15 min'\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n),\n\n\nds_stats as (\n     select ds_oid\n          ,avg(stor_used) as stor_used_avg\n          ,avg(stor_capacity) as stor_capacity \n    from\n        (SELECT entity_oid as ds_oid\n               ,time\n               ,max(current) FILTER (where type = 'STORAGE_AMOUNT') as stor_used\n               ,max(capacity) FILTER (where type = 'STORAGE_AMOUNT') as stor_capacity\n          FROM metric\n         WHERE type in ('STORAGE_AMOUNT')\n           and time between now() - interval '15 min' and now()\n           and time >= now() - interval '15 min'\n        -- AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'STORAGE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(pms_by_cluster.cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(pms_by_cluster.cluster_name, '/', 2) as \"Cluster Name\",\n       sum(cpu_used_avg)/sum(cpu_capacity)*100 as \"CPU Utilization (%)\",\n       sum(mem_used_avg)/sum(mem_capacity)*100 as \"Mem Utilization (%)\",\n       sum(stor_used_avg)/sum(stor_capacity)*100 as \"Storage Utilization (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n  join ds_by_cluster on pms_by_cluster.cluster_oid = ds_by_cluster.cluster_oid\n  join ds_stats on ds_stats.ds_oid = ds_by_cluster.ds_oid\ngroup by 1, 2\n;",
           "refId": "A",
           "select": [
             [
@@ -455,7 +494,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "wWMLoX6Mk"
+        "uid": "${DB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -507,6 +546,10 @@
       "pluginVersion": "8.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DB}"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -567,7 +610,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "wWMLoX6Mk"
+        "uid": "${DB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -627,7 +670,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 273
+                "value": 197
               }
             ]
           },
@@ -639,7 +682,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 195
+                "value": 134
               }
             ]
           },
@@ -651,7 +694,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 178
+                "value": 149
               }
             ]
           },
@@ -663,7 +706,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 172
+                "value": 159
               }
             ]
           },
@@ -675,7 +718,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 176
+                "value": 196
               }
             ]
           },
@@ -687,7 +730,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 233
+                "value": 230
               }
             ]
           },
@@ -711,7 +754,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 449
+                "value": 244
               }
             ]
           },
@@ -723,7 +766,43 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 194
+                "value": 133
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Datacenter"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Current.*"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
               }
             ]
           }
@@ -735,7 +814,7 @@
         "x": 0,
         "y": 38
       },
-      "id": 39,
+      "id": 41,
       "options": {
         "footer": {
           "fields": [],
@@ -745,21 +824,59 @@
           "show": true
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Storage Headroom"
+          }
+        ]
       },
       "pluginVersion": "8.3.2",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "wWMLoX6Mk"
+            "uid": "${DB}"
           },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "with clusters as (\n    SELECT\n        e.name as cluster_name,\n        e.oid as cluster_oid,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'VIRTUAL_MACHINE') as vm_count,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'PHYSICAL_MACHINE') as host_count\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       and e.last_seen > now()\n       and s.scoped_type in ('VIRTUAL_MACHINE', 'PHYSICAL_MACHINE')\n       and s.finish > now()\n  group by 1, 2\n), \n\n\ncluster_stats as (\n    SELECT entity_oid as cluster_oid\n           ,time\n           ,max(current) FILTER (where type = 'CPU_HEADROOM') as cpu_hr\n           ,max(capacity)  FILTER (where type = 'CPU_HEADROOM') as cpu_capacity\n           ,max(current) FILTER (where type = 'MEM_HEADROOM') as mem_hr\n           ,max(capacity)  FILTER (where type = 'MEM_HEADROOM') as mem_capacity\n           ,max(current) FILTER (where type = 'STORAGE_HEADROOM') as stor_hr\n           ,max(capacity)  FILTER (where type = 'STORAGE_HEADROOM') as stor_capacity\n      FROM metric\n     WHERE type in ('CPU_HEADROOM', 'MEM_HEADROOM', 'STORAGE_HEADROOM')\n       --AND $__timeFilter(time)\n       AND time > date_trunc('day', now()) - interval '1 day'\n       AND consumed is null\n       and entity_type = 'COMPUTE_CLUSTER'\n     GROUP BY 1,2\n)\n\nselect time\n      ,SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\"\n      ,SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\"\n      ,time as \"Scoped Time\"\n      ,host_count as \"Current Hosts\"\n      ,vm_count as \"Current VMs\"\n      ,cpu_hr as \"CPU Headroom\"\n      ,mem_hr as \"Mem Headroom\"\n      ,stor_hr as \"Storage Headroom\"\n      ,least(cpu_hr, mem_hr, stor_hr) \"Min Required VM Headroom\"\n  from clusters\n  JOIN cluster_stats on clusters.cluster_oid = cluster_stats.cluster_oid\n",
+          "rawSql": "with clusters as (\n    SELECT\n        e.name as cluster_name,\n        e.oid as cluster_oid,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'PHYSICAL_MACHINE') as host_count\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       and e.last_seen > now()\n       and s.scoped_type = ('PHYSICAL_MACHINE')\n       and s.finish > now()\n  group by 1, 2\n), \n\n\ncluster_stats as (\n    SELECT entity_oid as cluster_oid\n           ,time\n           ,max(current) FILTER (where type = 'CPU_HEADROOM') as cpu_hr\n           ,max(capacity)  FILTER (where type = 'CPU_HEADROOM') as cpu_capacity\n           ,max(current) FILTER (where type = 'MEM_HEADROOM') as mem_hr\n           ,max(capacity)  FILTER (where type = 'MEM_HEADROOM') as mem_capacity\n           ,max(current) FILTER (where type = 'STORAGE_HEADROOM') as stor_hr\n           ,max(capacity)  FILTER (where type = 'STORAGE_HEADROOM') as stor_capacity\n      FROM metric\n     WHERE type in ('CPU_HEADROOM', 'MEM_HEADROOM', 'STORAGE_HEADROOM')\n       --AND $__timeFilter(time)\n       AND time > date_trunc('day', now()) - interval '1 day'\n       AND consumed is null\n       and entity_type = 'COMPUTE_CLUSTER'\n     GROUP BY 1,2\n)\n\nselect time\n      ,SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\"\n      ,SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\"\n      ,clusters.cluster_oid\n      ,time as \"Scoped Time\"\n      ,host_count as \"Current Hosts\"\n      ,cpu_hr as \"CPU Headroom\"\n      ,mem_hr as \"Mem Headroom\"\n      ,stor_hr as \"Storage Headroom\"\n      ,least(cpu_hr, mem_hr, stor_hr) \"Min Required VM Headroom\"\n  from clusters\n  JOIN cluster_stats on clusters.cluster_oid = cluster_stats.cluster_oid",
           "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DB}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with clusters as (\n    SELECT\n        e.oid as cluster_oid,\n        count(distinct scoped_oid) filter (where s.scoped_type = 'VIRTUAL_MACHINE') as vm_count\n      FROM entity e\n      join scope s on s.seed_oid = e.oid\n     WHERE e.type = 'COMPUTE_CLUSTER'\n       and e.last_seen > now()\n       and s.scoped_type = ('VIRTUAL_MACHINE')\n       and s.finish > now()\n  group by 1\n)\n\nselect cluster_oid\n      ,vm_count as \"Current VMs\"\n  from clusters",
+          "refId": "B",
           "select": [
             [
               {
@@ -785,6 +902,12 @@
       "title": "Cluster Headroom",
       "transformations": [
         {
+          "id": "seriesToColumns",
+          "options": {
+            "byField": "cluster_oid"
+          }
+        },
+        {
           "id": "filterFieldsByName",
           "options": {
             "include": {
@@ -807,7 +930,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "wWMLoX6Mk"
+        "uid": "${DB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -901,13 +1024,13 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "wWMLoX6Mk"
+            "uid": "${DB}"
           },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as ds_oid,\n        e.name as ds_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n),\n\n\nds_stats as (\n     select ds_oid\n          ,avg(stor_used) as stor_used_avg\n          ,avg(stor_capacity) as stor_capacity \n    from\n        (SELECT entity_oid as ds_oid\n               ,time\n               ,max(current) FILTER (where type = 'STORAGE_AMOUNT') as stor_used\n               ,max(capacity) FILTER (where type = 'STORAGE_AMOUNT') as stor_capacity\n          FROM metric\n         WHERE type in ('STORAGE_AMOUNT')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'STORAGE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(pms_by_cluster.cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(pms_by_cluster.cluster_name, '/', 2) as \"Cluster Name\",\n       sum(cpu_used_avg)/sum(cpu_capacity)*100 as \"CPU Utilization (%)\",\n       sum(mem_used_avg)/sum(mem_capacity)*100 as \"Mem Utilization (%)\",\n       sum(stor_used_avg)/sum(stor_capacity)*100 as \"Storage Utilization (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n  join ds_by_cluster on pms_by_cluster.cluster_oid = ds_by_cluster.cluster_oid\n  join ds_stats on ds_stats.ds_oid = ds_by_cluster.ds_oid\ngroup by 1, 2\n;",
+          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'PHYSICAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS (now() - interval '15 min', now())\n       AND (s1.start, s1.finish) OVERLAPS (now() - interval '15 min', now())\n    -- AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    -- AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\nds_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as ds_oid,\n        e.name as ds_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'STORAGE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS (now() - interval '15 min', now())\n       AND (s1.start, s1.finish) OVERLAPS (now() - interval '15 min', now())\n    -- AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    -- AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'CPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'CPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'MEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'MEM') as mem_capacity\n          FROM metric\n         WHERE type in ('CPU', 'MEM')\n        -- AND $__timeFilter(time)\n           and time between now() - interval '15 min' and now()\n           and time >= now() - interval '15 min'\n           AND consumed is null\n           and entity_type = 'PHYSICAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n),\n\n\nds_stats as (\n     select ds_oid\n          ,avg(stor_used) as stor_used_avg\n          ,avg(stor_capacity) as stor_capacity \n    from\n        (SELECT entity_oid as ds_oid\n               ,time\n               ,max(current) FILTER (where type = 'STORAGE_AMOUNT') as stor_used\n               ,max(capacity) FILTER (where type = 'STORAGE_AMOUNT') as stor_capacity\n          FROM metric\n         WHERE type in ('STORAGE_AMOUNT')\n           and time between now() - interval '15 min' and now()\n           and time >= now() - interval '15 min'\n        -- AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'STORAGE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect SPLIT_PART(pms_by_cluster.cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(pms_by_cluster.cluster_name, '/', 2) as \"Cluster Name\",\n       sum(cpu_used_avg)/sum(cpu_capacity)*100 as \"CPU Utilization (%)\",\n       sum(mem_used_avg)/sum(mem_capacity)*100 as \"Mem Utilization (%)\",\n       sum(stor_used_avg)/sum(stor_capacity)*100 as \"Storage Utilization (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n  join ds_by_cluster on pms_by_cluster.cluster_oid = ds_by_cluster.cluster_oid\n  join ds_stats on ds_stats.ds_oid = ds_by_cluster.ds_oid\ngroup by 1, 2\n;",
           "refId": "A",
           "select": [
             [
@@ -963,7 +1086,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "wWMLoX6Mk"
+        "uid": "${DB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1026,7 +1149,7 @@
         ]
       },
       "gridPos": {
-        "h": 27,
+        "h": 25,
         "w": 24,
         "x": 0,
         "y": 60
@@ -1051,6 +1174,10 @@
       "pluginVersion": "8.3.2",
       "targets": [
         {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DB}"
+          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
@@ -1170,11 +1297,28 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Turbo Timescale",
+          "value": "Turbo Timescale"
+        },
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "name": "DB",
+        "options": [],
+        "query": "postgres",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
       }
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1194,6 +1338,6 @@
   "timezone": "",
   "title": "Ultimate On-Prem Cluster and Virtual Machine Headroom",
   "uid": "gjJPcZy7k",
-  "version": 7,
+  "version": 19,
   "weekStart": ""
 }
