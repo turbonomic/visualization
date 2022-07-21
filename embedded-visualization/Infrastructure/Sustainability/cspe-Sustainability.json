@@ -123,6 +123,12 @@
     },
     {
       "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "text",
       "name": "Text",
       "version": ""
@@ -158,7 +164,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1658390391256,
+  "iteration": 1658390391259,
   "links": [
     {
       "asDropdown": false,
@@ -788,6 +794,143 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Number of CPU"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Model"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 350
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 235
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host Model"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 2
+      },
+      "id": 44,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"Host Name\",\n\tattrs->>'model' as \"Host Model\",\n\t-- attrs->>'state' as \"Power State\",\n\tattrs->>'num_cpus' as \"Number of CPU\",\n\tattrs->>'cpu_model' as \"CPU Model\"\nFROM entity e\nWHERE\n  (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo()) AND\n  e.\"type\" = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Physical Hosts List",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -834,8 +977,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
-        "x": 0,
+        "w": 12,
+        "x": 12,
         "y": 2
       },
       "id": 6,
@@ -887,7 +1030,7 @@
           ]
         }
       ],
-      "title": "Total Power for All Hosts (Watts)",
+      "title": "All Hosts Power",
       "type": "timeseries"
     },
     {
@@ -921,7 +1064,7 @@
         "x": 0,
         "y": 10
       },
-      "id": 13,
+      "id": 45,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -929,7 +1072,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -947,7 +1090,7 @@
           "refId": "A"
         }
       ],
-      "title": "Total Power for All Hosts (Watts)",
+      "title": "Total Averaged Power for All Hosts",
       "transformations": [
         {
           "id": "reduce",
@@ -1001,7 +1144,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -1044,7 +1187,7 @@
           ]
         }
       ],
-      "title": "Average Total Energy Consumption for All Hosts",
+      "title": "Total Averaged Energy Consumption for All Hosts",
       "transformations": [
         {
           "id": "reduce",
@@ -1052,7 +1195,7 @@
             "includeTimeField": false,
             "mode": "seriesToRows",
             "reducers": [
-              "mean"
+              "sum"
             ]
           }
         }
@@ -1099,7 +1242,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -1142,7 +1285,7 @@
           ]
         }
       ],
-      "title": "Total Private Cloud CO2 Emissions",
+      "title": "Total Averaged Private Cloud CO2 Emissions",
       "transformations": [
         {
           "id": "reduce",
@@ -1150,7 +1293,7 @@
             "includeTimeField": false,
             "mode": "seriesToRows",
             "reducers": [
-              "mean"
+              "sum"
             ]
           }
         }
@@ -1307,7 +1450,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -1350,7 +1493,7 @@
           ]
         }
       ],
-      "title": "Projection of Average Total Energy Consumption for All Hosts per year",
+      "title": "Projection of Total Averaged Energy Consumption for All Hosts per year",
       "transformations": [
         {
           "id": "reduce",
@@ -1358,7 +1501,7 @@
             "includeTimeField": false,
             "mode": "seriesToRows",
             "reducers": [
-              "mean"
+              "sum"
             ]
           }
         }
@@ -1405,7 +1548,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -1448,7 +1591,7 @@
           ]
         }
       ],
-      "title": "Projection of Total Private Cloud CO2 Emissions per year",
+      "title": "Projection of Total Averaged Private Cloud CO2 Emissions per year",
       "transformations": [
         {
           "id": "reduce",
@@ -1456,7 +1599,7 @@
             "includeTimeField": false,
             "mode": "seriesToRows",
             "reducers": [
-              "mean"
+              "sum"
             ]
           }
         }
@@ -2012,7 +2155,7 @@
           ]
         }
       ],
-      "title": "Total Power for All Azure Virtual Machines (Watts)",
+      "title": "All Azure Virtual Machines Power",
       "transformations": [],
       "type": "timeseries"
     },
@@ -2128,7 +2271,7 @@
           ]
         }
       ],
-      "title": "Total Power for All AWS Virtual Machines (Watts)",
+      "title": "All AWS Virtual Machines Power",
       "transformations": [],
       "type": "timeseries"
     },
@@ -2244,7 +2387,7 @@
           ]
         }
       ],
-      "title": "Total Power for All GCP Virtual Machines (Watts)",
+      "title": "All GCP Virtual Machines Power",
       "transformations": [],
       "type": "timeseries"
     },
@@ -2286,7 +2429,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -2304,7 +2447,7 @@
           "refId": "A"
         }
       ],
-      "title": "Total Power for All Azure Virtual Machines (Watts)",
+      "title": "Total Averaged Power for All Azure Virtual Machines (Watts)",
       "transformations": [
         {
           "id": "reduce",
@@ -2355,7 +2498,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -2373,7 +2516,7 @@
           "refId": "A"
         }
       ],
-      "title": "Total Power for All AWS Virtual Machines (Watts)",
+      "title": "Total Averaged Power for All AWS Virtual Machines (Watts)",
       "transformations": [
         {
           "id": "reduce",
@@ -2424,7 +2567,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -2567,12 +2710,12 @@
           ]
         }
       ],
-      "title": "Total Power for All Virtual Machines (Watts)",
+      "title": "All Public Cloud Virtual Machines Power",
       "transformations": [],
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2580,129 +2723,128 @@
         "y": 44
       },
       "id": 32,
-      "panels": [
+      "panels": [],
+      "title": "WiP",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 45
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "${DS_TURBO_TIMESCALE}"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 34
-          },
-          "id": 26,
-          "options": {
-            "legend": {
-              "calcs": [
-                "min",
-                "max",
-                "mean"
-              ],
-              "displayMode": "list",
-              "placement": "bottom"
-            },
-            "tooltip": {
-              "mode": "single"
-            }
-          },
-          "pluginVersion": "8.3.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "postgres",
-                "uid": "${DS_TURBO_TIMESCALE}"
-              },
-              "format": "time_series",
-              "group": [],
-              "metricColumn": "none",
-              "rawQuery": true,
-              "rawSql": "SELECT\n  time_bucket_gapfill('12 hour', hea.\"time\") AS \"time\",\n  locf(sum(hea.int_value)) as value\nFROM historical_entity_attrs hea\nJOIN entity e on hea.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(hea.\"time\") AND\n  e.type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  hea.type = 'NUM_VCPU'\nGROUP BY time_bucket_gapfill('12 hour', hea.\"time\")\nORDER BY 1",
-              "refId": "A",
-              "select": [
-                [
-                  {
-                    "params": [
-                      "savings"
-                    ],
-                    "type": "column"
-                  }
-                ]
-              ],
-              "table": "completed_action",
-              "timeColumn": "recommendation_time",
-              "timeColumnType": "timestamp",
-              "where": [
-                {
-                  "name": "$__timeFilter",
-                  "params": [],
-                  "type": "macro"
-                }
-              ]
-            }
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  time_bucket_gapfill('12 hour', hea.\"time\") AS \"time\",\n  locf(sum(hea.int_value)) as value\nFROM historical_entity_attrs hea\nJOIN entity e on hea.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(hea.\"time\") AND\n  e.type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  hea.type = 'NUM_VCPU'\nGROUP BY time_bucket_gapfill('12 hour', hea.\"time\")\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
           ],
-          "title": "Public Cloud VM(s) Total Number of vCPU(s)",
-          "transformations": [],
-          "type": "timeseries"
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
-      "title": "WiP",
-      "type": "row"
+      "title": "Public Cloud VM(s) Total Number of vCPU(s)",
+      "transformations": [],
+      "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 33,
   "style": "dark",
   "tags": [],
@@ -3026,8 +3168,8 @@
     ]
   },
   "time": {
-    "from": "now-24h",
-    "to": "now"
+    "from": "2022-04-22T22:00:00.000Z",
+    "to": "2022-04-23T21:59:59.000Z"
   },
   "timepicker": {
     "nowDelay": ""
@@ -3035,6 +3177,6 @@
   "timezone": "",
   "title": "Sustainability",
   "uid": "rUXIcAunz",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
