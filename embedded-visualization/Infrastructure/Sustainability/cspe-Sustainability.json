@@ -1,6 +1,14 @@
 {
   "__inputs": [
     {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    },
+    {
       "name": "DS_CONTROLXL_DB",
       "label": "ControlXL DB",
       "description": "",
@@ -150,7 +158,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1653998200513,
+  "iteration": 1658390391256,
   "links": [
     {
       "asDropdown": false,
@@ -180,7 +188,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -220,7 +228,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -233,8 +242,8 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
-            "w": 12,
+            "h": 7,
+            "w": 24,
             "x": 0,
             "y": 1
           },
@@ -257,7 +266,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "${DS_CONTROLXL_DB}"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -333,7 +342,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -346,12 +356,12 @@
             "overrides": []
           },
           "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 12,
-            "y": 1
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 8
           },
-          "id": 23,
+          "id": 25,
           "options": {
             "legend": {
               "calcs": [
@@ -366,6 +376,7 @@
               "mode": "single"
             }
           },
+          "pluginVersion": "8.3.2",
           "targets": [
             {
               "datasource": {
@@ -374,7 +385,6 @@
               },
               "format": "time_series",
               "group": [],
-              "hide": true,
               "metricColumn": "none",
               "rawQuery": true,
               "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  m.type = 'VCPU'\nORDER BY 1",
@@ -401,7 +411,356 @@
               ]
             }
           ],
-          "title": "Public Cloud VM(s) Average CPU Usage",
+          "title": "vCPU Utilization of All Public Cloud Virtual Machines",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_CONTROLXL_DB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 0,
+            "y": 15
+          },
+          "id": 34,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_CONTROLXL_DB}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  e.attrs->'targets' @> '[{\"type\": \"Azure Subscription\"}]' AND\n  m.type = 'VCPU'\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "savings"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "completed_action",
+              "timeColumn": "recommendation_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "vCPU Utilization of All Azure Virtual Machines",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_CONTROLXL_DB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 8,
+            "y": 15
+          },
+          "id": 35,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_CONTROLXL_DB}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  e.attrs->'targets' @> '[{\"type\": \"AWS\"}]' AND\n  m.type = 'VCPU'\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "savings"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "completed_action",
+              "timeColumn": "recommendation_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "vCPU Utilization of All AWS Virtual Machines",
+          "transformations": [],
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_CONTROLXL_DB}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 16,
+            "y": 15
+          },
+          "id": 36,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_CONTROLXL_DB}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  e.attrs->'targets' @> '[{\"type\": \"GCP Project\"}]' AND\n  m.type = 'VCPU'\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "savings"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "completed_action",
+              "timeColumn": "recommendation_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "vCPU Utilization of All GCP Virtual Machines",
+          "transformations": [],
           "type": "timeseries"
         }
       ],
@@ -424,7 +783,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -498,7 +857,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -528,7 +887,7 @@
           ]
         }
       ],
-      "title": "Total Energy for All Hosts (Watts)",
+      "title": "Total Power for All Hosts (Watts)",
       "type": "timeseries"
     },
     {
@@ -588,7 +947,7 @@
           "refId": "A"
         }
       ],
-      "title": "Total Energy for All Hosts (Watts)",
+      "title": "Total Power for All Hosts (Watts)",
       "transformations": [
         {
           "id": "reduce",
@@ -606,7 +965,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -634,6 +993,312 @@
         "x": 8,
         "y": 10
       },
+      "id": 27,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (${HOST_MIN_CONSUMPTION} + m.utilization * (${HOST_MAX_CONSUMPTION} - ${HOST_MIN_CONSUMPTION}))*((${__to:date:seconds}-${__from:date:seconds})/3600)*${PRIVATE_CLOUD_AVG_PUE} as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'CPU'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Average Total Energy Consumption for All Hosts",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "mean"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "masst"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 10
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (${HOST_MIN_CONSUMPTION} + m.utilization * (${HOST_MAX_CONSUMPTION} - ${HOST_MIN_CONSUMPTION}))*((${__to:date:seconds}-${__from:date:seconds})/3600)*${PRIVATE_CLOUD_AVG_PUE}/1000*${PRIVATE_CLOUD_EMISSIONS_FACTOR} as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'CPU'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Private Cloud CO2 Emissions",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "mean"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unit": "masst"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 0,
+        "y": 14
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  date_trunc('day', m.\"time\") as \"time\",\n  sum((${HOST_MIN_CONSUMPTION} + m.utilization * (${HOST_MAX_CONSUMPTION} - ${HOST_MIN_CONSUMPTION}))*((${__to:date:seconds}-${__from:date:seconds})/3600)*${PRIVATE_CLOUD_AVG_PUE}/1000*${PRIVATE_CLOUD_EMISSIONS_FACTOR}) as \"MTCO2e\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'CPU'\nGROUP BY time\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Daily Private Cloud CO2 Emissions",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 14
+      },
       "id": 14,
       "options": {
         "colorMode": "value",
@@ -654,7 +1319,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -703,7 +1368,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -711,7 +1376,7 @@
             "fixedColor": "red",
             "mode": "fixed"
           },
-          "decimals": 0,
+          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -730,9 +1395,9 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 10
+        "y": 14
       },
-      "id": 15,
+      "id": 28,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -752,7 +1417,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -804,7 +1469,7 @@
         "h": 6,
         "w": 4,
         "x": 0,
-        "y": 14
+        "y": 18
       },
       "id": 19,
       "options": {
@@ -817,7 +1482,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -844,7 +1509,7 @@
         "h": 3,
         "w": 8,
         "x": 4,
-        "y": 14
+        "y": 18
       },
       "id": 17,
       "options": {
@@ -866,7 +1531,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -918,7 +1583,7 @@
         "h": 6,
         "w": 4,
         "x": 12,
-        "y": 14
+        "y": 18
       },
       "id": 22,
       "options": {
@@ -931,7 +1596,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -958,7 +1623,7 @@
         "h": 3,
         "w": 8,
         "x": 16,
-        "y": 14
+        "y": 18
       },
       "id": 20,
       "options": {
@@ -980,7 +1645,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1011,7 +1676,7 @@
           ]
         }
       ],
-      "title": "Equivalent in vehicles per year",
+      "title": "Equivalent in vehicles",
       "transformations": [
         {
           "id": "reduce",
@@ -1029,7 +1694,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1056,7 +1721,7 @@
         "h": 3,
         "w": 8,
         "x": 4,
-        "y": 17
+        "y": 21
       },
       "id": 16,
       "options": {
@@ -1078,7 +1743,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1127,7 +1792,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1154,7 +1819,7 @@
         "h": 3,
         "w": 8,
         "x": 16,
-        "y": 17
+        "y": 21
       },
       "id": 21,
       "options": {
@@ -1176,7 +1841,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1207,7 +1872,7 @@
           ]
         }
       ],
-      "title": "Equivalent in household electricity consumption per year",
+      "title": "Equivalent in household electricity consumption",
       "transformations": [
         {
           "id": "reduce",
@@ -1228,7 +1893,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 24
       },
       "id": 4,
       "panels": [],
@@ -1238,7 +1903,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DS_CONTROLXL_DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1287,17 +1952,17 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "watt"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 6,
+        "w": 8,
         "x": 0,
-        "y": 21
+        "y": 25
       },
-      "id": 25,
+      "id": 37,
       "options": {
         "legend": {
           "calcs": [
@@ -1317,13 +1982,13 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DS_CONTROLXL_DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  time_bucket_gapfill('12 hour', hea.\"time\") AS \"time\",\n  locf(sum(hea.int_value)) as value\nFROM historical_entity_attrs hea\nJOIN entity e on hea.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(hea.\"time\") AND\n  e.type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  hea.type = 'NUM_VCPU'\nGROUP BY time_bucket_gapfill('12 hour', hea.\"time\")\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (${AZURE_MIN_CONSUMPTION} + m.utilization * (${AZURE_MAX_CONSUMPTION} - ${AZURE_MIN_CONSUMPTION})) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  e.attrs->'targets' @> '[{\"type\": \"Azure Subscription\"}]' AND\n  m.type = 'VCPU'\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1347,9 +2012,694 @@
           ]
         }
       ],
-      "title": "Public Cloud VM(s) Total Number of vCPU(s)",
+      "title": "Total Power for All Azure Virtual Machines (Watts)",
       "transformations": [],
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 25
+      },
+      "id": 38,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (${AWS_MIN_CONSUMPTION} + m.utilization * (${AWS_MAX_CONSUMPTION} - ${AWS_MIN_CONSUMPTION})) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  e.attrs->'targets' @> '[{\"type\": \"AWS\"}]' AND\n  m.type = 'VCPU'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Power for All AWS Virtual Machines (Watts)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 25
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (${GCP_MIN_CONSUMPTION} + m.utilization * (${GCP_MAX_CONSUMPTION} - ${GCP_MIN_CONSUMPTION})) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  e.attrs->'targets' @> '[{\"type\": \"GCP Project\"}]' AND\n  m.type = 'VCPU'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Power for All GCP Virtual Machines (Watts)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 31
+      },
+      "id": 40,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 37,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Power for All Azure Virtual Machines (Watts)",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "sum"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 31
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 38,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Power for All AWS Virtual Machines (Watts)",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "sum"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 31
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 39,
+          "refId": "A"
+        }
+      ],
+      "title": "Total Power for All GCP Virtual Machines (Watts)",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "sum"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (${AZURE_MIN_CONSUMPTION} + m.utilization * (${AZURE_MAX_CONSUMPTION} - ${AZURE_MIN_CONSUMPTION})) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  m.type = 'VCPU'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Power for All Virtual Machines (Watts)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 32,
+      "panels": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 34
+          },
+          "id": 26,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "max",
+                "mean"
+              ],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single"
+            }
+          },
+          "pluginVersion": "8.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "postgres",
+                "uid": "${DS_TURBO_TIMESCALE}"
+              },
+              "format": "time_series",
+              "group": [],
+              "metricColumn": "none",
+              "rawQuery": true,
+              "rawSql": "SELECT\n  time_bucket_gapfill('12 hour', hea.\"time\") AS \"time\",\n  locf(sum(hea.int_value)) as value\nFROM historical_entity_attrs hea\nJOIN entity e on hea.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(hea.\"time\") AND\n  e.type = 'VIRTUAL_MACHINE' AND\n  e.environment = 'CLOUD' AND\n  hea.type = 'NUM_VCPU'\nGROUP BY time_bucket_gapfill('12 hour', hea.\"time\")\nORDER BY 1",
+              "refId": "A",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "savings"
+                    ],
+                    "type": "column"
+                  }
+                ]
+              ],
+              "table": "completed_action",
+              "timeColumn": "recommendation_time",
+              "timeColumnType": "timestamp",
+              "where": [
+                {
+                  "name": "$__timeFilter",
+                  "params": [],
+                  "type": "macro"
+                }
+              ]
+            }
+          ],
+          "title": "Public Cloud VM(s) Total Number of vCPU(s)",
+          "transformations": [],
+          "type": "timeseries"
+        }
+      ],
+      "title": "WiP",
+      "type": "row"
     }
   ],
   "refresh": "",
@@ -1381,9 +2731,9 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "1107",
-          "value": "1107"
+          "selected": false,
+          "text": "80",
+          "value": "80"
         },
         "description": "Minimum consumption of your Private Cloud hosts in Watts. You can refer the the \"All Published SPECpower_ssh2008 Results\" link to get the values for your specific host.",
         "hide": 0,
@@ -1392,19 +2742,19 @@
         "options": [
           {
             "selected": true,
-            "text": "1107",
-            "value": "1107"
+            "text": "80",
+            "value": "80"
           }
         ],
-        "query": "1107",
+        "query": "80",
         "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "current": {
-          "selected": true,
-          "text": "4847",
-          "value": "4847"
+          "selected": false,
+          "text": "200",
+          "value": "200"
         },
         "description": "Maximum consumption of your Private Cloud hosts in Watts. You can refer the the \"All Published SPECpower_ssh2008 Results\" link to get the values for your specific host.",
         "hide": 0,
@@ -1413,11 +2763,11 @@
         "options": [
           {
             "selected": true,
-            "text": "4847",
-            "value": "4847"
+            "text": "200",
+            "value": "200"
           }
         ],
-        "query": "4847",
+        "query": "200",
         "skipUrlSync": false,
         "type": "textbox"
       },
@@ -1676,7 +3026,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -1685,6 +3035,6 @@
   "timezone": "",
   "title": "Sustainability",
   "uid": "rUXIcAunz",
-  "version": 11,
+  "version": 13,
   "weekStart": ""
 }
