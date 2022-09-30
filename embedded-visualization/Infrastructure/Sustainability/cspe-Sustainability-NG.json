@@ -1,4 +1,137 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    },
+    {
+      "name": "VAR_PRIVATE_CLOUD_AVG_PUE",
+      "type": "constant",
+      "label": "PRIVATE_CLOUD_AVG_PUE",
+      "value": "1.67",
+      "description": ""
+    },
+    {
+      "name": "VAR_PRIVATE_CLOUD_EMISSIONS_FACTOR",
+      "type": "constant",
+      "label": "PRIVATE_CLOUD_EMISSIONS_FACTOR",
+      "value": "0.000709",
+      "description": ""
+    },
+    {
+      "name": "VAR_TREE_SEQUESTRATION_FACTOR",
+      "type": "constant",
+      "label": "TREE_SEQUESTRATION_FACTOR",
+      "value": "0.060",
+      "description": ""
+    },
+    {
+      "name": "VAR_ACRES_OF_FOREST_SEQUESTRATION_FACTOR",
+      "type": "constant",
+      "label": "ACRES_OF_FOREST_SEQUESTRATION_FACTOR",
+      "value": "0.84",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLE_EMISSIONS_FACTOR",
+      "type": "constant",
+      "label": "VEHICLE_EMISSIONS_FACTOR",
+      "value": "4.60",
+      "description": ""
+    },
+    {
+      "name": "VAR_HOUSEHOLD_EMISSIONS_FACTOR",
+      "type": "constant",
+      "label": "HOUSEHOLD_EMISSIONS_FACTOR",
+      "value": "5.505",
+      "description": ""
+    },
+    {
+      "name": "VAR_AWS_MIN_CONSUMPTION",
+      "type": "constant",
+      "label": "AWS_MIN_CONSUMPTION",
+      "value": "0.74",
+      "description": ""
+    },
+    {
+      "name": "VAR_AWS_MAX_CONSUMPTION",
+      "type": "constant",
+      "label": "AWS_MAX_CONSUMPTION",
+      "value": "3.5",
+      "description": ""
+    },
+    {
+      "name": "VAR_AZURE_MIN_CONSUMPTION",
+      "type": "constant",
+      "label": "AZURE_MIN_CONSUMPTION",
+      "value": "0.78",
+      "description": ""
+    },
+    {
+      "name": "VAR_AZURE_MAX_CONSUMPTION",
+      "type": "constant",
+      "label": "AZURE_MAX_CONSUMPTION",
+      "value": "3.76",
+      "description": ""
+    },
+    {
+      "name": "VAR_GCP_MIN_CONSUMPTION",
+      "type": "constant",
+      "label": "GCP_MIN_CONSUMPTION",
+      "value": "0.71",
+      "description": ""
+    },
+    {
+      "name": "VAR_GCP_MAX_CONSUMPTION",
+      "type": "constant",
+      "label": "GCP_MAX_CONSUMPTION",
+      "value": "4.26",
+      "description": ""
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.12"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -25,8 +158,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 69,
-  "iteration": 1664450101315,
+  "id": null,
+  "iteration": 1664535971866,
   "links": [
     {
       "asDropdown": false,
@@ -60,7 +193,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -138,7 +271,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -174,7 +307,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -253,7 +386,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -290,7 +423,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -369,7 +502,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -406,7 +539,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -485,7 +618,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -522,7 +655,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -601,7 +734,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -721,7 +854,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "dQJMY1b7z"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -823,7 +956,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -859,7 +992,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "dQJMY1b7z"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -934,7 +1067,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1029,7 +1162,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "dQJMY1b7z"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1130,7 +1263,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1245,7 +1378,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "dQJMY1b7z"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1285,8 +1418,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1320,7 +1452,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1357,7 +1489,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "dQJMY1b7z"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1397,8 +1529,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1457,7 +1588,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "time_series",
           "group": [],
@@ -1516,7 +1647,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "dQJMY1b7z"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1533,8 +1664,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1568,7 +1698,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1600,7 +1730,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1669,8 +1799,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1744,7 +1873,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1785,8 +1914,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -1817,7 +1945,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -1866,7 +1994,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1880,8 +2008,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -1915,7 +2042,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -1984,7 +2111,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -1998,8 +2125,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2033,7 +2159,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2102,7 +2228,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2116,8 +2242,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2151,7 +2276,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2200,7 +2325,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2214,8 +2339,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2249,7 +2373,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2298,7 +2422,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2312,8 +2436,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2347,7 +2470,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2414,7 +2537,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2454,8 +2577,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2494,7 +2616,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2531,7 +2653,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2571,8 +2693,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2611,7 +2732,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2648,7 +2769,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2688,8 +2809,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2728,7 +2848,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -2777,8 +2897,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "yellow",
-                    "value": null
+                    "color": "yellow"
                   }
                 ]
               },
@@ -2846,8 +2965,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "yellow",
-                    "value": null
+                    "color": "yellow"
                   }
                 ]
               },
@@ -2915,8 +3033,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "yellow",
-                    "value": null
+                    "color": "yellow"
                   }
                 ]
               },
@@ -2972,7 +3089,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3051,7 +3168,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -3106,7 +3223,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "dQJMY1b7z"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3146,8 +3263,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3186,7 +3302,7 @@
             {
               "datasource": {
                 "type": "postgres",
-                "uid": "dQJMY1b7z"
+                "uid": "${DS_TURBO_TIMESCALE}"
               },
               "format": "time_series",
               "group": [],
@@ -3236,122 +3352,258 @@
         "hide": 2,
         "label": "",
         "name": "PRIVATE_CLOUD_AVG_PUE",
-        "query": "1.67",
+        "query": "${VAR_PRIVATE_CLOUD_AVG_PUE}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PRIVATE_CLOUD_AVG_PUE}",
+          "text": "${VAR_PRIVATE_CLOUD_AVG_PUE}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_PRIVATE_CLOUD_AVG_PUE}",
+            "text": "${VAR_PRIVATE_CLOUD_AVG_PUE}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Private Cloud Emissions Factor corresponds to 1,562.4 lbs CO2/MWh × (4.536 × 10^(-4) metric tons/lb) × 0.001 MWh/kWh = 7.09 × 10^(-4) metric tons CO2/kWh",
         "hide": 2,
         "label": "",
         "name": "PRIVATE_CLOUD_EMISSIONS_FACTOR",
-        "query": "0.000709",
+        "query": "${VAR_PRIVATE_CLOUD_EMISSIONS_FACTOR}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PRIVATE_CLOUD_EMISSIONS_FACTOR}",
+          "text": "${VAR_PRIVATE_CLOUD_EMISSIONS_FACTOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_PRIVATE_CLOUD_EMISSIONS_FACTOR}",
+            "text": "${VAR_PRIVATE_CLOUD_EMISSIONS_FACTOR}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Each Tree Seedlings Grown for 10 years captures that amount of ton of CO2",
         "hide": 2,
         "label": "",
         "name": "TREE_SEQUESTRATION_FACTOR",
-        "query": "0.060",
+        "query": "${VAR_TREE_SEQUESTRATION_FACTOR}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_TREE_SEQUESTRATION_FACTOR}",
+          "text": "${VAR_TREE_SEQUESTRATION_FACTOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_TREE_SEQUESTRATION_FACTOR}",
+            "text": "${VAR_TREE_SEQUESTRATION_FACTOR}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Each acre of forest captures that amount of ton of CO2 per year",
         "hide": 2,
         "label": "",
         "name": "ACRES_OF_FOREST_SEQUESTRATION_FACTOR",
-        "query": "0.84",
+        "query": "${VAR_ACRES_OF_FOREST_SEQUESTRATION_FACTOR}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_ACRES_OF_FOREST_SEQUESTRATION_FACTOR}",
+          "text": "${VAR_ACRES_OF_FOREST_SEQUESTRATION_FACTOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_ACRES_OF_FOREST_SEQUESTRATION_FACTOR}",
+            "text": "${VAR_ACRES_OF_FOREST_SEQUESTRATION_FACTOR}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Emission of ton of CO2 per passenger vehicles driven for 1 year",
         "hide": 2,
         "label": "",
         "name": "VEHICLE_EMISSIONS_FACTOR",
-        "query": "4.60",
+        "query": "${VAR_VEHICLE_EMISSIONS_FACTOR}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLE_EMISSIONS_FACTOR}",
+          "text": "${VAR_VEHICLE_EMISSIONS_FACTOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VEHICLE_EMISSIONS_FACTOR}",
+            "text": "${VAR_VEHICLE_EMISSIONS_FACTOR}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Emission of ton of CO2 per household electricity consumption for 1 year",
         "hide": 2,
         "label": "",
         "name": "HOUSEHOLD_EMISSIONS_FACTOR",
-        "query": "5.505",
+        "query": "${VAR_HOUSEHOLD_EMISSIONS_FACTOR}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_HOUSEHOLD_EMISSIONS_FACTOR}",
+          "text": "${VAR_HOUSEHOLD_EMISSIONS_FACTOR}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_HOUSEHOLD_EMISSIONS_FACTOR}",
+            "text": "${VAR_HOUSEHOLD_EMISSIONS_FACTOR}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Average minimum consumption of an AWS instance in Watts. Reference: https://www.cloudcarbonfootprint.org/docs/methodology/#energy-estimate-watt-hours",
         "hide": 2,
         "label": "",
         "name": "AWS_MIN_CONSUMPTION",
-        "query": "0.74",
+        "query": "${VAR_AWS_MIN_CONSUMPTION}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_AWS_MIN_CONSUMPTION}",
+          "text": "${VAR_AWS_MIN_CONSUMPTION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_AWS_MIN_CONSUMPTION}",
+            "text": "${VAR_AWS_MIN_CONSUMPTION}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Average maximum consumption of an AWS instance in Watts. Reference: https://www.cloudcarbonfootprint.org/docs/methodology/#energy-estimate-watt-hours",
         "hide": 2,
         "label": "",
         "name": "AWS_MAX_CONSUMPTION",
-        "query": "3.5",
+        "query": "${VAR_AWS_MAX_CONSUMPTION}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_AWS_MAX_CONSUMPTION}",
+          "text": "${VAR_AWS_MAX_CONSUMPTION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_AWS_MAX_CONSUMPTION}",
+            "text": "${VAR_AWS_MAX_CONSUMPTION}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Average minimum consumption of an Azure instance in Watts. Reference: https://www.cloudcarbonfootprint.org/docs/methodology/#energy-estimate-watt-hours",
         "hide": 2,
         "label": "",
         "name": "AZURE_MIN_CONSUMPTION",
-        "query": "0.78",
+        "query": "${VAR_AZURE_MIN_CONSUMPTION}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_AZURE_MIN_CONSUMPTION}",
+          "text": "${VAR_AZURE_MIN_CONSUMPTION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_AZURE_MIN_CONSUMPTION}",
+            "text": "${VAR_AZURE_MIN_CONSUMPTION}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Average maximum consumption of an Azure instance in Watts. Reference: https://www.cloudcarbonfootprint.org/docs/methodology/#energy-estimate-watt-hours",
         "hide": 2,
         "label": "",
         "name": "AZURE_MAX_CONSUMPTION",
-        "query": "3.76",
+        "query": "${VAR_AZURE_MAX_CONSUMPTION}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_AZURE_MAX_CONSUMPTION}",
+          "text": "${VAR_AZURE_MAX_CONSUMPTION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_AZURE_MAX_CONSUMPTION}",
+            "text": "${VAR_AZURE_MAX_CONSUMPTION}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Average minimum consumption of a GCP instance in Watts. Reference: https://www.cloudcarbonfootprint.org/docs/methodology/#energy-estimate-watt-hours",
         "hide": 2,
         "label": "",
         "name": "GCP_MIN_CONSUMPTION",
-        "query": "0.71",
+        "query": "${VAR_GCP_MIN_CONSUMPTION}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_GCP_MIN_CONSUMPTION}",
+          "text": "${VAR_GCP_MIN_CONSUMPTION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_GCP_MIN_CONSUMPTION}",
+            "text": "${VAR_GCP_MIN_CONSUMPTION}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Average maximum consumption of a GCP instance in Watts. Reference: https://www.cloudcarbonfootprint.org/docs/methodology/#energy-estimate-watt-hours",
         "hide": 2,
         "label": "",
         "name": "GCP_MAX_CONSUMPTION",
-        "query": "4.26",
+        "query": "${VAR_GCP_MAX_CONSUMPTION}",
         "skipUrlSync": false,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_GCP_MAX_CONSUMPTION}",
+          "text": "${VAR_GCP_MAX_CONSUMPTION}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_GCP_MAX_CONSUMPTION}",
+            "text": "${VAR_GCP_MAX_CONSUMPTION}",
+            "selected": false
+          }
+        ]
       },
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "dQJMY1b7z"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'COMPUTE_CLUSTER'\n    and last_seen > now()\norder by 1",
         "hide": 0,
@@ -3368,14 +3620,10 @@
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "dQJMY1b7z"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and e.last_seen > now()\norder by 1",
         "hide": 2,
