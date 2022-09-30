@@ -159,7 +159,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1664535971866,
+  "iteration": 1664549834059,
   "links": [
     {
       "asDropdown": false,
@@ -818,7 +818,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 6,
         "x": 0,
         "y": 2
       },
@@ -936,7 +936,7 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
+        "x": 6,
         "y": 2
       },
       "id": 44,
@@ -988,6 +988,92 @@
       ],
       "title": "Physical Hosts List",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 2
+      },
+      "id": 65,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "/^VM OID$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.12",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  distinct e.oid as \"VM OID\",\n  e.\"name\" as \"VM Name\"\nFROM entity e\nJOIN scope s on s.scoped_oid = e.oid\nWHERE\n  (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo()) AND\n  -- e.last_seen > now() AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  s.seed_oid IN (${HOST_LIST})\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "VM Number",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -1294,16 +1380,7 @@
         }
       ],
       "title": "All Hosts Power",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "seriesToRows",
-            "reducers": []
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1418,7 +1495,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -1529,7 +1607,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -1632,12 +1711,638 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 34
+      },
+      "id": 59,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (m.current/6) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": " Individual Hosts Energy (calculated Energy)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 34
+      },
+      "id": 63,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.12",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 59,
+          "refId": "A"
+        }
+      ],
+      "title": "Individual Hosts Energy (calculated Energy) - Average",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "value"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "id": 60,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current/6) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'POWER'\nGROUP BY m.time\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "All Hosts Energy (calculated Energy)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "id": 64,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.12",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 60,
+          "refId": "A"
+        }
+      ],
+      "title": "All Hosts Energy (calculated Energy) - Average",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "mode": "seriesToRows",
+            "reducers": []
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 50
+      },
+      "id": 62,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current/6) over (PARTITION BY e.name ORDER BY m.\"time\") as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Individual Hosts Cumulative Energy (calculated Energy)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "value"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 50
+      },
+      "id": 61,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current/6) over (order by m.\"time\") as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'POWER'\n-- GROUP BY m.time\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "All Hosts Cumulative Energy (calculated Energy)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 58
       },
       "id": 56,
       "panels": [],
@@ -1664,7 +2369,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1679,7 +2385,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 35
+        "y": 59
       },
       "id": 53,
       "options": {
@@ -1702,6 +2408,7 @@
           },
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "SELECT\n  TO_CHAR(a.recommendation_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Recommended\",\n  e.\"name\" as \"Host Name\",\n  e.\"oid\" as \"Host OID\",\n  ec.\"name\" as \"Cluster Name\",\n  a.description as \"Description\"\nFROM pending_action a\nJOIN entity e on e.oid = a.target_entity_id\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER}) and s.finish > now()\njoin entity ec on ec.oid = s.seed_oid\nwhere\n  $__timeFilter(a.recommendation_time) AND\n  a.\"type\" = 'PROVISION' AND\n  a.target_entity_id IN (${HOST_LIST})\nORDER BY \"Host Name\"",
@@ -1737,7 +2444,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  avg(m.current) as \"Power Average\",\n  (avg(m.current)/((${__to:date:seconds}-${__from:date:seconds})/3600)*365*24) as \"Estimated Yearly Average Power\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nJOIN pending_action pa on pa.target_entity_id = e.oid\nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nGROUP BY e.oid\nORDER BY 1",
+          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  avg(m.current/6) as \"Energy Average (kWh)\",\n  (avg(m.current/6)/((${__to:date:seconds}-${__from:date:seconds})/3600)*365*24) as \"Estimated Yearly Average Energy (kWh)\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nJOIN pending_action pa on pa.target_entity_id = e.oid\nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nGROUP BY e.oid\nORDER BY 1",
           "refId": "Average host power",
           "select": [
             [
@@ -1773,12 +2480,33 @@
           "id": "organize",
           "options": {
             "excludeByName": {
+              "Energy Average": true,
+              "Energy Average (kWh)": true,
+              "Estimated Yearly Average Energy": true,
+              "Estimated Yearly Average Energy (kWh)": true,
+              "Estimated Yearly Average Energy (kwH": true,
               "Estimated Yearly Average Power": true,
               "Host OID": true,
-              "Power Average": true
+              "Power Average": false
             },
             "indexByName": {},
             "renameByName": {}
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Host Name"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
           }
         }
       ],
@@ -1799,11 +2527,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
-          "unit": "watt"
+          "unit": "kwatth"
         },
         "overrides": []
       },
@@ -1811,12 +2540,12 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 35
+        "y": 59
       },
       "id": 54,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
@@ -1866,7 +2595,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 67
       },
       "id": 58,
       "panels": [
@@ -2530,7 +3259,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 68
       },
       "id": 4,
       "panels": [
@@ -3216,7 +3945,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 69
       },
       "id": 32,
       "panels": [
@@ -3642,7 +4371,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -3651,6 +4380,6 @@
   "timezone": "",
   "title": "Sustainability NG - WiP",
   "uid": "bR0umS44k",
-  "version": 8,
+  "version": 10,
   "weekStart": ""
 }
