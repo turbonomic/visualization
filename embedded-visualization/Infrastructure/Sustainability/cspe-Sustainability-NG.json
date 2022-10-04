@@ -159,7 +159,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1664549834059,
+  "iteration": 1664914081818,
   "links": [
     {
       "asDropdown": false,
@@ -1159,7 +1159,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.current as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.current as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1355,7 +1355,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nGROUP BY m.time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\nGROUP BY m.time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1536,7 +1536,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.current as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.current as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'ENERGY'\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1673,7 +1673,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'ENERGY'\nGROUP BY m.time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.provider_oid is null AND\n  m.type = 'ENERGY'\nGROUP BY m.time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1794,7 +1794,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (m.current/6) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (m.current/6) as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -1990,7 +1990,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current/6) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'POWER'\nGROUP BY m.time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current/6) as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\nGROUP BY m.time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2171,7 +2171,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current/6) over (PARTITION BY e.name ORDER BY m.\"time\") as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current/6) over (PARTITION BY e.name ORDER BY m.\"time\") as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2308,7 +2308,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current/6) over (order by m.\"time\") as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.type = 'POWER'\n-- GROUP BY m.time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  SUM(m.current/6) over (order by m.\"time\") as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\n-- GROUP BY m.time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2444,7 +2444,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  avg(m.current/6) as \"Energy Average (kWh)\",\n  (avg(m.current/6)/((${__to:date:seconds}-${__from:date:seconds})/3600)*365*24) as \"Estimated Yearly Average Energy (kWh)\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nJOIN pending_action pa on pa.target_entity_id = e.oid\nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'POWER'\nGROUP BY e.oid\nORDER BY 1",
+          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  avg(m.current/6) as \"Energy Average (kWh)\",\n  (avg(m.current/6)/((${__to:date:seconds}-${__from:date:seconds})/3600)*365*24) as \"Estimated Yearly Average Energy (kWh)\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nJOIN pending_action pa on pa.target_entity_id = e.oid\nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'POWER'\nGROUP BY e.oid\nORDER BY 1",
           "refId": "Average host power",
           "select": [
             [
@@ -4371,7 +4371,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -4380,6 +4380,6 @@
   "timezone": "",
   "title": "Sustainability NG - WiP",
   "uid": "bR0umS44k",
-  "version": 10,
+  "version": 11,
   "weekStart": ""
 }
