@@ -159,7 +159,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1665680277017,
+  "iteration": 1665753098846,
   "links": [
     {
       "asDropdown": false,
@@ -2423,7 +2423,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  avg(m.current) as \"Energy Average (kWh)\",\n  (avg(m.current)*365*24) as \"Estimated Yearly Average Energy (kWh)\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nJOIN pending_action pa on pa.target_entity_id = e.oid\nWHERE\n--  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'ENERGY'\nGROUP BY e.oid\nORDER BY 1",
+          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  avg(m.current) as \"Energy Average (Wh)\",\n  (avg(m.current)*365*24) as \"Estimated Yearly Average Energy (Wh)\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nJOIN pending_action pa on pa.target_entity_id = e.oid\nWHERE\n--  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'ENERGY'\nGROUP BY e.oid\nORDER BY 1",
           "refId": "Average host power",
           "select": [
             [
@@ -2615,12 +2615,12 @@
       "id": 14,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "sum"
           ],
           "fields": "",
           "values": false
@@ -2639,7 +2639,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  (sum(m.current)*${PRIVATE_CLOUD_AVG_PUE}/1000*${PRIVATE_CLOUD_EMISSIONS_FACTOR}) as \"MTCO2e\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*${PRIVATE_CLOUD_AVG_PUE}/1000*${PRIVATE_CLOUD_EMISSIONS_FACTOR} as \"MTCO2e\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY m.time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2664,18 +2664,7 @@
         }
       ],
       "title": "Private Cloud CO2 Emissions",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "sum"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -2757,7 +2746,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*8760*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${ACRES_OF_FOREST_SEQUESTRATION_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${ACRES_OF_FOREST_SEQUESTRATION_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2782,18 +2771,7 @@
         }
       ],
       "title": "Equivalent in acres of forest/year",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "mean"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -2875,7 +2853,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*8760*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${VEHICLE_EMISSIONS_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${VEHICLE_EMISSIONS_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2900,18 +2878,7 @@
         }
       ],
       "title": "Equivalent in vehicles",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "mean"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -2973,7 +2940,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*8760*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${TREE_SEQUESTRATION_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${TREE_SEQUESTRATION_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -2998,18 +2965,7 @@
         }
       ],
       "title": "Equivalent in trees growing for 10 years",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "mean"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -3071,7 +3027,7 @@
           "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*8760*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${HOUSEHOLD_EMISSIONS_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  sum(m.current)*${PRIVATE_CLOUD_AVG_PUE}*${PRIVATE_CLOUD_EMISSIONS_FACTOR}/1000/${HOUSEHOLD_EMISSIONS_FACTOR} as value\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.type = 'ENERGY'\nGROUP BY time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -3096,18 +3052,7 @@
         }
       ],
       "title": "Equivalent in household electricity consumption",
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "includeTimeField": false,
-            "mode": "seriesToRows",
-            "reducers": [
-              "mean"
-            ]
-          }
-        }
-      ],
+      "transformations": [],
       "type": "stat"
     },
     {
@@ -4107,6 +4052,6 @@
   "timezone": "",
   "title": "Sustainability NG - WiP",
   "uid": "bR0umS44k",
-  "version": 25,
+  "version": 27,
   "weekStart": ""
 }
