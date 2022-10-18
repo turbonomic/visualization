@@ -159,7 +159,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1665753098846,
+  "iteration": 1666102237686,
   "links": [
     {
       "asDropdown": false,
@@ -2302,7 +2302,7 @@
           "refId": "A"
         }
       ],
-      "title": "All Hosts Energy (calculated Energy) - Average",
+      "title": "All Hosts Energy - Average",
       "transformations": [
         {
           "id": "reduce",
@@ -2559,10 +2559,27 @@
           "id": "organize",
           "options": {
             "excludeByName": {
+              "Host Name": false,
               "Host OID": true
             },
             "indexByName": {},
             "renameByName": {}
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Host Name"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
           }
         }
       ],
@@ -4043,7 +4060,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {
@@ -4052,6 +4069,6 @@
   "timezone": "",
   "title": "Sustainability NG - WiP",
   "uid": "bR0umS44k",
-  "version": 27,
+  "version": 5,
   "weekStart": ""
 }
