@@ -159,7 +159,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1666102237686,
+  "iteration": 1666171959036,
   "links": [
     {
       "asDropdown": false,
@@ -4023,14 +4023,14 @@
           "type": "postgres",
           "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "definition": "select\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'COMPUTE_CLUSTER'\n    and last_seen > now()\norder by 1",
+        "definition": "select\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'COMPUTE_CLUSTER'\n    and attrs->>'targets' like '%vCenter%'\n    and last_seen > now()\norder by 1",
         "hide": 0,
         "includeAll": true,
         "label": "Cluster",
         "multi": true,
         "name": "CLUSTER",
         "options": [],
-        "query": "select\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'COMPUTE_CLUSTER'\n    and last_seen > now()\norder by 1",
+        "query": "select\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'COMPUTE_CLUSTER'\n    and attrs->>'targets' like '%vCenter%'\n    and last_seen > now()\norder by 1",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -4060,7 +4060,7 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -4069,6 +4069,6 @@
   "timezone": "",
   "title": "Sustainability NG - WiP",
   "uid": "bR0umS44k",
-  "version": 5,
+  "version": 7,
   "weekStart": ""
 }
