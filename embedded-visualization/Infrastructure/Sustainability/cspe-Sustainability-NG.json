@@ -159,7 +159,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1666171959036,
+  "iteration": 1667230880133,
   "links": [
     {
       "asDropdown": false,
@@ -4043,14 +4043,14 @@
           "type": "postgres",
           "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "definition": "select\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and e.last_seen > now()\norder by 1",
+        "definition": "select\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and attrs->>'model' not like 'VMware%'\n    and e.last_seen > now()\norder by 1",
         "hide": 2,
         "includeAll": true,
         "label": "Host List",
         "multi": true,
         "name": "HOST_LIST",
         "options": [],
-        "query": "select\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and e.last_seen > now()\norder by 1",
+        "query": "select\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and attrs->>'model' not like 'VMware%'\n    and e.last_seen > now()\norder by 1",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -4069,6 +4069,6 @@
   "timezone": "",
   "title": "Sustainability NG - WiP",
   "uid": "bR0umS44k",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
