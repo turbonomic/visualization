@@ -9,13 +9,12 @@
       "pluginName": "PostgreSQL"
     }
   ],
-  "__elements": [],
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.12"
+      "version": "8.0.6"
     },
     {
       "type": "datasource",
@@ -40,38 +39,25 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
-        },
+        "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
-  "fiscalYearStartMonth": 0,
+  "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1667306760979,
+  "iteration": 1667322818868,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -84,10 +70,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -130,18 +113,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -163,14 +142,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Total Successful Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -213,18 +191,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -246,14 +220,91 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Completed vCPU Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
+      "datasource": "${DS_TURBO_TIMESCALE}",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 1
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^vCPU Added$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"vCPU Added\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float > (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vCPU Added",
+      "type": "stat"
+    },
+    {
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -281,7 +332,7 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 10,
+        "x": 15,
         "y": 1
       },
       "id": 5,
@@ -300,18 +351,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) as \"VCPU Removed\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float < (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) as \"VCPU Removed\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float < (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -333,98 +380,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Total vCPU Removed",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "deckbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 15,
-        "y": 1
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "/^Difference$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "8.5.12",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float < (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Total vMem Removed",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "description": "",
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -451,11 +413,11 @@
         "x": 20,
         "y": 1
       },
-      "id": 13,
+      "id": 12,
       "options": {
         "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -465,20 +427,16 @@
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -500,14 +458,13 @@
           ]
         }
       ],
-      "title": "Total vMem cost difference",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vCPU cost difference",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -550,18 +507,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -583,14 +536,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Completed vMem Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -607,7 +559,7 @@
               }
             ]
           },
-          "unit": "vCPU"
+          "unit": "deckbytes"
         },
         "overrides": []
       },
@@ -617,34 +569,30 @@
         "x": 10,
         "y": 5
       },
-      "id": 22,
+      "id": 23,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "sum"
           ],
-          "fields": "/^vCPU Added$/",
+          "fields": "/^Difference$/",
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "value"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"vCPU Added\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float > (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float > (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -666,14 +614,13 @@
           ]
         }
       ],
-      "title": "Total vCPU Added",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vMem Added",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -700,7 +647,7 @@
         "x": 15,
         "y": 5
       },
-      "id": 23,
+      "id": 4,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -716,18 +663,14 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float > (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"Difference\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float < (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -749,14 +692,14 @@
           ]
         }
       ],
-      "title": "Total vMem Added",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vMem Removed",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -783,11 +726,11 @@
         "x": 20,
         "y": 5
       },
-      "id": 12,
+      "id": 13,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -797,20 +740,16 @@
           "values": false
         },
         "text": {},
-        "textMode": "auto"
+        "textMode": "value"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -832,15 +771,14 @@
           ]
         }
       ],
-      "title": "Total vCPU cost difference",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Total vMem cost difference",
       "type": "stat"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
+      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -853,10 +791,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -899,18 +834,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%' OR a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -932,24 +863,22 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Total Successful Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
           "custom": {
-            "align": "auto",
+            "align": null,
             "displayMode": "auto",
-            "filterable": true,
-            "inspect": false
+            "filterable": true
           },
           "mappings": [],
           "thresholds": {
@@ -1055,28 +984,17 @@
       },
       "id": 2,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.\"category\" as \"Category\",\n  ec.\"name\" as \"Cluster Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)/1024/1024\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\",\n    TO_CHAR(a.acceptance_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Executed\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\njoin entity ec on ec.oid = s.seed_oid\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.\"category\" as \"Category\",\n  ec.\"name\" as \"Cluster Name\",\n--  a.recommendation_time,\n  CASE WHEN a.description like '%VCPU%'\n    THEN 'VCPU'\n    ELSE 'VMEM'\n    END as \"Resource\",\n  CASE WHEN ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float) > 0 OR ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float) > 0\n    THEN 1::integer\n    ELSE -1::integer\n    END as \"Direction\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float\n    ELSE ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)/1024/1024\n    END as \"Difference\",\n  CASE WHEN a.description like '%VCPU%'\n    THEN a.attrs->'resizeInfo'->'VCPU'->>'unit'\n    ELSE a.attrs->'resizeInfo'->'VMEM'->>'unit'\n    END as \"Unit\",\n    TO_CHAR(a.acceptance_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Executed\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\njoin entity ec on ec.oid = s.seed_oid\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1098,15 +1016,14 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Successfully Completed Resize Actions (group selected above)",
       "transformations": [],
       "type": "table"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1149,18 +1066,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VCPU%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1182,14 +1095,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Completed vCPU Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1232,18 +1144,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  a.description as \"Description\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  (a.description like '%VMem%') AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1265,14 +1173,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "Completed vMem Resize Actions",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1315,18 +1222,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"vCPU Added\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float > (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"vCPU Added\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float > (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1348,97 +1251,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "vCPU Added",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "yellow",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "vCPU"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 5,
-        "y": 17
-      },
-      "id": 24,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "/^vCPU Removed$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.5.12",
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"vCPU Removed\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float < (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "vCPU Removed",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1462,8 +1281,8 @@
       "gridPos": {
         "h": 4,
         "w": 5,
-        "x": 0,
-        "y": 21
+        "x": 5,
+        "y": 17
       },
       "id": 8,
       "options": {
@@ -1481,18 +1300,14 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"vMem Added\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float > (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"vMem Added\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float > (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1514,14 +1329,91 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "vMem Added",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
+      "datasource": "${DS_TURBO_TIMESCALE}",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "vCPU"
+        },
+        "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 21
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^vCPU Removed$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.0.6",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float as \"vCPU Removed\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  (a.attrs->'resizeInfo'->'VCPU'->>'to')::float < (a.attrs->'resizeInfo'->'VCPU'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "vCPU Removed",
+      "type": "stat"
+    },
+    {
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1564,18 +1456,14 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"vMem Removed\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float < (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float as \"vMem Removed\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  (a.attrs->'resizeInfo'->'VMEM'->>'to')::float < (a.attrs->'resizeInfo'->'VMEM'->>'from')::float AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1597,14 +1485,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "vMem Removed",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1647,18 +1534,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VCPU'->>'to')::float - (a.attrs->'resizeInfo'->'VCPU'->>'from')::float)*${VCPU_COST} as \"Cost\",\n  a.attrs->'resizeInfo'->'VCPU'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VCPU%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1680,14 +1563,13 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "vCPU cost difference",
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
+      "datasource": "${DS_TURBO_TIMESCALE}",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1731,18 +1613,14 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.0.6",
       "targets": [
         {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  a.\"type\" = 'RESIZE' OR\n  a.\"type\" = 'RECONFIGURE' AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
+          "rawSql": "SELECT\n  e.\"name\" as \"VM Name\",\n  ((a.attrs->'resizeInfo'->'VMEM'->>'to')::float - (a.attrs->'resizeInfo'->'VMEM'->>'from')::float)*${VMEM_COST}/(1000*1000) as \"Cost\",\n  a.attrs->'resizeInfo'->'VMEM'->>'unit' as \"Unit\"\nFROM completed_action a\njoin entity e on a.target_entity_id = e.\"oid\"\njoin scope s on s.scoped_oid = e.oid AND s.seed_oid IN (${CLUSTER_OID:sqlstring}) and s.finish > now()\nwhere\n  $__timeFilter(a.acceptance_time) AND\n  (a.\"type\" = 'RESIZE' OR a.\"type\" = 'RECONFIGURE') AND\n  e.environment = 'ON_PREM' AND\n  e.\"type\" = 'VIRTUAL_MACHINE' AND\n  a.description like '%VMem%' AND\n  a.final_state = 'SUCCEEDED'\nORDER BY \"VM Name\"",
           "refId": "A",
           "select": [
             [
@@ -1764,23 +1642,25 @@
           ]
         }
       ],
+      "timeFrom": null,
+      "timeShift": null,
       "title": "vMem cost difference",
       "type": "stat"
     }
   ],
   "refresh": "",
-  "schemaVersion": 36,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
+        "allValue": null,
         "current": {},
-        "datasource": {
-          "type": "postgres",
-          "uid": "${DS_TURBO_TIMESCALE}"
-        },
+        "datasource": "${DS_TURBO_TIMESCALE}",
         "definition": "select name from entity e\nwhere \"type\" = 'COMPUTE_CLUSTER'\norder by name",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Cluster",
@@ -1798,12 +1678,12 @@
         "useTags": false
       },
       {
+        "allValue": null,
         "current": {},
-        "datasource": {
-          "type": "postgres",
-          "uid": "${DS_TURBO_TIMESCALE}"
-        },
+        "datasource": "${DS_TURBO_TIMESCALE}",
         "definition": "select oid from entity e\nwhere \"type\" = 'COMPUTE_CLUSTER'\nand name IN (${CLUSTER_NAME:sqlstring})\norder by name",
+        "description": null,
+        "error": null,
         "hide": 2,
         "includeAll": true,
         "label": "Cluster OID",
@@ -1826,6 +1706,8 @@
           "text": "20",
           "value": "20"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "label": "Cost of a vCPU ($)",
         "name": "VCPU_COST",
@@ -1846,6 +1728,8 @@
           "text": "10",
           "value": "10"
         },
+        "description": null,
+        "error": null,
         "hide": 0,
         "label": "Cost of a vMem GB ($)",
         "name": "VMEM_COST",
@@ -1871,7 +1755,6 @@
   },
   "timezone": "",
   "title": "New - Taken On-Prem Resize Actions Summary by Cluster",
-  "uid": "7-ejoUL7k",
-  "version": 29,
-  "weekStart": ""
+  "uid": "7-ejoUL7m",
+  "version": 25
 }
