@@ -1,4 +1,41 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.12"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -24,8 +61,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 49,
-  "iteration": 1667240874511,
+  "id": null,
+  "iteration": 1667306804698,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -49,7 +86,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -98,7 +135,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -132,7 +169,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -181,7 +218,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -215,7 +252,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "description": "",
       "fieldConfig": {
@@ -268,7 +305,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -302,7 +339,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -351,7 +388,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -385,7 +422,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "description": "",
       "fieldConfig": {
@@ -435,7 +472,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -469,7 +506,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -518,7 +555,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -552,7 +589,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -601,7 +638,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -635,7 +672,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -684,7 +721,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -718,7 +755,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -767,7 +804,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -818,7 +855,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -867,7 +904,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -901,7 +938,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1045,7 +1082,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1080,7 +1117,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1129,7 +1166,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1163,7 +1200,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1212,7 +1249,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1246,7 +1283,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1295,7 +1332,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1329,7 +1366,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1378,7 +1415,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1412,7 +1449,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1461,7 +1498,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1495,7 +1532,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1544,7 +1581,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1578,7 +1615,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1587,7 +1624,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow"
+                "color": "yellow",
+                "value": null
               },
               {
                 "color": "red",
@@ -1626,7 +1664,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1660,7 +1698,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "HM9VBBBnk"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "description": "",
       "fieldConfig": {
@@ -1670,7 +1708,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow"
+                "color": "yellow",
+                "value": null
               },
               {
                 "color": "red",
@@ -1709,7 +1748,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "HM9VBBBnk"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1748,14 +1787,10 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "HM9VBBBnk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select name\nfrom entity e \nwhere e.\"type\" = 'GROUP'\nand attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\norder by name",
         "hide": 0,
@@ -1775,14 +1810,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "HM9VBBBnk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "select oid from entity e\nwhere e.\"type\" = 'GROUP'\nand e.attrs->'member_types' ? 'VIRTUAL_MACHINE'\nand e.last_seen > now()\nand e.name IN (${GROUP_NAME:sqlstring})\norder by e.name",
         "hide": 2,
