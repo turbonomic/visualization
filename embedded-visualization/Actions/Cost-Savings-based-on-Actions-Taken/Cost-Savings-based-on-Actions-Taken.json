@@ -1,0 +1,692 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 58,
+  "iteration": 1669386454604,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "panels": [],
+      "title": "Cost Savings Graphs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "super-light-blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 8,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Bars"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 40
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "hideTimeOverride": false,
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "8.3.9",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH data AS (SELECT\n  DATE_TRUNC('${Period}', ca.completion_time) AS completionTime,\n  sum(savings * 24 * 365 / 12) as CumulativeSavings\nFROM completed_action ca\n  JOIN entity e ON e.oid = ca.target_entity_id,\n  jsonb_array_elements(e.attrs->'targets') with ordinality att(cloudType, position)\nWHERE\n  $__timeFilter(ca.completion_time)\n  AND e.environment IN (${Environment}) \n  AND ca.type IN (${ActionType})\n  AND att.cloudType->>'type' in (${TargetType})\nGROUP BY completionTime)\n\nSELECT completionTime, Sum(CumulativeSavings) OVER (ORDER BY completionTime) as Cumulative FROM data",
+          "refId": "Line",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  DATE_TRUNC('${Period}', ca.completion_time) AS completionTime, \n  sum(ca.savings * 24 * 365 / 12) as evolution\nFROM completed_action ca\n  JOIN entity e ON e.oid = ca.target_entity_id,\n  jsonb_array_elements(e.attrs->'targets') with ordinality att(cloudType, position)\nWHERE\n  $__timeFilter(ca.completion_time)\n  AND e.environment IN (${Environment}) \n  AND ca.type IN (${ActionType})\n  AND att.cloudType->>'type' in (${TargetType})\nGROUP BY completionTime",
+          "refId": "Bars",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Cost Savings (+/-)",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "yellow",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 47,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  DATE_TRUNC('${Period}', ca.completion_time) AS completionTime,\n  count(ca.completion_time) as CountActions\nFROM completed_action ca\n  JOIN entity e ON e.oid = ca.target_entity_id,\n  jsonb_array_elements(e.attrs->'targets') with ordinality att(cloudType, position)\nWHERE\n  $__timeFilter(ca.completion_time)\n  AND e.environment IN (${Environment}) \n  AND ca.type IN (${ActionType})\n  AND att.cloudType->>'type' in (${TargetType})\nGROUP BY completionTime",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Number of Actions Taken",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 4,
+      "panels": [],
+      "title": "Cost Savings Data",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Savings/mo"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 395
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": " Account Type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 153
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Action Type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Environment"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 126
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Environment"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.9",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  ca.completion_time as \"Completion Time\",\n  ca.recommendation_time as \"Recommendation Time\",\n  ca.acceptance_time as \"Acceptance Time\",\n  ca.type as \"Action Type\",\n  e.name as \"Entity Name\",\n  e.type as \"Entity Type\",\n  e.environment as \"Environment\",\n  e.name as \"Account Name\",\n  --e.attrs as \"json\",\n  att.cloudType->>'type' as \"Target Type\",\n  ca.savings * 24 * 365 / 12 as \"Savings/mo\"\nFROM completed_action ca\n JOIN entity e ON e.oid = ca.target_entity_id,\n jsonb_array_elements(e.attrs->'targets') with ordinality att(cloudType, position)\nWHERE\n  $__timeFilter(ca.completion_time)\n  AND e.environment IN (${Environment}) \n  AND ca.type IN (${ActionType})\n  AND att.cloudType->>'type' in (${TargetType})\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Executed Actions",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "Month",
+          "value": "Month"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Granularity",
+        "multi": false,
+        "name": "Period",
+        "options": [
+          {
+            "selected": false,
+            "text": "Year",
+            "value": "Year"
+          },
+          {
+            "selected": false,
+            "text": "Quarter",
+            "value": "Quarter"
+          },
+          {
+            "selected": true,
+            "text": "Month",
+            "value": "Month"
+          },
+          {
+            "selected": false,
+            "text": "Day",
+            "value": "Day"
+          },
+          {
+            "selected": false,
+            "text": "Hour",
+            "value": "Hour"
+          },
+          {
+            "selected": false,
+            "text": "Minute",
+            "value": "Minute"
+          }
+        ],
+        "query": "Year,Quarter,Month,Day,Hour,Minute",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "DELETE",
+            "MOVE",
+            "SCALE",
+            "RESIZE"
+          ],
+          "value": [
+            "DELETE",
+            "MOVE",
+            "SCALE",
+            "RESIZE"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT DISTINCT type FROM completed_action ca",
+        "hide": 0,
+        "includeAll": false,
+        "multi": true,
+        "name": "ActionType",
+        "options": [],
+        "query": "SELECT DISTINCT type FROM completed_action ca",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": "'CLOUD','ON_PREM'",
+        "current": {
+          "selected": true,
+          "text": "CLOUD",
+          "value": "CLOUD"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": false,
+        "name": "Environment",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": true,
+            "text": "CLOUD",
+            "value": "CLOUD"
+          },
+          {
+            "selected": false,
+            "text": "ON_PREM",
+            "value": "ON_PREM"
+          }
+        ],
+        "query": "CLOUD,ON_PREM",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      },
+      {
+        "allValue": "'AWS','Azure Subscription','GCP Project','vCenter'",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "description": "It would be possible to grab the list of target types using a query BUT this would be quite a long and heavy query (DISTINCT in a JSON field). Right now, I decided to stick with a custom list I change for each customer. Beware: for the \"Custom all value\", I'm retyping all values as I'm using a \"IN\" statement in the queries",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Target Type",
+        "multi": false,
+        "name": "TargetType",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "AWS",
+            "value": "AWS"
+          },
+          {
+            "selected": false,
+            "text": "Azure Subscription",
+            "value": "Azure Subscription"
+          },
+          {
+            "selected": false,
+            "text": "GCP Project",
+            "value": "GCP Project"
+          },
+          {
+            "selected": false,
+            "text": "vCenter",
+            "value": "vCenter"
+          }
+        ],
+        "query": "AWS,Azure Subscription,GCP Project,vCenter ",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Cost Savings Based on Actions Taken",
+  "uid": "cost-savings",
+  "version": 2,
+  "weekStart": ""
+}
