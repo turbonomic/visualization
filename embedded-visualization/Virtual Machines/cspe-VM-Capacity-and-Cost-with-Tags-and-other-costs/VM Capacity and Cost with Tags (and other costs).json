@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.12"
+      "version": "8.5.15"
     },
     {
       "type": "datasource",
@@ -62,7 +62,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1668091153340,
+  "iteration": 1670346828144,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -151,15 +151,15 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
-          "panelId": 2,
-          "refId": "A",
           "datasource": {
             "type": "datasource",
             "uid": "-- Dashboard --"
-          }
+          },
+          "panelId": 2,
+          "refId": "A"
         }
       ],
       "title": "Total Information",
@@ -340,7 +340,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.5.12",
+      "pluginVersion": "8.5.15",
       "targets": [
         {
           "datasource": {
@@ -565,37 +565,14 @@
           "type": "postgres",
           "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "definition": "select name from entity where \"type\" = 'GROUP' order by name",
+        "definition": "select distinct\n    name AS __text,\n    oid AS __value\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nand e.last_seen > now()",
         "hide": 0,
         "includeAll": true,
         "label": "Group Name",
         "multi": true,
-        "name": "GROUP_NAME",
-        "options": [],
-        "query": "select name from entity where \"type\" = 'GROUP' order by name",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "postgres",
-          "uid": "${DS_TURBO_TIMESCALE}"
-        },
-        "definition": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
-        "hide": 2,
-        "includeAll": true,
-        "label": "",
-        "multi": true,
         "name": "GROUP_OID",
         "options": [],
-        "query": "select oid\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nAND name IN (${GROUP_NAME})",
+        "query": "select distinct\n    name AS __text,\n    oid AS __value\nfrom entity e\nwhere e.\"type\" = 'GROUP'\nand e.last_seen > now()",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -611,14 +588,14 @@
           "type": "postgres",
           "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "definition": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
+        "definition": "select distinct\n    e.oid\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'VIRTUAL_MACHINE'\n    and e.last_seen > now()\n    and s.seed_oid IN (${GROUP_OID})\norder by 1",
         "hide": 2,
         "includeAll": true,
         "label": "",
         "multi": true,
         "name": "VM_OID",
         "options": [],
-        "query": "select oid\nfrom entity e\njoin scope s ON e.oid = s.scoped_oid\nwhere s.scoped_type = 'VIRTUAL_MACHINE'\nAND s.seed_oid IN (${GROUP_OID})",
+        "query": "select distinct\n    e.oid\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'VIRTUAL_MACHINE'\n    and e.last_seen > now()\n    and s.seed_oid IN (${GROUP_OID})\norder by 1",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -738,6 +715,6 @@
   "timezone": "",
   "title": "VM Capacity and Cost with Tags (and other costs)",
   "uid": "5Od3savVz",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }
