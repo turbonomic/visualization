@@ -1,9 +1,49 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.5.12"
+    },
+    {
+      "type": "panel",
+      "id": "histogram",
+      "name": "Histogram",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -18,19 +58,19 @@
       }
     ]
   },
-  "description": "v.1.0.6",
+  "description": "v.2.1",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 98,
-  "iteration": 1653666777692,
+  "id": null,
+  "iteration": 1671032101676,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -38,9 +78,10 @@
             "mode": "continuous-GrYlRd"
           },
           "custom": {
-            "align": "auto",
+            "align": "left",
             "displayMode": "gradient-gauge",
-            "filterable": true
+            "filterable": true,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -61,48 +102,48 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Host Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 267
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "VM Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 323
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Datacenter"
             },
             "properties": [
               {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
                 "id": "custom.width",
-                "value": 197
+                "value": 183
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Current VMs"
+              "options": "Cluster Name"
             },
             "properties": [
               {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
                 "id": "custom.width",
-                "value": 134
+                "value": 192
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Current Hosts"
+            },
+            "properties": [
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
               }
             ]
           },
@@ -114,7 +155,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 204
+                "value": 337
               }
             ]
           },
@@ -126,7 +167,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 254
+                "value": 327
               }
             ]
           },
@@ -138,7 +179,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 311
+                "value": 267
               }
             ]
           },
@@ -150,91 +191,31 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 327
+                "value": 222
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "time"
+              "options": "Current VMs"
             },
             "properties": [
               {
                 "id": "custom.width",
-                "value": 230
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Cluster Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 309
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Current Hosts"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 133
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Datacenter"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Cluster Name"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "Current.*"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
+                "value": 242
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 25,
+        "h": 21,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 35,
+      "id": 39,
       "options": {
         "footer": {
           "fields": [],
@@ -244,19 +225,14 @@
           "show": true
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Storage Headroom"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.5.12",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -288,7 +264,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -335,11 +311,11 @@
                 "Datacenter",
                 "Cluster Name",
                 "Current Hosts",
-                "Current VMs",
                 "CPU Headroom",
                 "Mem Headroom",
                 "Storage Headroom",
-                "Min Required VM Headroom"
+                "Min Required VM Headroom",
+                "Current VMs"
               ]
             }
           }
@@ -350,7 +326,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -358,9 +334,10 @@
             "mode": "continuous-RdYlGr"
           },
           "custom": {
-            "align": "auto",
+            "align": "left",
             "displayMode": "gradient-gauge",
-            "filterable": true
+            "filterable": true,
+            "inspect": false
           },
           "decimals": 0,
           "mappings": [],
@@ -368,11 +345,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "semi-dark-blue",
                 "value": null
               },
               {
-                "color": "red",
+                "color": "semi-dark-purple",
                 "value": 80
               }
             ]
@@ -386,31 +363,40 @@
             },
             "properties": [
               {
-                "id": "custom.width"
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "custom.width",
+                "value": 259
               }
             ]
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "Datacenter|Cluster Name"
+              "id": "byName",
+              "options": "Cluster Name"
             },
             "properties": [
               {
                 "id": "custom.displayMode",
-                "value": "auto"
+                "value": "color-text"
+              },
+              {
+                "id": "custom.width",
+                "value": 241
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 25,
+        "h": 21,
         "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 38,
+      "id": 36,
       "options": {
         "footer": {
           "fields": "",
@@ -420,19 +406,14 @@
           "show": true
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Storage Utilization (%)"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.5.12",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -494,7 +475,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -502,7 +483,7 @@
             "mode": "continuous-BlPu"
           },
           "custom": {
-            "fillOpacity": 96,
+            "fillOpacity": 83,
             "gradientMode": "hue",
             "hideFrom": {
               "legend": false,
@@ -516,11 +497,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "light-blue",
+                "color": "light-yellow",
                 "value": null
               },
               {
-                "color": "semi-dark-purple",
+                "color": "semi-dark-red",
                 "value": 80
               }
             ]
@@ -529,32 +510,33 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 19,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 21
       },
-      "id": 40,
+      "id": 37,
       "options": {
         "bucketOffset": 0,
+        "combine": false,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom"
         }
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.5.12",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "rawSql": "-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS (now() - interval '15 min', now())\n       AND (s1.start, s1.finish) OVERLAPS (now() - interval '15 min', now())\n    -- AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    -- AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n        -- AND $__timeFilter(time)\n           AND time between now() - interval '15 min' and now()\n           AND time >= now() - interval '15 min'\n           AND consumed is null\n           AND entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
           "refId": "A",
           "select": [
             [
@@ -610,7 +592,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -620,7 +602,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": true
+            "filterable": true,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
@@ -670,7 +653,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 197
+                "value": 273
               }
             ]
           },
@@ -682,7 +665,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 134
+                "value": 195
               }
             ]
           },
@@ -694,7 +677,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 149
+                "value": 178
               }
             ]
           },
@@ -706,7 +689,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 159
+                "value": 172
               }
             ]
           },
@@ -718,7 +701,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 196
+                "value": 176
               }
             ]
           },
@@ -730,7 +713,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 230
+                "value": 233
               }
             ]
           },
@@ -754,7 +737,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 244
+                "value": 449
               }
             ]
           },
@@ -766,55 +749,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 133
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Datacenter"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Cluster Name"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "Current.*"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "auto"
+                "value": 194
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 22,
+        "h": 29,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 40
       },
-      "id": 41,
+      "id": 40,
       "options": {
         "footer": {
           "fields": [],
@@ -824,19 +771,14 @@
           "show": true
         },
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Storage Headroom"
-          }
-        ]
+        "sortBy": []
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.5.12",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -868,7 +810,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -915,11 +857,11 @@
                 "Datacenter",
                 "Cluster Name",
                 "Current Hosts",
-                "Current VMs",
                 "CPU Headroom",
                 "Mem Headroom",
                 "Storage Headroom",
-                "Min Required VM Headroom"
+                "Min Required VM Headroom",
+                "Current VMs"
               ]
             }
           }
@@ -930,7 +872,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
@@ -940,7 +882,8 @@
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": true
+            "filterable": true,
+            "inspect": false
           },
           "decimals": 0,
           "mappings": [],
@@ -997,12 +940,12 @@
         ]
       },
       "gridPos": {
-        "h": 22,
+        "h": 29,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 40
       },
-      "id": 36,
+      "id": 41,
       "options": {
         "footer": {
           "fields": "",
@@ -1019,12 +962,12 @@
           }
         ]
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.5.12",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
@@ -1086,22 +1029,22 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "${DB}"
+        "uid": "${DS_TURBO_TIMESCALE}"
       },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
             "displayMode": "auto",
-            "filterable": true
+            "filterable": true,
+            "inspect": false
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1149,12 +1092,12 @@
         ]
       },
       "gridPos": {
-        "h": 25,
+        "h": 27,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 69
       },
-      "id": 37,
+      "id": 42,
       "options": {
         "footer": {
           "fields": "",
@@ -1171,18 +1114,18 @@
           }
         ]
       },
-      "pluginVersion": "8.3.2",
+      "pluginVersion": "8.5.12",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
-            "uid": "${DB}"
+            "uid": "${DS_TURBO_TIMESCALE}"
           },
           "format": "table",
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "\n-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n           AND $__timeFilter(time)\n           AND consumed is null\n           and entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
+          "rawSql": "-- Host Stats Panel\nwith pms_by_cluster as (\n    SELECT DISTINCT ON (e.oid)\n        g.name as cluster_name,\n        g.oid as cluster_oid,\n        e.oid as pm_oid,\n        e.name as pm_name\n      FROM entity e\n      JOIN scope s1 ON (s1.seed_oid = e.oid)\n      JOIN entity g ON (g.oid = s1.scoped_oid)\n     WHERE e.type = 'VIRTUAL_MACHINE'\n       AND (s1.scoped_type = 'COMPUTE_CLUSTER')\n       AND (s1.scoped_oid in ($Cluster))\n       AND (e.first_seen, e.last_seen) OVERLAPS (now() - interval '15 min', now())\n       AND (s1.start, s1.finish) OVERLAPS (now() - interval '15 min', now())\n    -- AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    -- AND (s1.start, s1.finish) OVERLAPS ($__timeFrom(), $__timeTo())\n),\n\npm_stats as (\n     select pm_oid\n          ,avg(cpu_used) as cpu_used_avg\n          ,max(cpu_used) as cpu_used_max\n          ,percentile_cont(.97) within group (order by cpu_used/cpu_capacity asc) cpu_util_percentile\n          ,avg(cpu_used/cpu_capacity) as cpu_util_avg\n          ,max(cpu_used/cpu_capacity) as cpu_util_max\n          ,avg(cpu_capacity) as cpu_capacity \n          ,avg(mem_used) as mem_used_avg\n          ,max(mem_used) as mem_used_max\n          ,percentile_cont(.97) within group (order by mem_used/mem_capacity asc) mem_util_percentile\n          ,avg(mem_used/mem_capacity) as mem_util_avg\n          ,max(mem_used/mem_capacity) as mem_util_max\n          ,avg(mem_capacity) as mem_capacity\n    from\n        (SELECT entity_oid as pm_oid\n               ,time\n               ,max(current) FILTER (where type = 'VCPU') as cpu_used\n               ,max(capacity)  FILTER (where type = 'VCPU') as cpu_capacity\n               ,max(current) FILTER (where type = 'VMEM') as mem_used\n               ,max(capacity)  FILTER (where type = 'VMEM') as mem_capacity\n          FROM metric\n         WHERE type in ('VCPU', 'VMEM')\n        -- AND $__timeFilter(time)\n           AND time between now() - interval '15 min' and now()\n           AND time >= now() - interval '15 min'\n           AND consumed is null\n           AND entity_type = 'VIRTUAL_MACHINE'\n         GROUP BY 1,2) as cluster_stats\n    group by 1\n)\n\nselect pm_name as \"Virtual Machine Name\",\n       SPLIT_PART(cluster_name, '/', 1) as \"Datacenter\",\n       SPLIT_PART(cluster_name, '/', 2) as \"Cluster Name\",\n       cpu_capacity as \"CPU Capacity (MHz)\",\n       cpu_used_avg as \"CPU Avg Used (MHz)\",\n       cpu_used_max as \"CPU Max Used (MHz)\",\n       mem_capacity/1024/1024 as \"Mem Capacity (GB)\",\n       mem_used_avg/1024/1024 as \"Mem Avg Used (GB)\",\n       mem_used_max/1024/1024 as \"Mem Max Used (GB)\",\n       cpu_util_avg*100 as \"CPU Avg Util (%)\",\n       cpu_util_max*100 as \"CPU Max Util (%)\",\n       cpu_util_percentile*100 as \"CPU Percentile Util (%)\",\n       mem_util_avg*100 as \"Mem Avg Util (%)\",\n       mem_util_max*100 as \"Mem Max Util (%)\",\n       mem_util_percentile*100 as \"Mem Percentile Util (%)\"\n  from pm_stats\n  JOIN pms_by_cluster on pms_by_cluster.pm_oid = pm_stats.pm_oid\n;",
           "refId": "A",
           "select": [
             [
@@ -1237,24 +1180,16 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 33,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "wWMLoX6Mk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "SELECT DISTINCT name as __text\n             ,oid as __value\n   FROM entity\n WHERE type = 'DATACENTER'\nAND (first_seen, last_seen) overlaps ($__timeFrom(), $__timeTo())\nORDER BY 1",
         "hide": 0,
@@ -1273,14 +1208,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
           "type": "postgres",
-          "uid": "wWMLoX6Mk"
+          "uid": "${DS_TURBO_TIMESCALE}"
         },
         "definition": "SELECT DISTINCT name as __text\n            ,oid as __value\n   FROM entity e\n   JOIN scope s on s.seed_oid = e.oid\n WHERE e.type = 'COMPUTE_CLUSTER'\n  AND (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo())\n  and s.scoped_type = 'DATACENTER'\n  and s.scoped_oid in ($Datacenter)",
         "hide": 0,
@@ -1318,7 +1249,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1338,6 +1269,6 @@
   "timezone": "",
   "title": "Ultimate On-Prem Cluster and Virtual Machine Headroom",
   "uid": "gjJPcZy7k",
-  "version": 19,
+  "version": 6,
   "weekStart": ""
 }
