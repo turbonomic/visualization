@@ -2,9 +2,9 @@
 #### Note: Embedded Reporting must be enabled and configured.
 ####
 ####
-#### Import Procedure :
-######   1. Download the .json file from this GitHub repo for the custom report you want to import
-#### Import as a File (.json)
+#### Download Custom Report Procedure
+######   1. Download the .json file from this GitHub repo for the custom report you want to import and save it locally on your system.  Make sure the file is saved with the .json extension
+#### Import as a File Procedure (.json)
 ######   1. Login to Turbonomic T8 / CWOM > Reporting
 ######   2. Click on Dashboards > Manage
 ######    ![Screen Shot 2021-06-09 at 11 05 59 AM](https://user-images.githubusercontent.com/84854976/121380793-2c510180-c913-11eb-9f1c-4bfcbc782b19.png)
