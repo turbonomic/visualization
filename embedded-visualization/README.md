@@ -3,6 +3,7 @@
 ####
 ####
 #### Import Procedure :
+######   1. Download the .json file from this GitHub repo for the custom report you want to import
 #### Import as a File (.json)
 ######   1. Login to Turbonomic T8 / CWOM > Reporting
 ######   2. Click on Dashboards > Manage
