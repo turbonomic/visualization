@@ -63,7 +63,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1676362918009,
+  "iteration": 1676365172259,
   "links": [
     {
       "asDropdown": false,
@@ -145,8 +145,7 @@
           "calcs": [
             "min",
             "max",
-            "mean",
-            "sum"
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
@@ -260,8 +259,7 @@
           "calcs": [
             "min",
             "max",
-            "mean",
-            "sum"
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
@@ -439,6 +437,7 @@
           },
           "format": "table",
           "group": [],
+          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  e.\"name\" as \"Host Name\",\n\tattrs->>'model' as \"Host Model\",\n\tinitcap(replace(attrs->>'state', '_', ' ')) as \"Power State\",\n\tattrs->>'num_cpus' as \"Number of CPU\",\n\tattrs->>'cpu_model' as \"CPU Model\"\nFROM entity e\nWHERE\n  (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo()) AND\n  e.\"type\" = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  e.oid IN (${HOST_LIST})\nORDER BY 1",
@@ -496,6 +495,39 @@
               "type": "macro"
             }
           ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "select\n  e.oid as \"Host OID\",\n  round(capacity/1024/1024) as \"Quantity of Memory (MB)\"\nfrom metric m\njoin entity e on m.entity_oid = e.oid\nwhere m.entity_oid IN (${HOST_LIST})\nand m.type = 'MEM'\nand m.time > now() - INTERVAL '19 min'\nORDER by m.time",
+          "refId": "Quantity of Memory",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
       "title": "Physical Host(s) List",
@@ -512,7 +544,16 @@
             "excludeByName": {
               "Host OID": true
             },
-            "indexByName": {},
+            "indexByName": {
+              "CPU Model": 5,
+              "Current Number of VMs": 7,
+              "Host Model": 2,
+              "Host Name": 1,
+              "Host OID": 0,
+              "Number of CPU": 4,
+              "Power State": 3,
+              "Quantity of Memory (MB)": 6
+            },
             "renameByName": {}
           }
         }
@@ -520,7 +561,7 @@
       "type": "table"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 36,
   "style": "dark",
   "tags": [],
@@ -598,6 +639,6 @@
   "timezone": "",
   "title": "Cluster Stats - Individual Hosts",
   "uid": "HK10NdJVz",
-  "version": 3,
+  "version": 8,
   "weekStart": ""
 }
