@@ -63,7 +63,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1676535080328,
+  "iteration": 1676629559911,
   "links": [
     {
       "asDropdown": false,
@@ -135,11 +135,11 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 14,
+        "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 6,
+      "id": 49,
       "options": {
         "legend": {
           "calcs": [
@@ -148,7 +148,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "sortBy": "Total",
           "sortDesc": true
         },
@@ -167,7 +167,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nORDER BY 1, 3",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  avg(m.utilization) as \"CPU Usage\",\n  avg(m.peak_current/m.capacity) as \"Peak CPU Usage\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nGROUP BY time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -191,7 +191,7 @@
           ]
         }
       ],
-      "title": "CPU Usage - Individual Host(s)",
+      "title": "CPU Usage - Cluster Average",
       "type": "timeseries"
     },
     {
@@ -249,11 +249,11 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 10,
-        "x": 14,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
-      "id": 49,
+      "id": 50,
       "options": {
         "legend": {
           "calcs": [
@@ -281,7 +281,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  avg(m.utilization) as \"CPU Usage\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  avg(m.utilization) as \"Memory Usage\",\n  avg(m.peak_current/m.capacity) as \"Peak Memory Usage\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'MEM'\nGROUP BY time\nORDER BY 1",
           "refId": "A",
           "select": [
             [
@@ -305,7 +305,121 @@
           ]
         }
       ],
-      "title": "CPU Usage - Cluster Average",
+      "title": "Memory Usage - Cluster Average",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nORDER BY 1, 3",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "CPU Usage (avg) - Individual Host(s)",
       "type": "timeseries"
     },
     {
@@ -363,8 +477,8 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 14,
-        "x": 0,
+        "w": 12,
+        "x": 12,
         "y": 10
       },
       "id": 48,
@@ -376,7 +490,7 @@
             "mean"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "sortBy": "Total",
           "sortDesc": true
         },
@@ -419,7 +533,7 @@
           ]
         }
       ],
-      "title": "Memory Usage - Individual Host(s)",
+      "title": "Memory Usage (avg) - Individual Host(s)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -478,11 +592,11 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 10,
-        "x": 14,
-        "y": 10
+        "w": 12,
+        "x": 0,
+        "y": 20
       },
-      "id": 50,
+      "id": 51,
       "options": {
         "legend": {
           "calcs": [
@@ -510,7 +624,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  avg(m.utilization) as \"Memory Usage\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'MEM'\nGROUP BY time\nORDER BY 1",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  peak_current/capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nORDER BY 1, 3",
           "refId": "A",
           "select": [
             [
@@ -534,7 +648,122 @@
           ]
         }
       ],
-      "title": "Memory Usage - Cluster Average",
+      "title": "CPU Usage (peak) - Individual Host(s)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 52,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  peak_current/capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'MEM'\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Memory Usage (peak) - Individual Host(s)",
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -636,7 +865,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 30
       },
       "id": 44,
       "options": {
@@ -867,6 +1096,6 @@
   "timezone": "",
   "title": "Cluster Stats - Individual Hosts",
   "uid": "HK10NdJVz",
-  "version": 9,
+  "version": 10,
   "weekStart": ""
 }
