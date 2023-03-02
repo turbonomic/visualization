@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.16"
+      "version": "8.5.17"
     },
     {
       "type": "datasource",
@@ -63,7 +63,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1676629559911,
+  "iteration": 1677745175922,
   "links": [
     {
       "asDropdown": false,
@@ -788,8 +788,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
