@@ -1,0 +1,144 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 90,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Turbo Timescale",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Execution Message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 1607
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Risk Type"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 196
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Date Created"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 249
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "7.3.8",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  TO_CHAR(ca.recommendation_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Created\",\n  e.name as \"Entity Name\",\n  initcap(replace(e.type::text, '_', ' ')) as \"Entity Type\",\n  ca.description as \"Action Description\",\n  CASE\n    WHEN ca.category = 'PERFORMANCE_ASSURANCE' THEN 'Performance Assurance'\n    WHEN ca.category = 'EFFICIENCY_IMPROVEMENT' THEN 'Efficiency Improvement'\n    WHEN ca.category = 'PREVENTION' THEN 'Prevention'\n    WHEN ca.category = 'COMPLIANCE' THEN 'Compliance'\n  END as \"Risk Type\",\n  initcap(ca.type::text) as \"Type\",\n  initcap(ca.final_state::text) as \"Execution State\",\n  TO_CHAR(ca.acceptance_time, 'dd/mm/yyyy hh:mm:ss') as \"Date Executed\",\n  ca.final_message as \"Execution Message\"\nFROM completed_action ca\nJOIN entity e ON ca.target_entity_id = e.oid\nWHERE\n  $__timeFilter(acceptance_time)\n--GROUP BY \"type\"\nORDER BY acceptance_time ASC",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Completed Actions",
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Actions Taken",
+  "uid": "7LlMOv6Gz",
+  "version": 3
+}
