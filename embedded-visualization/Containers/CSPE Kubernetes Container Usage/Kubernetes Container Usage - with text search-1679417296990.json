@@ -25,12 +25,6 @@
     },
     {
       "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
       "id": "timeseries",
       "name": "Time series",
       "version": ""
@@ -41,8 +35,8 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
@@ -58,26 +52,12 @@
       }
     ]
   },
-  "description": "Sustainable IT Dashboard - Private Cloud including suspend actions",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 1,
+  "graphTooltip": 0,
   "id": null,
-  "iteration": 1677745175922,
-  "links": [
-    {
-      "asDropdown": false,
-      "icon": "info",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "All Published SPECpower_ssj2008 Results",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://www.spec.org/power_ssj2008/results/power_ssj2008.html"
-    }
-  ],
+  "iteration": 1679417222644,
+  "links": [],
   "liveNow": false,
   "panels": [
     {
@@ -102,7 +82,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "smooth",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -118,852 +98,59 @@
               "mode": "off"
             }
           },
+          "decimals": 2,
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 0
-      },
-      "id": 49,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  avg(m.utilization) as \"CPU Usage\",\n  avg(m.peak_current/m.capacity) as \"Peak CPU Usage\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nGROUP BY time\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "CPU Usage - Cluster Average",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 50,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  avg(m.utilization) as \"Memory Usage\",\n  avg(m.peak_current/m.capacity) as \"Peak Memory Usage\"\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'MEM'\nGROUP BY time\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Memory Usage - Cluster Average",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 10
-      },
-      "id": 6,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nORDER BY 1, 3",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "CPU Usage (avg) - Individual Host(s)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 10
-      },
-      "id": 48,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'MEM'\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Memory Usage (avg) - Individual Host(s)",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 20
-      },
-      "id": 51,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  peak_current/capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'CPU'\nORDER BY 1, 3",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "CPU Usage (peak) - Individual Host(s)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "stepBefore",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percentunit"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 20
-      },
-      "id": 52,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "time_series",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  peak_current/capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\" \nWHERE\n  $__timeFilter(m.\"time\") AND\n  m.entity_type = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  m.entity_oid IN (${HOST_LIST}) AND\n  m.provider_oid is null AND\n  m.type = 'MEM'\nORDER BY 1",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "title": "Memory Usage (peak) - Individual Host(s)",
-      "transformations": [],
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "postgres",
-        "uid": "${DS_TURBO_TIMESCALE}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "filterable": true,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "percentunit"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Number of CPU"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 134
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "CPU Model"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 313
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Host Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 273
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Host Model"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 160
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Power State"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 118
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 24,
+        "h": 9,
+        "w": 12,
         "x": 0,
-        "y": 30
+        "y": 0
       },
-      "id": 44,
+      "id": 2,
       "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
           ],
-          "show": false
+          "displayMode": "table",
+          "placement": "bottom"
         },
-        "frameIndex": 1,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "Host Name"
-          }
-        ]
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "8.5.16",
       "targets": [
         {
           "datasource": {
             "type": "postgres",
             "uid": "${DS_TURBO_TIMESCALE}"
           },
-          "format": "table",
+          "format": "time_series",
           "group": [],
-          "hide": false,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  e.oid as \"Host OID\",\n  e.\"name\" as \"Host Name\",\n\tattrs->>'model' as \"Host Model\",\n\tinitcap(replace(attrs->>'state', '_', ' ')) as \"Power State\",\n\tattrs->>'num_cpus' as \"Number of CPU\",\n\tattrs->>'cpu_model' as \"CPU Model\"\nFROM entity e\nWHERE\n  (e.first_seen, e.last_seen) overlaps ($__timeFrom(), $__timeTo()) AND\n  e.\"type\" = 'PHYSICAL_MACHINE' AND\n  e.environment = 'ON_PREM' AND\n  e.oid IN (${HOST_LIST})\nORDER BY 1",
-          "refId": "Host List",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n  e.oid as \"Host OID\",\n  --e.name as \"Host Name\",\n  count(s.seed_oid) as \"Current Number of VMs\"\nfrom entity e\njoin scope s on s.seed_oid = e.oid and s.scoped_type = 'VIRTUAL_MACHINE' and s.finish > now()\nwhere\n  e.type = 'PHYSICAL_MACHINE' and\n  e.oid IN (${HOST_LIST}) and\n  e.last_seen > now()\ngroup by e.oid\norder by e.name",
-          "refId": "VMs per Host",
-          "select": [
-            [
-              {
-                "params": [
-                  "savings"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "completed_action",
-          "timeColumn": "recommendation_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        },
-        {
-          "datasource": {
-            "type": "postgres",
-            "uid": "${DS_TURBO_TIMESCALE}"
-          },
-          "format": "table",
-          "group": [],
-          "hide": false,
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "select\n  e.oid as \"Host OID\",\n  round(capacity/1024/1024) as \"Quantity of Memory (MB)\"\nfrom metric m\njoin entity e on m.entity_oid = e.oid\nwhere m.entity_oid IN (${HOST_LIST})\nand m.type = 'MEM'\nand m.time > now() - INTERVAL '19 min'\nORDER by m.time",
-          "refId": "Quantity of Memory",
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VCPU_REQUEST'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
           "select": [
             [
               {
@@ -986,35 +173,917 @@
           ]
         }
       ],
-      "title": "Physical Host(s) List",
-      "transformations": [
-        {
-          "id": "seriesToColumns",
-          "options": {
-            "byField": "Host OID"
-          }
+      "title": "vCPU (usage vs request)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "millicores"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
         {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Host OID": true
-            },
-            "indexByName": {
-              "CPU Model": 5,
-              "Current Number of VMs": 7,
-              "Host Model": 2,
-              "Host Name": 1,
-              "Host OID": 0,
-              "Number of CPU": 4,
-              "Power State": 3,
-              "Quantity of Memory (MB)": 6
-            },
-            "renameByName": {}
-          }
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VCPU_REQUEST'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
         }
       ],
-      "type": "table"
+      "title": "vCPU Request Capacity",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VCPU'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "vCPU (usage vs limit)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "millicores"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VCPU'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "vCPU Limit",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VMEM_REQUEST'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "vMem (usage vs request)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "deckbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VMEM_REQUEST'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "vMem Request Capacity",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 27
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VMEM'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "vMem (usage vs limit)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "deckbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 27
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.capacity as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VMEM'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "vMem Limit Capacity",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  m.\"time\" as \"time\",\n  m.utilization as value,\n  e.name as metric\nFROM metric m\nJOIN entity e on m.entity_oid = e.\"oid\"\nWHERE\n  $__timeFilter(m.time)\n  AND m.entity_type = 'CONTAINER'\n  AND m.type = 'VCPU_THROTTLING'\n  AND m.entity_oid IN (${CONTAINER})\n  AND m.provider_oid is null\nORDER BY 1\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "CPU Throttling (%)",
+      "type": "timeseries"
     }
   ],
   "refresh": "",
@@ -1029,34 +1098,14 @@
           "type": "postgres",
           "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "definition": "select distinct\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'DATACENTER'\n    and attrs->>'targets' like '%vCenter%'\n    and last_seen > now()\norder by 1",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Data Center",
-        "multi": true,
-        "name": "DATACENTER",
-        "options": [],
-        "query": "select distinct\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'DATACENTER'\n    and attrs->>'targets' like '%vCenter%'\n    and last_seen > now()\norder by 1",
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "postgres",
-          "uid": "${DS_TURBO_TIMESCALE}"
-        },
-        "definition": "select distinct\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'COMPUTE_CLUSTER'\n    and s.seed_oid IN (${DATACENTER})\n    and e.last_seen > now()\norder by 1",
+        "definition": "select distinct\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'CONTAINER_PLATFORM_CLUSTER'\n    and ($__timeFrom(),$__timeTo()) OVERLAPS (first_seen, last_seen)\norder by 1",
         "hide": 0,
         "includeAll": true,
         "label": "Cluster",
         "multi": true,
         "name": "CLUSTER",
         "options": [],
-        "query": "select distinct\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'COMPUTE_CLUSTER'\n    and s.seed_oid IN (${DATACENTER})\n    and e.last_seen > now()\norder by 1",
+        "query": "select distinct\n    name AS __text,\n    oid AS __value\nfrom entity\nwhere\n    type = 'CONTAINER_PLATFORM_CLUSTER'\n    and ($__timeFrom(),$__timeTo()) OVERLAPS (first_seen, last_seen)\norder by 1",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1069,15 +1118,75 @@
           "type": "postgres",
           "uid": "${DS_TURBO_TIMESCALE}"
         },
-        "definition": "select distinct\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and e.last_seen > now()\n    and attrs->>'model' not like 'VMware%'\norder by 1",
+        "definition": "select distinct\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'NAMESPACE'\n    and ($__timeFrom(),$__timeTo()) OVERLAPS (e.first_seen, e.last_seen)\n    and s.seed_oid IN (${CLUSTER})\n    and ($__timeFrom(),$__timeTo()) OVERLAPS (s.start, s.finish)\norder by 1",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Namespace",
+        "multi": true,
+        "name": "NAMESPACE",
+        "options": [],
+        "query": "select distinct\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'NAMESPACE'\n    and ($__timeFrom(),$__timeTo()) OVERLAPS (e.first_seen, e.last_seen)\n    and s.seed_oid IN (${CLUSTER})\n    and ($__timeFrom(),$__timeTo()) OVERLAPS (s.start, s.finish)\norder by 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "Tag",
+        "name": "TAG_SEARCH",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT distinct\n  ec.name as __text,\n  s.scoped_oid as __value\nFROM entity ecs\njoin scope s on s.seed_oid = ecs.oid and s.scoped_type = 'CONTAINER'\njoin entity ec on s.scoped_oid = ec.oid\njoin scope sn on sn.scoped_oid = ec.oid and sn.seed_oid IN (${NAMESPACE})\nWHERE\n  ecs.type = 'CONTAINER_SPEC'\n  and ($__timeFrom(),$__timeTo()) OVERLAPS (ec.first_seen, ec.last_seen)\n  and ($__timeFrom(),$__timeTo()) OVERLAPS (s.start, s.finish) \n  AND replace(translate(ecs.attrs->>'tags', '{}[]\"', ''), ',', ' --- ') like '%${TAG_SEARCH}%'\nORDER BY 1",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Container",
+        "multi": true,
+        "name": "CONTAINER",
+        "options": [],
+        "query": "SELECT distinct\n  ec.name as __text,\n  s.scoped_oid as __value\nFROM entity ecs\njoin scope s on s.seed_oid = ecs.oid and s.scoped_type = 'CONTAINER'\njoin entity ec on s.scoped_oid = ec.oid\njoin scope sn on sn.scoped_oid = ec.oid and sn.seed_oid IN (${NAMESPACE})\nWHERE\n  ecs.type = 'CONTAINER_SPEC'\n  and ($__timeFrom(),$__timeTo()) OVERLAPS (ec.first_seen, ec.last_seen)\n  and ($__timeFrom(),$__timeTo()) OVERLAPS (s.start, s.finish) \n  AND replace(translate(ecs.attrs->>'tags', '{}[]\"', ''), ',', ' --- ') like '%${TAG_SEARCH}%'\nORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "select\n  concat(tag.key, ': ', translate(tag.value, '{}[]\"', '')) as \"tag\"\nFROM entity e\ncross join jsonb_each_text(e.attrs->'tags') as tag(key, value)\nWHERE\n  ($__timeFrom(),$__timeTo()) OVERLAPS (e.first_seen, e.last_seen)\n  AND e.type = 'CONTAINER_SPEC'\nORDER BY 1",
         "hide": 2,
         "includeAll": true,
-        "label": "Host List",
+        "label": "Tag",
         "multi": true,
-        "name": "HOST_LIST",
+        "name": "TAG",
         "options": [],
-        "query": "select distinct\n    e.name AS __text,\n    e.oid AS __value\nfrom \"scope\" s \njoin entity e on s.scoped_oid = e.\"oid\"\nwhere\n    s.scoped_type = 'PHYSICAL_MACHINE'\n    and s.seed_oid IN (${CLUSTER})\n    and e.last_seen > now()\n    and attrs->>'model' not like 'VMware%'\norder by 1",
-        "refresh": 2,
+        "query": "select\n  concat(tag.key, ': ', translate(tag.value, '{}[]\"', '')) as \"tag\"\nFROM entity e\ncross join jsonb_each_text(e.attrs->'tags') as tag(key, value)\nWHERE\n  ($__timeFrom(),$__timeTo()) OVERLAPS (e.first_seen, e.last_seen)\n  AND e.type = 'CONTAINER_SPEC'\nORDER BY 1",
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1086,15 +1195,13 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {
-    "nowDelay": ""
-  },
+  "timepicker": {},
   "timezone": "",
-  "title": "Cluster Stats - Individual Hosts",
-  "uid": "HK10NdJVz",
-  "version": 10,
+  "title": "Kubernetes Container Usage - with text search",
+  "uid": "05A6u_a4z",
+  "version": 3,
   "weekStart": ""
 }
