@@ -1,0 +1,688 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.4.7"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.width",
+                "value": 98
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 362
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 7,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Cluster Name"
+          }
+        ]
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "with clusters as (\n    SELECT DISTINCT e.name as cluster_name\n          ,s.scoped_oid as entity_oid\n      FROM entity e\n      JOIN scope s on s.seed_oid = e.oid\n       AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND e.type = 'CONTAINER_PLATFORM_CLUSTER'\n)\n\nSELECT cluster_name as \"Cluster Name\"\n      ,sum(cost) as \"Total Cost\"\n  FROM clusters c\n  JOIN entity_cost ec on c.entity_oid = ec.entity_oid\n   AND $__timeFilter(time)\n   AND ec.category = 'TOTAL'\n   AND ec.source = 'TOTAL'\n GROUP BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Cost Per Cluster",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mem Used"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kbytes"
+              },
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Consumed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.width",
+                "value": 132
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pod Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 419
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Used"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 115
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 306
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 17,
+        "x": 7,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CPU Used"
+          }
+        ]
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH pods_by_cluster as (\n    SELECT DISTINCT e.name as cluster_name\n          ,e.oid as cluster_oid\n          ,pod.name as pod_name\n          ,s.scoped_oid as pod_oid\n      FROM entity e\n      JOIN scope s on s.seed_oid = e.oid\n      JOIN entity pod on pod.oid = s.scoped_oid\n       AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (pod.first_seen, pod.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND e.type = 'CONTAINER_PLATFORM_CLUSTER'\n       AND s.scoped_type = 'CONTAINER_POD'\n),\n\npod_stats as (\n    SELECT entity_oid as pod_oid\n          ,AVG(current) FILTER (WHERE type = 'VMEM') as vmem_used\n          ,AVG(capacity) FILTER (WHERE type = 'VMEM') as vmem_capacity\n          ,AVG(current) FILTER (WHERE type = 'VCPU') as millicore_used\n          ,AVG(capacity) FILTER (WHERE type = 'VCPU') as millicore_capacity\n      FROM metric\n     WHERE $__timeFilter(time)\n       AND type IN ('VMEM', 'VCPU')\n       AND entity_type = 'CONTAINER_POD'\n       AND entity_oid IN (SELECT pod_oid from pods_by_cluster)\n       AND consumed IS NULL\n     GROUP BY 1\n),\n\ncluster_costs as (\n    SELECT seed_oid as cluster_oid\n          ,SUM(cost) AS cc_cost\n \t  FROM scope s\n      JOIN entity_cost ec ON scoped_oid = entity_oid\n     WHERE scoped_type = 'VIRTUAL_MACHINE'\n       AND seed_oid IN (SELECT DISTINCT cluster_oid FROM pods_by_cluster)\n       AND ec.category = 'TOTAL'\n       AND ec.source = 'TOTAL'\n       AND $__timeFilter(ec.time)\n       AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n     GROUP BY 1\n),\n\ncluster_stats as (\n    SELECT cluster_oid\n          ,SUM(vmem_used) as cluster_vmem_used\n          ,SUM(vmem_capacity) as cluster_vmem_cap\n          ,SUM(millicore_used) as cluster_vcpu_used\n          ,SUM(millicore_capacity) as cluster_vcpu_cap\n      FROM pods_by_cluster pbc\n      JOIN pod_stats ps on ps.pod_oid = pbc.pod_oid\n     GROUP BY 1\n)\n\nSELECT pod_name as \"Pod Name\"\n      ,cluster_name as \"Cluster Name\"\n      ,ps.vmem_used as \"Mem Used\"\n      ,ps.millicore_used as \"CPU Used\"\n      ,(ps.vmem_used / cs.cluster_vmem_used * .5) +\n       (ps.millicore_used / cs.cluster_vcpu_used * .5) as \"Consumed\"\n      ,cc_cost * (ps.vmem_used / cs.cluster_vmem_used * .5) +\n       (ps.millicore_used / cs.cluster_vcpu_used * .5) as \"Total Cost\"\n  FROM pods_by_cluster pbc\n  JOIN pod_stats ps on pbc.pod_oid = ps.pod_oid\n  JOIN cluster_costs cc on cc.cluster_oid = pbc.cluster_oid\n  JOIN cluster_stats cs on cs.cluster_oid = pbc.cluster_oid",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Cost Per Pod",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Cost.*"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 17,
+        "x": 0,
+        "y": 9
+      },
+      "id": 8,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "WITH cluster_costs_by_label as (\n    WITH pods_by_cluster as (\n        SELECT DISTINCT e.name as cluster_name\n              ,e.oid as cluster_oid\n              ,pod.name as pod_name\n              ,s.scoped_oid as pod_oid\n          FROM entity e\n          JOIN scope s on s.seed_oid = e.oid\n          JOIN entity pod on pod.oid = s.scoped_oid\n           AND (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n           AND (pod.first_seen, pod.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n           AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n           AND e.type = 'CONTAINER_PLATFORM_CLUSTER'\n           AND s.scoped_type = 'CONTAINER_POD'\n           AND pod.attrs -> 'tags' -> ${labelKey:singlequote} ->> 0 = ${labelValue:singlequote}\n    ),\n\n    pod_stats as (\n        SELECT entity_oid as pod_oid\n              ,AVG(current) FILTER (WHERE type = 'VMEM') as vmem_used\n              ,AVG(capacity) FILTER (WHERE type = 'VMEM') as vmem_capacity\n              ,AVG(current) FILTER (WHERE type = 'VCPU') as millicore_used\n              ,AVG(capacity) FILTER (WHERE type = 'VCPU') as millicore_capacity\n          FROM metric\n         WHERE $__timeFilter(time)\n           AND \n           type IN ('VMEM', 'VCPU')\n           AND entity_type = 'CONTAINER_POD'\n           AND entity_oid IN (SELECT pod_oid from pods_by_cluster)\n           AND consumed IS NULL\n         GROUP BY 1\n    ),\n\n    cluster_costs as (\n        SELECT seed_oid as cluster_oid\n              ,SUM(cost) AS cc_cost\n     \t  FROM scope s\n          JOIN entity_cost ec ON scoped_oid = entity_oid\n         WHERE scoped_type = 'VIRTUAL_MACHINE'\n           AND seed_oid IN (SELECT DISTINCT cluster_oid FROM pods_by_cluster)\n           AND ec.category = 'TOTAL'\n           AND ec.source = 'TOTAL'\n           AND $__timeFilter(ec.time)\n           AND (start, finish) OVERLAPS ($__timeFrom(), $__timeTo())\n         GROUP BY 1\n    ),\n\n    cluster_stats as (\n        SELECT cluster_oid\n              ,SUM(vmem_used) as cluster_vmem_used\n              ,SUM(vmem_capacity) as cluster_vmem_cap\n              ,SUM(millicore_used) as cluster_vcpu_used\n              ,SUM(millicore_capacity) as cluster_vcpu_cap\n          FROM pods_by_cluster pbc\n          JOIN pod_stats ps on ps.pod_oid = pbc.pod_oid\n         GROUP BY 1\n    )\n\n    SELECT ${labelValue:singlequote} as tag_value\n          ,sum(cc_cost * (ps.vmem_used / cs.cluster_vmem_used * .5) +\n               (ps.millicore_used / cs.cluster_vcpu_used * .5)) as cluster_costs\n      FROM pods_by_cluster pbc\n      JOIN pod_stats ps on pbc.pod_oid = ps.pod_oid\n      JOIN cluster_costs cc on cc.cluster_oid = pbc.cluster_oid\n      JOIN cluster_stats cs on cs.cluster_oid = pbc.cluster_oid\n     GROUP BY 1\n),\n\nresource_costs_by_label as (\n    SELECT ${labelValue:singlequote} as tag_value\n          ,sum(ec.cost) as resource_costs\n      FROM entity e\n      JOIN entity_cost ec on ec.entity_oid = e.oid\n     WHERE (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n       AND $__timeFilter(ec.time)\n       AND e.environment = 'CLOUD'\n       AND e.attrs -> 'tags' -> ${tagKey:singlequote} ->> 0 = ${tagValue:singlequote}\n       AND ec.category = 'TOTAL'\n       AND ec.source = 'TOTAL'\n       AND e.type != 'CONTAINER_POD'\n     GROUP BY 1\n)\n\nSELECT ${labelKey:singlequote} as \"Key\"\n      ,${labelValue:singlequote} as \"Label\"\n      ,cluster_costs as \"Cost From Cluster Resources\"\n      ,resource_costs as \"Cost From Tagged Resources\"\n      ,cluster_costs + resource_costs as \"Total Cost\"\n  FROM resource_costs_by_label, cluster_costs_by_label\n  --JOIN cluster_costs_by_label ccl on ccl.tag_value = rcl.tag_value",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Cost",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Resource Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 253
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 17,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT e.name as \"Resource Name\"\n      ,sum(ec.cost) as \"Total Cost\"\n  FROM entity e\n  JOIN entity_cost ec on ec.entity_oid = e.oid\n WHERE (e.first_seen, e.last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n   AND $__timeFilter(ec.time)\n   AND e.environment = 'CLOUD'\n   AND e.attrs -> 'tags' -> ${tagKey:singlequote} ->> 0 = ${tagValue:singlequote}\n   AND ec.category = 'TOTAL'\n   AND ec.source = 'TOTAL'\n   AND e.type != 'CONTAINER_POD'\n GROUP BY 1, e.oid",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "savings"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "completed_action",
+          "timeColumn": "recommendation_time",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Resource Spend by Tag",
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT * FROM\n  (SELECT DISTINCT jsonb_object_keys(attrs -> 'tags') as key\n     FROM entity\n    WHERE attrs -> 'tags' IS NOT NULL\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    ORDER BY 1) as a\nWHERE key LIKE '[k8s label]%'",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Label Key",
+        "multi": true,
+        "name": "labelKey",
+        "options": [],
+        "query": "SELECT * FROM\n  (SELECT DISTINCT jsonb_object_keys(attrs -> 'tags') as key\n     FROM entity\n    WHERE attrs -> 'tags' IS NOT NULL\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    ORDER BY 1) as a\nWHERE key LIKE '[k8s label]%'",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT DISTINCT attrs -> 'tags' -> ${labelKey:singlequote} ->> 0\n  FROM entity\n WHERE attrs -> 'tags' -> ${labelKey:singlequote} IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Label Value",
+        "multi": true,
+        "name": "labelValue",
+        "options": [],
+        "query": "SELECT DISTINCT attrs -> 'tags' -> ${labelKey:singlequote} ->> 0\n  FROM entity\n WHERE attrs -> 'tags' -> ${labelKey:singlequote} IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT DISTINCT jsonb_object_keys(attrs -> 'tags')\n  FROM entity\n WHERE attrs -> 'tags' IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Tag Key",
+        "multi": true,
+        "name": "tagKey",
+        "options": [],
+        "query": "SELECT DISTINCT jsonb_object_keys(attrs -> 'tags')\n  FROM entity\n WHERE attrs -> 'tags' IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT DISTINCT attrs -> 'tags' -> ${tagKey:singlequote} ->> 0\n  FROM entity\n WHERE attrs -> 'tags' -> ${tagKey:singlequote} IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Tag Value",
+        "multi": true,
+        "name": "tagValue",
+        "options": [],
+        "query": "SELECT DISTINCT attrs -> 'tags' -> ${tagKey:singlequote} ->> 0\n  FROM entity\n WHERE attrs -> 'tags' -> ${tagKey:singlequote} IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Container Pod Show Back Report",
+  "uid": "ZnqzJLrnk",
+  "version": 3,
+  "weekStart": ""
+}
