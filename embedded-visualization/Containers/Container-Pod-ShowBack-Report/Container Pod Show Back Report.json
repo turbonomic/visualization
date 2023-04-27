@@ -603,7 +603,7 @@
         "hide": 0,
         "includeAll": false,
         "label": "Label Key",
-        "multi": true,
+        "multi": false,
         "name": "labelKey",
         "options": [],
         "query": "SELECT * FROM\n  (SELECT DISTINCT jsonb_object_keys(attrs -> 'tags') as key\n     FROM entity\n    WHERE attrs -> 'tags' IS NOT NULL\n      AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n    ORDER BY 1) as a\nWHERE key LIKE '[k8s label]%'",
@@ -623,7 +623,7 @@
         "hide": 0,
         "includeAll": false,
         "label": "Label Value",
-        "multi": true,
+        "multi": false,
         "name": "labelValue",
         "options": [],
         "query": "SELECT DISTINCT attrs -> 'tags' -> ${labelKey:singlequote} ->> 0\n  FROM entity\n WHERE attrs -> 'tags' -> ${labelKey:singlequote} IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
@@ -643,7 +643,7 @@
         "hide": 0,
         "includeAll": false,
         "label": "Tag Key",
-        "multi": true,
+        "multi": false,
         "name": "tagKey",
         "options": [],
         "query": "SELECT DISTINCT jsonb_object_keys(attrs -> 'tags')\n  FROM entity\n WHERE attrs -> 'tags' IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
@@ -663,7 +663,7 @@
         "hide": 0,
         "includeAll": false,
         "label": "Tag Value",
-        "multi": true,
+        "multi": false,
         "name": "tagValue",
         "options": [],
         "query": "SELECT DISTINCT attrs -> 'tags' -> ${tagKey:singlequote} ->> 0\n  FROM entity\n WHERE attrs -> 'tags' -> ${tagKey:singlequote} IS NOT NULL\n   AND (first_seen, last_seen) OVERLAPS ($__timeFrom(), $__timeTo())\n ORDER BY 1",
@@ -676,13 +676,13 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Container Pod Show Back Report",
   "uid": "ZnqzJLrnk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
