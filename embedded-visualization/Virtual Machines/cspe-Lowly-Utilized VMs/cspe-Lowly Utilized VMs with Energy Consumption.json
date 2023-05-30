@@ -1,0 +1,395 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TURBO_TIMESCALE",
+      "label": "Turbo Timescale",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "postgres",
+      "pluginName": "PostgreSQL"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "9.4.7"
+    },
+    {
+      "type": "datasource",
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "${DS_TURBO_TIMESCALE}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": ".*Utilization.*"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "noValue",
+                "value": "-"
+              },
+              {
+                "id": "max",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sum of Energy Consumption"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "#6ED0E0",
+                      "value": 100
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 400
+                    },
+                    {
+                      "color": "red",
+                      "value": 800
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "unit",
+                "value": "watth"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "links": [],
+      "options": {
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Max vCPU Utilization (%)"
+          }
+        ]
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "${DS_TURBO_TIMESCALE}"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT\n    e.name as \"VM Name\",\n    e.oid as \"VM OID\",\n   -- mvcpu.entity_oid as \"VM OID\",\n    max(mvcpu.utilization)*100 as \"Max vCPU Utilization (%)\",\n    max(mvmem.utilization)*100 as \"Max vMem Utilization (%)\",\n    sum(menergy.current) as \"Sum of Energy Consumption\"\nFROM entity e\nJOIN metric mvcpu on mvcpu.entity_oid = e.oid\nJOIN metric mvmem on mvcpu.entity_oid = mvmem.entity_oid AND mvmem.time = mvcpu.time\nJOIN metric menergy on mvcpu.entity_oid = menergy.entity_oid AND menergy.time = mvcpu.time\nWHERE\n    e.last_seen > now() AND\n    e.oid IN (${VM_OID}) AND\n    e.name LIKE '%${VM_FILTER}%' AND\n    $__timeFilter(mvcpu.\"time\") AND\n    $__timeFilter(mvmem.\"time\") AND\n    $__timeFilter(menergy.\"time\") AND\n    mvcpu.entity_oid IN (${VM_OID}) AND \n    mvmem.entity_oid IN (${VM_OID}) AND \n    menergy.entity_oid IN (${VM_OID}) AND \n    mvcpu.\"type\" = 'VCPU' AND\n    mvmem.\"type\" = 'VMEM' AND\n    menergy.\"type\" = 'ENERGY' AND\n    mvcpu.utilization IS NOT NULL AND\n    mvmem.utilization IS NOT NULL AND\n    menergy.utilization IS NOT NULL\nGROUP BY \"VM OID\"\nHAVING max(mvcpu.utilization)*100 < ${MAXIMUM_VCPU} AND max(mvmem.utilization)*100 < ${MAXIMUM_VMEM}\nORDER BY 1",
+          "refId": "Query",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Lowly Utilized VMs",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "VM OID": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Max vCPU Utilization (%)"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Max vMem Utilization (%)"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT\n    CONCAT(e.name, ' - ' , e.oid) AS __text,\n    e.oid AS __value\nFROM entity e\nWHERE e.type = 'GROUP'\nAND e.last_seen > now()\norder by 1",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Group Name",
+        "multi": true,
+        "name": "GROUP_OID",
+        "options": [],
+        "query": "SELECT\n    CONCAT(e.name, ' - ' , e.oid) AS __text,\n    e.oid AS __value\nFROM entity e\nWHERE e.type = 'GROUP'\nAND e.last_seen > now()\norder by 1",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "postgres",
+          "uid": "${DS_TURBO_TIMESCALE}"
+        },
+        "definition": "SELECT\n    e.name as __text,\n    e.oid as __value\nFROM entity e\nJOIN scope s ON s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID}) AND s.finish > now()\nWHERE\n    s.scoped_type = 'VIRTUAL_MACHINE' AND\n    e.last_seen > now() AND\n    e.attrs->>'state' = 'POWERED_ON'\nORDER BY 1",
+        "description": "List of VMs which are POWERED_ON only",
+        "hide": 2,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "VM_OID",
+        "options": [],
+        "query": "SELECT\n    e.name as __text,\n    e.oid as __value\nFROM entity e\nJOIN scope s ON s.scoped_oid = e.oid AND s.seed_oid IN (${GROUP_OID}) AND s.finish > now()\nWHERE\n    s.scoped_type = 'VIRTUAL_MACHINE' AND\n    e.last_seen > now() AND\n    e.attrs->>'state' = 'POWERED_ON'\nORDER BY 1",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "10",
+          "value": "10"
+        },
+        "hide": 0,
+        "label": "Maximum vCPU Usage",
+        "name": "MAXIMUM_VCPU",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "10",
+          "value": "10"
+        },
+        "hide": 0,
+        "label": "Maximum vMem Usage",
+        "name": "MAXIMUM_VMEM",
+        "options": [
+          {
+            "selected": true,
+            "text": "10",
+            "value": "10"
+          }
+        ],
+        "query": "10",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "VM Name Filter",
+        "name": "VM_FILTER",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Lowly Utilized VMs with Energy Consumption",
+  "uid": "CsiMz8Q4k",
+  "version": 11,
+  "weekStart": ""
+}
