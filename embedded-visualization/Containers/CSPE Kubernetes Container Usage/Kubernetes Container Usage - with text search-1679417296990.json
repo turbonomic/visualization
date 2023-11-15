@@ -285,7 +285,7 @@
           ]
         }
       ],
-      "title": "vCPU Request Capacity",
+      "title": "vCPU Request",
       "type": "timeseries"
     },
     {
@@ -740,7 +740,7 @@
           ]
         }
       ],
-      "title": "vMem Request Capacity",
+      "title": "vMem Request",
       "type": "timeseries"
     },
     {
@@ -967,7 +967,7 @@
           ]
         }
       ],
-      "title": "vMem Limit Capacity",
+      "title": "vMem Limit",
       "type": "timeseries"
     },
     {
