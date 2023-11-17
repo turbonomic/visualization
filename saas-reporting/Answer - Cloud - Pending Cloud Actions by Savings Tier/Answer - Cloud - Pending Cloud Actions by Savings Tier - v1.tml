@@ -1,0 +1,92 @@
+guid: 7313a620-8d1d-4d53-8bf0-4540cc14bf60
+answer:
+  name: Pending Cloud Actions by Savings Tier
+  description: Prioritize the categories with large savings and few actions. Leverage automation in categories with large savings but many actions.
+  tables:
+  - id: Actions
+    name: Actions
+  formulas:
+  - id: Savings Range
+    name: Savings Range
+    expr: "if ( [Monthly Savings] > 1000 ) then 'a) > $1000' else if ( [Monthly Savings] > 500 ) then 'b) $1000< >$500>' else if ( [Monthly Savings] > 100 ) then 'c) $500< >$100' else if ( [Monthly Savings] > 10 ) then 'd) $100< >$10' else if ( [Monthly Savings] > 0 ) then 'e) $10< >$0' else 'investment'"
+    was_auto_generated: false
+  - id: Monthly Savings
+    name: Monthly Savings
+    expr: "[Savings Hourly] * 730"
+    was_auto_generated: false
+  search_query: "[Datetime (UTC)] [Datetime (UTC)].monthly [State].ready unique count [Id] [Type] [Description] [Latest Pending] = true [Monthly Savings] [Savings Range] [Monthly Savings] > 0 sort by [Savings Range] ascending [Entity Type]"
+  answer_columns:
+  - name: Month(Datetime (UTC))
+  - name: Unique Number of Id
+    format:
+      category: NUMBER
+      numberFormatConfig:
+        unit: NONE
+        decimals: 0.0
+        negativeValueFormat: PREFIX_DASH
+        toSeparateThousands: true
+      isCategoryEditable: true
+  - name: Type
+  - name: Description
+  - name: Total Monthly Savings
+    format:
+      category: CURRENCY
+      currencyFormatConfig:
+        locale: USD
+        unit: NONE
+        decimals: 0.0
+        toSeparateThousands: true
+      isCategoryEditable: true
+  - name: Savings Range
+  - name: Entity Type
+  table:
+    table_columns:
+    - column_id: Month(Datetime (UTC))
+      show_headline: false
+    - column_id: Type
+      show_headline: false
+    - column_id: Description
+      show_headline: false
+    - column_id: Savings Range
+      show_headline: false
+    - column_id: Entity Type
+      show_headline: false
+    - column_id: Unique Number of Id
+      show_headline: false
+    - column_id: Total Monthly Savings
+      show_headline: false
+    ordered_column_ids:
+    - Month(Datetime (UTC))
+    - Type
+    - Description
+    - Savings Range
+    - Entity Type
+    - Unique Number of Id
+    - Total Monthly Savings
+    client_state: ""
+    client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"columnProperties\": [{\"columnId\": \"Month(Datetime (UTC))\",\"columnProperty\": {}},{\"columnId\": \"Type\",\"columnProperty\": {}},{\"columnId\": \"Description\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Total Monthly Savings\",\"columnProperty\": {}}]}"
+  chart:
+    type: LINE_STACKED_COLUMN
+    chart_columns:
+    - column_id: Month(Datetime (UTC))
+    - column_id: Type
+    - column_id: Description
+    - column_id: Savings Range
+    - column_id: Entity Type
+    - column_id: Unique Number of Id
+    - column_id: Total Monthly Savings
+    axis_configs:
+    - x:
+      - Savings Range
+      "y":
+      - Total Monthly Savings
+      color:
+      - Type
+      - Entity Type
+    - x:
+      - Savings Range
+      "y":
+      - Unique Number of Id
+    client_state: ""
+    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": true,\"yGridlineEnabled\": false},\"responsiveLayoutPreference\": \"USER_PREFERRED_ON\",\"chartSpecific\": {\"dataFieldArea\": \"column\"},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Month(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Savings Range\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Total Monthly Savings\",\"columnProperty\": {\"dataLabels\": false}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"cf8e7afe-39fb-4118-9b35-08d3aa201a34\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Savings Range\"]}},{\"id\": \"aa683096-a134-480d-86b0-c6f99ad955b2\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of Actions\",\"isOpposite\": true}},{\"id\": \"07370dd2-4a2e-4606-a7ea-a36edfa36014\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Monthly Savings\"],\"format\": {\"category\": \"CURRENCY\",\"currencyFormatConfig\": {\"locale\": \"USD\",\"unit\": \"AUTO\",\"decimals\": 2.0,\"toSeparateThousands\": true},\"isCategoryEditable\": true},\"name\": \"Potential Monthly Savings\",\"isOpposite\": false}}],\"systemSeriesColors\": [{\"serieName\": \"delete\",\"color\": \"#FCC838\"},{\"serieName\": \"scale\",\"color\": \"#48D1E0\"},{\"serieName\": \"total monthly savings\",\"color\": \"#2E75F0\"},{\"serieName\": \"unique count id\",\"color\": \"#2E75F0\"},{\"serieName\": \"delete virtual_volume\",\"color\": \"#06BF7F\"},{\"serieName\": \"scale virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"scale virtual_volume\",\"color\": \"#48D1E0\"},{\"serieName\": \"delete, virtual_volume\",\"color\": \"#06BF7F\"},{\"serieName\": \"scale, virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"scale, virtual_volume\",\"color\": \"#48D1E0\"}]}"
+  display_mode: CHART_MODE
