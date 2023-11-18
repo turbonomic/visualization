@@ -1,0 +1,101 @@
+guid: 0b5ad845-bf6a-4319-ab77-646ec9022fc4
+answer:
+  name: "Top 50 VMs vMem: Max, 99P, 95P, 90P, Avg"
+  description: View different percentile calculations to determine your desired scaling policy.
+  tables:
+  - id: Entity Metrics
+    name: Entity Metrics
+  formulas:
+  - id: 90th Percentile
+    name: 90th Percentile
+    expr: "percentile ( [Utilization] , 90 , 'asc' )"
+    was_auto_generated: false
+  - id: 95th Percentile
+    name: 95th Percentile
+    expr: "percentile ( [Utilization] , 95 , 'asc' )"
+    was_auto_generated: false
+  - id: 99th Percentile
+    name: 99th Percentile
+    expr: "percentile ( [Utilization] , 99 , 'asc' )"
+    was_auto_generated: false
+  - id: Latest Capacity (GB)
+    name: Latest Capacity (GB)
+    expr: "if ( group_max ( [Datetime (UTC)] ) = [Datetime (UTC)] ) then if ( [Metric Type] = 'vmem' ) then [Capacity] / 1024 / 1024 else [Capacity] else null"
+    was_auto_generated: false
+  search_query: "[Datetime (UTC)] = [Datetime (UTC)].'last 30 days' [Datetime (UTC)].today [Entity Type].virtual_machine [Metric Type].vmem [Name] [Metric Type] average [Utilization] max [Utilization] [Latest Capacity (GB)] [95th Percentile] [99th Percentile] [90th Percentile] [Latest Capacity (GB)] top 50 by [95th Percentile]"
+  answer_columns:
+  - name: Name
+  - name: Metric Type
+  - name: Average Utilization
+  - name: Maximum Utilization
+  - name: Latest Capacity (GB)
+  - name: 95th Percentile
+    format:
+      category: PERCENTAGE
+      percentageFormatConfig:
+        decimals: 2.0
+      isCategoryEditable: true
+  - name: 99th Percentile
+    format:
+      category: PERCENTAGE
+      percentageFormatConfig:
+        decimals: 2.0
+      isCategoryEditable: true
+  - name: 90th Percentile
+    format:
+      category: PERCENTAGE
+      percentageFormatConfig:
+        decimals: 2.0
+      isCategoryEditable: true
+  table:
+    table_columns:
+    - column_id: Name
+      show_headline: false
+    - column_id: Metric Type
+      show_headline: false
+    - column_id: Latest Capacity (GB)
+      show_headline: false
+    - column_id: Average Utilization
+      show_headline: false
+    - column_id: Maximum Utilization
+      show_headline: false
+    - column_id: 95th Percentile
+      show_headline: false
+    - column_id: 99th Percentile
+      show_headline: false
+    - column_id: 90th Percentile
+      show_headline: false
+    ordered_column_ids:
+    - Name
+    - Metric Type
+    - Latest Capacity (GB)
+    - Average Utilization
+    - Maximum Utilization
+    - 95th Percentile
+    - 99th Percentile
+    - 90th Percentile
+    client_state: ""
+    client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Latest Capacity (GB)\",\"width\": 133.0}],\"orderedColumnIds\": [\"Name\",\"Metric Type\",\"Latest Capacity (GB)\",\"Maximum Utilization\",\"99th Percentile\",\"95th Percentile\",\"90th Percentile\",\"Average Utilization\"]}"
+  chart:
+    type: COLUMN
+    chart_columns:
+    - column_id: Name
+    - column_id: Metric Type
+    - column_id: Latest Capacity (GB)
+    - column_id: Average Utilization
+    - column_id: Maximum Utilization
+    - column_id: 95th Percentile
+    - column_id: 99th Percentile
+    - column_id: 90th Percentile
+    axis_configs:
+    - x:
+      - Name
+      "y":
+      - Maximum Utilization
+      - 99th Percentile
+      - 95th Percentile
+      - 90th Percentile
+      - Average Utilization
+    client_state: ""
+    client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotSummariesState\": {}}},\"columnProperties\": [{\"columnId\": \"Name\",\"columnProperty\": {}},{\"columnId\": \"Metric Type\",\"columnProperty\": {}},{\"columnId\": \"Latest Capacity (GB)\",\"columnProperty\": {}},{\"columnId\": \"Average Utilization\",\"columnProperty\": {}},{\"columnId\": \"Maximum Utilization\",\"columnProperty\": {}},{\"columnId\": \"95th Percentile\",\"columnProperty\": {}},{\"columnId\": \"99th Percentile\",\"columnProperty\": {}},{\"columnId\": \"90th Percentile\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"7d8ef053-cf67-4269-acb5-4171594133f9\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Name\"]}},{\"id\": \"0bf0082e-f65f-4f06-a919-edd7f393930a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Average Utilization\"],\"yAxisRange\": {\"max\": 1.25},\"isOpposite\": false}},{\"id\": \"f4340d5e-4de7-4125-af65-c4f8e023655e\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"90th Percentile\"],\"format\": {\"category\": \"PERCENTAGE\",\"percentageFormatConfig\": {\"decimals\": 0.0},\"isCategoryEditable\": true},\"yAxisRange\": {\"max\": 1.25},\"isOpposite\": false}},{\"id\": \"f29e2461-5ba4-4c99-95a4-0460e3817176\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"95th Percentile\"],\"format\": {\"category\": \"PERCENTAGE\",\"percentageFormatConfig\": {\"decimals\": 0.0},\"isCategoryEditable\": true},\"yAxisRange\": {\"max\": 1.25},\"isOpposite\": false}},{\"id\": \"96f8cf50-31c7-4c81-b018-a35bca5e4ee3\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"99th Percentile\"],\"format\": {\"category\": \"PERCENTAGE\",\"percentageFormatConfig\": {\"decimals\": 0.0},\"isCategoryEditable\": true},\"yAxisRange\": {\"max\": 1.25},\"isOpposite\": false}},{\"id\": \"3530e923-3e17-4371-91fc-4537fce0fd85\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Maximum Utilization\"],\"yAxisRange\": {\"max\": 1.25},\"isOpposite\": false}}],\"systemSeriesColors\": [{\"serieName\": \"Average Utilization\",\"color\": \"#06BF7F\"},{\"serieName\": \"Maximum Utilization\",\"color\": \"#FCC838\"},{\"serieName\": \"95th Percentile\",\"color\": \"#48D1E0\"},{\"serieName\": \"99th Percentile\",\"color\": \"#2E75F0\"},{\"serieName\": \"90th Percentile\",\"color\": \"#71A1F4\"}]}"
+  display_mode: TABLE_MODE
