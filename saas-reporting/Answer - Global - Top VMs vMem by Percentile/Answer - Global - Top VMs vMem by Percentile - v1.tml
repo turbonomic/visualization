@@ -1,4 +1,4 @@
-guid: 0b5ad845-bf6a-4319-ab77-646ec9022fc4
+guid: 
 answer:
   name: "Top 50 VMs vMem: Max, 99P, 95P, 90P, Avg"
   description: View different percentile calculations to determine your desired scaling policy.
