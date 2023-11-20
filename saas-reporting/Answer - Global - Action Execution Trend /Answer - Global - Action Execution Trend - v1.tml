@@ -1,4 +1,4 @@
-guid: a6491384-1f1a-4f89-9fda-2f453a32125c
+guid: 
 answer:
   name: Action Execution Trend
   description: "Actions executed in the last 30 days organized by Environment, Entity Type, and Action Type."
