@@ -1,0 +1,310 @@
+guid: 
+liveboard:
+  name: Failed Actions Summary
+  description: Investigate and resolve failed actions.
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: Failed Unique Actions
+      description: by Environment + Entity Type + Action Type
+      tables:
+      - id: Actions
+        name: Actions
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [Environment] [State].failed [State] [Datetime (UTC)] = 'last 20160 minutes' [Entity Type]"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: State
+      - name: Entity Type
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - State
+        - Entity Type
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: State
+        - column_id: Entity Type
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Day(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - Environment
+          - Entity Type
+          - Type
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": false,\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotSummariesState\": {}},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"State\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"7fc66ccb-94ce-4182-bf17-3fba32c111ef\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of Actions\",\"isOpposite\": false}},{\"id\": \"80bfb247-1c33-4d0d-a8ce-e7b132e0df98\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(Datetime (UTC))\"],\"name\": \"Date\"}}],\"systemSeriesColors\": [{\"serieName\": \"cloud, activate\",\"color\": \"#56D3A8\"},{\"serieName\": \"cloud, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"cloud, delete\",\"color\": \"#FCD977\"},{\"serieName\": \"hybrid, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, deactivate\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, move\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, provision\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, virtual_machine, activate\",\"color\": \"#B094F8\"},{\"serieName\": \"cloud, virtual_machine, deactivate\",\"color\": \"#8C62F5\"},{\"serieName\": \"cloud, virtual_volume, delete\",\"color\": \"#56D3A8\"},{\"serieName\": \"hybrid, virtual_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, container_pod, move\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, virtual_machine, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, virtual_machine, move\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, virtual_machine, provision\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, virtual_machine, resize\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, workload_controller, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem, failed\",\"color\": \"#8C62F5\"},{\"serieName\": \"on_prem, physical_machine, activate\",\"color\": \"#FCC838\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_2
+    answer:
+      name: Failed Unique Actions Heatmap
+      description: Action Type + Entity Type
+      tables:
+      - id: Actions
+        name: Actions
+      formulas:
+      - id: Action Type & Entity Type
+        name: Action Type & Entity Type
+        expr: "concat ( [Type] , ' ' , [Entity Type] )"
+        was_auto_generated: false
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [Environment] [State] unique count [Datetime (UTC)] [Datetime (UTC)] = 'last 20160 minutes' [Entity Type] [Action Type & Entity Type] [State].failed"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: State
+      - name: Unique Number of Datetime (UTC)
+      - name: Entity Type
+      - name: Action Type & Entity Type
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Action Type & Entity Type
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        - column_id: Unique Number of Datetime (UTC)
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - State
+        - Entity Type
+        - Action Type & Entity Type
+        - Unique Number of Id
+        - Unique Number of Datetime (UTC)
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: HEATMAP
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: State
+        - column_id: Entity Type
+        - column_id: Action Type & Entity Type
+        - column_id: Unique Number of Id
+        - column_id: Unique Number of Datetime (UTC)
+        axis_configs:
+        - x:
+          - Day(Datetime (UTC))
+          "y":
+          - Action Type & Entity Type
+          size: Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"chartSpecific\": {\"dataFieldArea\": \"column\"},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"State\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Action Type & Entity Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"2c2b1ab9-5696-4586-9474-08c61a718d02\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Action Type & Entity Type\"],\"isOpposite\": false}},{\"id\": \"5a8f651f-0133-4bfd-a5b8-e6bd57c297aa\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(Datetime (UTC))\"]}}],\"seriesColors\": [{\"serieName\": \"Environment\",\"color\": \"#48d1e0\"},{\"serieName\": \"b3672af0-f01b-4d11-85ef-2f0a911146ef\",\"color\": \"#F47E89\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#48D1E0\"},{\"serieName\": \"Unique Number of Datetime (UTC)\",\"color\": \"#2E75F0\"},{\"serieName\": \"Action Type & Entity Type\",\"color\": \"#F9B3B9\"}],\"systemSeriesColors\": [{\"serieName\": \"Environment\",\"color\": \"#48d1e0\"},{\"serieName\": \"b3672af0-f01b-4d11-85ef-2f0a911146ef\",\"color\": \"#F47E89\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#48D1E0\"},{\"serieName\": \"Unique Number of Datetime (UTC)\",\"color\": \"#2E75F0\"},{\"serieName\": \"Action Type & Entity Type\",\"color\": \"#48d1e0\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_3
+    answer:
+      name: Failed Actions Pivot Table
+      tables:
+      - id: Actions
+        name: Actions
+      formulas:
+      - id: Action Type & Entity Type
+        name: Action Type & Entity Type
+        expr: "concat ( [Type] , ' ' , [Entity Type] )"
+        was_auto_generated: false
+      - id: Datetime & Action ID
+        name: Datetime & Action ID
+        expr: "concat ( to_string ( [Datetime (UTC)] , 'YYYY-MM-DD HH:mm' ) , ' ' , to_string ( [Id] ) )"
+        was_auto_generated: false
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [Environment] [State] [Entity Type] [Action Type & Entity Type] [State].failed [Datetime (UTC)] = 'last 20160 minutes' [Entity Name] [Execution Error] [Datetime & Action ID] unique count [Datetime & Action ID]"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+        custom_name: Unique Failed Actions
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: State
+      - name: Entity Type
+      - name: Action Type & Entity Type
+      - name: Entity Name
+      - name: Execution Error
+      - name: Datetime & Action ID
+      - name: Unique Number of Datetime & Action ID
+        custom_name: Failed Attempts
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Action Type & Entity Type
+          show_headline: false
+        - column_id: Entity Name
+          show_headline: false
+        - column_id: Execution Error
+          show_headline: false
+        - column_id: Datetime & Action ID
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        - column_id: Unique Number of Datetime & Action ID
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - State
+        - Entity Type
+        - Action Type & Entity Type
+        - Entity Name
+        - Execution Error
+        - Datetime & Action ID
+        - Unique Number of Id
+        - Unique Number of Datetime & Action ID
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: State
+        - column_id: Entity Type
+        - column_id: Action Type & Entity Type
+        - column_id: Entity Name
+        - column_id: Execution Error
+        - column_id: Datetime & Action ID
+        - column_id: Unique Number of Id
+        - column_id: Unique Number of Datetime & Action ID
+        axis_configs:
+        - x:
+          - Day(Datetime (UTC))
+          - Entity Name
+          - Execution Error
+          "y":
+          - Unique Number of Id
+          - Unique Number of Datetime & Action ID
+          color:
+          - Action Type & Entity Type
+        - "y":
+          - Unique Number of Id
+          - Unique Number of Datetime & Action ID
+        - x:
+          - Day(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          - Unique Number of Datetime & Action ID
+        - "y":
+          - Unique Number of Id
+          - Unique Number of Datetime & Action ID
+          color:
+          - Action Type & Entity Type
+        - x:
+          - Day(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          - Unique Number of Datetime & Action ID
+          color:
+          - Action Type & Entity Type
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"chartSpecific\": {\"pivotState\": {\"fields\": [{\"dataField\": \"Day(Datetime (UTC))\",\"sortBy\": \"value\",\"sortBySummaryField\": \"Day(Datetime (UTC))\",\"sortOrder\": \"desc\",\"expanded\": false,\"area\": \"row\"}]},\"isHeatmapOverlayed\": true,\"dataFieldArea\": \"column\"},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"State\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Action Type & Entity Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Name\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Execution Error\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Datetime & Action ID\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Datetime & Action ID\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"db77e6c3-3dc1-4c84-acff-63ba5151d890\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"isOpposite\": false}},{\"id\": \"f0421678-635c-48fb-8a50-afdd5ade086b\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Datetime & Action ID\"],\"isOpposite\": true}},{\"id\": \"439c2f2b-7749-4505-ba15-10e5e1d05927\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(Datetime (UTC))\",\"Entity Name\",\"Execution Error\"]}}],\"seriesColors\": [{\"serieName\": \"Environment\",\"color\": \"#48d1e0\"},{\"serieName\": \"b3672af0-f01b-4d11-85ef-2f0a911146ef\",\"color\": \"#F47E89\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#48D1E0\"},{\"serieName\": \"313bbe0f-ec20-415f-bc47-e4be6f127641\",\"color\": \"#2E75F0\"},{\"serieName\": \"Action Type & Entity Type\",\"color\": \"#F9B3B9\"}],\"systemSeriesColors\": [{\"serieName\": \"Environment\",\"color\": \"#48d1e0\"},{\"serieName\": \"b3672af0-f01b-4d11-85ef-2f0a911146ef\",\"color\": \"#F47E89\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#48D1E0\"},{\"serieName\": \"313bbe0f-ec20-415f-bc47-e4be6f127641\",\"color\": \"#2E75F0\"},{\"serieName\": \"Action Type & Entity Type\",\"color\": \"#48d1e0\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  filters:
+  - column:
+    - Datetime (UTC)
+    is_mandatory: false
+    date_filter:
+      type: LAST_N_PERIOD
+      number: 20160
+      oper: =
+      date_period: MINUTE
+    display_name: ""
+  layout:
+    tiles:
+    - visualization_id: Viz_3
+      x: 0
+      "y": 5
+      height: 6
+      width: 12
+    - visualization_id: Viz_2
+      x: 6
+      "y": 0
+      height: 5
+      width: 6
+    - visualization_id: Viz_1
+      x: 0
+      "y": 0
+      height: 5
+      width: 6
