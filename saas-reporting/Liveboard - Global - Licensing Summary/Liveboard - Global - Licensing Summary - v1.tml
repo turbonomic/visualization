@@ -1,0 +1,342 @@
+guid: 
+liveboard:
+  name: Licensing Summary
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: MVS Trend
+      description: Powered On VMs
+      tables:
+      - id: Entity Metrics
+        name: Entity Metrics
+      search_query: "[Entity Type] [Entity Type].virtual_machine [State] unique count [Id] [Datetime (UTC)].'last 30 days' [Environment] [State].powered_on [Datetime (UTC)] [Datetime (UTC)].hourly"
+      answer_columns:
+      - name: Entity Type
+      - name: State
+      - name: Unique Number of Id
+      - name: Environment
+      - name: Hour(Datetime (UTC))
+      table:
+        table_columns:
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Hour(Datetime (UTC))
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Entity Type
+        - State
+        - Environment
+        - Hour(Datetime (UTC))
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Entity Type\",\"width\": 160.0},{\"columnId\": \"Environment\",\"width\": 130.64981079101562}],\"orderedColumnIds\": [\"Entity Type\",\"State\",\"Unique Number of Id\"],\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}}]}"
+      chart:
+        type: LINE
+        chart_columns:
+        - column_id: Entity Type
+        - column_id: State
+        - column_id: Environment
+        - column_id: Hour(Datetime (UTC))
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"USER_PREFERRED_ON\",\"chartSpecific\": {\"dataFieldArea\": \"column\"}},\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Environment\",\"columnProperty\": {}},{\"columnId\": \"Hour(Datetime (UTC))\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"6b9ab2af-dcc0-411d-acf7-10d64b6506cc\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Hour(Datetime (UTC))\"]}},{\"id\": \"3caf7367-797e-409d-9bc2-989fd1e7205a\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of MVS\",\"isOpposite\": false}}],\"systemSeriesColors\": [{\"serieName\": \"powered_off\",\"color\": \"#2E75F0\"},{\"serieName\": \"powered_on\",\"color\": \"#48D1E0\"},{\"serieName\": \"unknown\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud, powered_off\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, powered_on\",\"color\": \"#48D1E0\"},{\"serieName\": \"cloud, unknown\",\"color\": \"#FCC838\"},{\"serieName\": \"hybrid, powered_on\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, powered_off\",\"color\": \"#8C62F5\"},{\"serieName\": \"on_prem, powered_on\",\"color\": \"#FF8142\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#48D1E0\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_2
+    answer:
+      name: MVS Trend by State
+      tables:
+      - id: Entity Metrics
+        name: Entity Metrics
+      formulas:
+      - id: Max Unique Count
+        name: Max Unique Count
+        expr: "count ( [Id] )"
+        was_auto_generated: false
+      search_query: "[Entity Type] [Entity Type].virtual_machine [State] unique count [Id] [Environment] [Datetime (UTC)] = 'last 43200 minutes' [Datetime (UTC)] [Datetime (UTC)].hourly"
+      answer_columns:
+      - name: Entity Type
+      - name: State
+      - name: Unique Number of Id
+      - name: Environment
+      - name: Hour(Datetime (UTC))
+      table:
+        table_columns:
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Hour(Datetime (UTC))
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Entity Type
+        - State
+        - Environment
+        - Hour(Datetime (UTC))
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Entity Type\",\"width\": 160.0},{\"columnId\": \"Environment\",\"width\": 130.64981079101562}],\"orderedColumnIds\": [\"Entity Type\",\"State\",\"Unique Number of Id\"],\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}}]}"
+      chart:
+        type: LINE
+        chart_columns:
+        - column_id: Entity Type
+        - column_id: State
+        - column_id: Environment
+        - column_id: Hour(Datetime (UTC))
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - State
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"USER_PREFERRED_ON\",\"chartSpecific\": {\"dataFieldArea\": \"column\"},\"dataSize\": 20000.0},\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Environment\",\"columnProperty\": {}},{\"columnId\": \"Hour(Datetime (UTC))\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"abaa3362-4cd0-471d-97cd-c7fd6d8daa18\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"isOpposite\": false}},{\"id\": \"7c4a3331-e87d-4a13-84f4-7df22394357e\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Hour(Datetime (UTC))\"]}}],\"systemSeriesColors\": [{\"serieName\": \"powered_off\",\"color\": \"#2E75F0\"},{\"serieName\": \"powered_on\",\"color\": \"#48D1E0\"},{\"serieName\": \"unknown\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud, powered_off\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, powered_on\",\"color\": \"#48D1E0\"},{\"serieName\": \"cloud, unknown\",\"color\": \"#FCC838\"},{\"serieName\": \"hybrid, powered_on\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, powered_off\",\"color\": \"#8C62F5\"},{\"serieName\": \"on_prem, powered_on\",\"color\": \"#FF8142\"},{\"serieName\": \"on_prem, unknown\",\"color\": \"#ABC7F9\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_3
+    answer:
+      name: MVS Trend by Environment
+      description: Active VMs
+      tables:
+      - id: Entity Metrics
+        name: Entity Metrics
+      search_query: "[Entity Type] [Entity Type].virtual_machine [State] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].hourly [Environment] [State].powered_on [Datetime (UTC)] = 'last 60 minutes'"
+      answer_columns:
+      - name: Entity Type
+      - name: State
+      - name: Unique Number of Id
+      - name: Hour(Datetime (UTC))
+      - name: Environment
+      table:
+        table_columns:
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Hour(Datetime (UTC))
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Entity Type
+        - State
+        - Hour(Datetime (UTC))
+        - Environment
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Entity Type\",\"width\": 160.0},{\"columnId\": \"Hour(Datetime (UTC))\",\"width\": 202.94168090820312},{\"columnId\": \"Environment\",\"width\": 130.64981079101562}],\"orderedColumnIds\": [\"Hour(Datetime (UTC))\",\"Entity Type\",\"State\",\"Unique Number of Id\"],\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}}]}"
+      chart:
+        type: LINE
+        chart_columns:
+        - column_id: Entity Type
+        - column_id: State
+        - column_id: Hour(Datetime (UTC))
+        - column_id: Environment
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - Environment
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"USER_PREFERRED_ON\",\"chartSpecific\": {\"dataFieldArea\": \"column\"}},\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}},{\"columnId\": \"Hour(Datetime (UTC))\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Environment\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"35fb8a56-f97c-4f73-a3f1-ee71b1d5d044\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Hour(Datetime (UTC))\"]}},{\"id\": \"a8521b61-a354-4ee4-be13-714c857e10f5\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of MVS\",\"isOpposite\": false}}],\"systemSeriesColors\": [{\"serieName\": \"powered_off\",\"color\": \"#2E75F0\"},{\"serieName\": \"powered_on\",\"color\": \"#48D1E0\"},{\"serieName\": \"unknown\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud, powered_off\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, powered_on\",\"color\": \"#48D1E0\"},{\"serieName\": \"cloud, unknown\",\"color\": \"#FCC838\"},{\"serieName\": \"hybrid, powered_on\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, powered_off\",\"color\": \"#8C62F5\"},{\"serieName\": \"on_prem, powered_on\",\"color\": \"#FF8142\"},{\"serieName\": \"cloud\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem\",\"color\": \"#48D1E0\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_4
+    answer:
+      name: "On-Prem: MVS by Cluster"
+      description: Active VMs
+      tables:
+      - id: Entity Metrics
+        name: Entity Metrics
+      search_query: "[Entity Type] [Entity Type].virtual_machine [State] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].hourly [Environment] [State].powered_on [Datetime (UTC)] = 'last 60 minutes' [Environment].on_prem [Group Type].compute_cluster [Group Name]"
+      answer_columns:
+      - name: Entity Type
+      - name: State
+      - name: Unique Number of Id
+        custom_name: '# of MVS'
+      - name: Hour(Datetime (UTC))
+      - name: Environment
+      - name: Group Name
+        custom_name: Cluster
+      table:
+        table_columns:
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Hour(Datetime (UTC))
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Group Name
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Entity Type
+        - State
+        - Hour(Datetime (UTC))
+        - Environment
+        - Group Name
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Entity Type\",\"width\": 160.0},{\"columnId\": \"Hour(Datetime (UTC))\",\"width\": 202.94168090820312},{\"columnId\": \"Environment\",\"width\": 130.64981079101562}],\"orderedColumnIds\": [\"Hour(Datetime (UTC))\",\"Entity Type\",\"State\",\"Unique Number of Id\"],\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}}]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: Entity Type
+        - column_id: State
+        - column_id: Hour(Datetime (UTC))
+        - column_id: Environment
+        - column_id: Group Name
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - Group Name
+        - "y":
+          - Unique Number of Id
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+        - "y":
+          - Unique Number of Id
+          color:
+          - Group Name
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"responsiveLayoutPreference\": \"USER_PREFERRED_ON\",\"chartSpecific\": {\"pivotState\": {\"fields\": [{\"dataField\": \"Hour(Datetime (UTC))\",\"sortBy\": \"value\",\"sortBySummaryField\": \"Hour(Datetime (UTC))\",\"sortOrder\": \"desc\",\"expanded\": false,\"area\": \"row\"}]},\"dataFieldArea\": \"column\"}},\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}},{\"columnId\": \"Hour(Datetime (UTC))\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Environment\",\"columnProperty\": {}},{\"columnId\": \"Group Name\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"11c6bdc6-af0d-4acc-85f2-b725ea357d24\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Hour(Datetime (UTC))\"]}},{\"id\": \"88282aae-4223-4589-acd8-2c9c130d544d\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of MVS\",\"isOpposite\": false}}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_5
+    answer:
+      name: "Cloud: MVS by Cloud Account"
+      description: Active VMs
+      tables:
+      - id: Entity Metrics
+        name: Entity Metrics
+      search_query: "[Entity Type] [Entity Type].virtual_machine [State] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].hourly [Environment] [State].powered_on [Datetime (UTC)] = 'last 60 minutes' [Environment].cloud [Related Type].business_account [Related Name]"
+      answer_columns:
+      - name: Entity Type
+      - name: State
+      - name: Unique Number of Id
+        custom_name: '# of MVS'
+      - name: Hour(Datetime (UTC))
+      - name: Environment
+      - name: Related Name
+        custom_name: Cloud Account
+      table:
+        table_columns:
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: State
+          show_headline: false
+        - column_id: Hour(Datetime (UTC))
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Related Name
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Entity Type
+        - State
+        - Hour(Datetime (UTC))
+        - Environment
+        - Related Name
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Entity Type\",\"width\": 160.0},{\"columnId\": \"Hour(Datetime (UTC))\",\"width\": 202.94168090820312},{\"columnId\": \"Environment\",\"width\": 130.64981079101562}],\"orderedColumnIds\": [\"Hour(Datetime (UTC))\",\"Entity Type\",\"State\",\"Unique Number of Id\"],\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}}]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: Entity Type
+        - column_id: State
+        - column_id: Hour(Datetime (UTC))
+        - column_id: Environment
+        - column_id: Related Name
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - Related Name
+        - "y":
+          - Unique Number of Id
+        - x:
+          - Hour(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+        - "y":
+          - Unique Number of Id
+          color:
+          - Related Name
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {},\"chartSpecific\": {\"pivotState\": {\"fields\": [{\"dataField\": \"Hour(Datetime (UTC))\",\"sortBy\": \"value\",\"sortBySummaryField\": \"Hour(Datetime (UTC))\",\"sortOrder\": \"desc\",\"expanded\": false,\"area\": \"row\"}]},\"dataFieldArea\": \"column\"}},\"columnProperties\": [{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"State\",\"columnProperty\": {}},{\"columnId\": \"Hour(Datetime (UTC))\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Environment\",\"columnProperty\": {}},{\"columnId\": \"Related Name\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"4086f4ce-78f0-41af-b1a5-177325634fed\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"isOpposite\": false}},{\"id\": \"7d5c3301-9484-400c-8937-897e4ba5ce82\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Hour(Datetime (UTC))\"]}}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  filters:
+  - column:
+    - Datetime (UTC)
+    is_mandatory: false
+    date_filter:
+      type: LAST_N_PERIOD
+      number: 43200
+      oper: =
+      date_period: MINUTE
+    display_name: ""
+  layout:
+    tiles:
+    - visualization_id: Viz_4
+      x: 0
+      "y": 5
+      height: 6
+      width: 6
+    - visualization_id: Viz_3
+      x: 8
+      "y": 0
+      height: 5
+      width: 4
+    - visualization_id: Viz_1
+      x: 0
+      "y": 0
+      height: 5
+      width: 4
+    - visualization_id: Viz_2
+      x: 4
+      "y": 0
+      height: 5
+      width: 4
+    - visualization_id: Viz_5
+      x: 6
+      "y": 5
+      height: 6
+      width: 6
