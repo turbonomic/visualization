@@ -1,0 +1,578 @@
+guid: 
+liveboard:
+  name: Action Execution Overview
+  visualizations:
+  - id: Viz_1
+    answer:
+      name: Action Execution Trend
+      description: by Environment + Entity Type + Action Type
+      tables:
+      - id: Actions
+        name: Actions
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [State].succeeded [Environment] [Datetime (UTC)] = 'last 20160 minutes' [Entity Type]"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: Entity Type
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - Entity Type
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: Entity Type
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Day(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - Environment
+          - Entity Type
+          - Type
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": false,\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotSummariesState\": {}},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"2cff2c34-2363-4231-89f0-2f1e79956552\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of Actions\",\"isOpposite\": false}},{\"id\": \"b0354b58-a116-4659-a358-9eade8d75eec\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(Datetime (UTC))\"],\"name\": \"Daily Datetime (UTC)\"}}],\"systemSeriesColors\": [{\"serieName\": \"cloud, activate\",\"color\": \"#56D3A8\"},{\"serieName\": \"cloud, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"cloud, delete\",\"color\": \"#FCD977\"},{\"serieName\": \"hybrid, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, deactivate\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, move\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, provision\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, virtual_machine, activate\",\"color\": \"#B094F8\"},{\"serieName\": \"cloud, virtual_machine, deactivate\",\"color\": \"#8C62F5\"},{\"serieName\": \"cloud, virtual_volume, delete\",\"color\": \"#56D3A8\"},{\"serieName\": \"hybrid, virtual_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, container_pod, move\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, virtual_machine, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, virtual_machine, move\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, virtual_machine, provision\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, virtual_machine, resize\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, workload_controller, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem, activate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, physical_machine, activate\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem, physical_machine, deactivate\",\"color\": \"#06BF7F\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_2
+    answer:
+      name: Action Execution
+      description: by Environment + Entity Type + Action Type
+      tables:
+      - id: Actions
+        name: Actions
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [State].succeeded [Environment] sort by unique count [Id] descending [Datetime (UTC)] = 'last 20160 minutes' [Entity Type]"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: Entity Type
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - Entity Type
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: PIE
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: Entity Type
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Environment
+          - Entity Type
+          - Type
+          "y":
+          - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": false,\"yGridlineEnabled\": true},\"chartSpecific\": {\"pivotSummariesState\": {}},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"cdc30e5e-f7d6-44c0-9cfc-bacb1c25904f\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"isOpposite\": false}},{\"id\": \"c2217a86-465b-4d3b-b83c-283d076b6ae3\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Environment\",\"Entity Type\",\"Type\"]}}],\"systemSeriesColors\": [{\"serieName\": \"cloud, activate\",\"color\": \"#56D3A8\"},{\"serieName\": \"cloud, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"cloud, delete\",\"color\": \"#FCD977\"},{\"serieName\": \"hybrid, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, deactivate\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, move\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, provision\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, virtual_machine, activate\",\"color\": \"#B094F8\"},{\"serieName\": \"cloud, virtual_machine, deactivate\",\"color\": \"#8C62F5\"},{\"serieName\": \"cloud, virtual_volume, delete\",\"color\": \"#56D3A8\"},{\"serieName\": \"hybrid, virtual_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, container_pod, move\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, virtual_machine, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, virtual_machine, move\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, virtual_machine, provision\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, virtual_machine, resize\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, workload_controller, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud\",\"color\": \"#48D1E0\"},{\"serieName\": \"hybrid\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem, activate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, physical_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, physical_machine, activate\",\"color\": \"#FCC838\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_3
+    answer:
+      name: Risks Avoided Trend
+      description: by Action Type + Risk
+      tables:
+      - id: Actions
+        name: Actions
+      formulas:
+      - id: Formatted Action Description 2
+        name: Formatted Action Description 2
+        expr: "if ( [Type] = 'resize' ) then if ( [Category] = 'performance_assurance' ) then ( concat ( [Resizeinfo Commodity] , \" congestion\" ) ) else if ( [Category] = 'efficiency_improvement' ) then ( concat ( [Resizeinfo Commodity] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [Type] = 'move' and [Category] = 'compliance' ) then ( [Category] ) else if ( [Type] = 'move' and contains ( [Explanation] , 'efficiency' ) ) then 'efficiency improvement' else [Explanation] "
+        was_auto_generated: false
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [State].succeeded [Environment] [Formatted Action Description 2] [Formatted Action Description 2] [Environment].on_prem sort by [Datetime (UTC)] [Datetime (UTC)].detailed descending [Datetime (UTC)] = 'last 20160 minutes'"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: Formatted Action Description 2
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Formatted Action Description 2
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - Formatted Action Description 2
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: STACKED_COLUMN
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: Formatted Action Description 2
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Day(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          color:
+          - Type
+          - Formatted Action Description 2
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": false,\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotSummariesState\": {}},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Formatted Action Description 2\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"266c8dfd-c9a6-4811-9ad5-301ecf444d7a\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Day(Datetime (UTC))\"]}},{\"id\": \"8db2bfa5-48f1-4abf-bd5a-45b1bf6c015d\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"# of Actions\",\"isOpposite\": false}}],\"systemSeriesColors\": [{\"serieName\": \"cloud, activate\",\"color\": \"#56D3A8\"},{\"serieName\": \"cloud, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"cloud, delete\",\"color\": \"#FCD977\"},{\"serieName\": \"hybrid, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, deactivate\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, move\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, provision\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, virtual_machine, activate\",\"color\": \"#B094F8\"},{\"serieName\": \"cloud, virtual_machine, deactivate\",\"color\": \"#8C62F5\"},{\"serieName\": \"cloud, virtual_volume, delete\",\"color\": \"#56D3A8\"},{\"serieName\": \"hybrid, virtual_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, container_pod, move\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, virtual_machine, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, virtual_machine, move\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, virtual_machine, provision\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, virtual_machine, resize\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, workload_controller, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud\",\"color\": \"#48D1E0\"},{\"serieName\": \"hybrid\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, virtual_machine\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, container_pod\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, virtual_machine\",\"color\": \"#FCD977\"},{\"serieName\": \"deactivate, virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"activate, virtual_machine\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, workload_controller\",\"color\": \"#48D1E0\"},{\"serieName\": \"delete, virtual_volume\",\"color\": \"#71A1F4\"},{\"serieName\": \"provision, virtual_machine\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, efficiency improvement\",\"color\": \"#B094F8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#8C62F5\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"resize, vcpu underutilized\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, vmem underutilized\",\"color\": \"#FCD977\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"deactivate, improve infrastructure efficiency\",\"color\": \"#82DFE9\"},{\"serieName\": \"activate, add more resource to satisfy the increased demand\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, vmem_request underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"delete, increase savings\",\"color\": \"#71A1F4\"},{\"serieName\": \"provision, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"efficiency improvement\",\"color\": \"#B094F8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#8C62F5\"},{\"serieName\": \"vcpu underutilized\",\"color\": \"#06BF7F\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"vmem underutilized\",\"color\": \"#FCC838\"},{\"serieName\": \"improve infrastructure efficiency\",\"color\": \"#82DFE9\"},{\"serieName\": \"add more resource to satisfy the increased demand\",\"color\": \"#48D1E0\"},{\"serieName\": \"vmem_request underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"increase savings\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#06BF7F\"},{\"serieName\": \"deactivate, physical_machine, improve infrastructure efficiency\",\"color\": \"#B094F8\"},{\"serieName\": \"deactivate, virtual_machine, improve infrastructure efficiency\",\"color\": \"#8C62F5\"},{\"serieName\": \"move, container_pod, improve overall performance\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, container_pod, efficiency improvement\",\"color\": \"#06BF7F\"},{\"serieName\": \"move, virtual_machine, improve overall performance\",\"color\": \"#FCD977\"},{\"serieName\": \"move, virtual_machine, efficiency improvement\",\"color\": \"#FCC838\"},{\"serieName\": \"resize, virtual_machine, vcpu congestion\",\"color\": \"#369FAA\"},{\"serieName\": \"resize, virtual_machine, vcpu underutilized\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, virtual_machine, vmem congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, virtual_machine, vmem underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"resize, workload_controller, vmem congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, workload_controller, vmem underutilized\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem, activate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, activate, address high utilization of clustercommodity\",\"color\": \"#56D3A8\"},{\"serieName\": \"on_prem, deactivate, improve infrastructure efficiency\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, move, improve overall performance\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, move, mem congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, move, efficiency improvement\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, resize, vcpu congestion\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, resize, vcpu underutilized\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize, vmem underutilized\",\"color\": \"#2E75F0\"},{\"serieName\": \"activate, address high utilization of clustercommodity\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, compliance\",\"color\": \"#48D1E0\"},{\"serieName\": \"move, ded-wdc06s006.na.cloud.techzone.ibm.com is not available\",\"color\": \"#BF982A\"},{\"serieName\": \"resize, vcpu_request underutilized\",\"color\": \"#BF982A\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_4
+    answer:
+      name: Labor Saved
+      description: User can customize "Labor Cost/Hour" parameter
+      tables:
+      - id: Actions
+        name: Actions
+      formulas:
+      - id: Action Type & Entity
+        name: Action Type & Entity
+        expr: "concat ( [Type] , ' ' , [Entity Type] )"
+        was_auto_generated: false
+      - id: Labor Saved ($)
+        name: Labor Saved ($)
+        expr: "[Labor Saved (Hours)] * [Labor Cost/Hour] "
+        was_auto_generated: false
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [State].succeeded [Environment] [Labor Saved (Hours)] [Formatted Action Type] [Datetime (UTC)] = 'last 20160 minutes' [Entity Type] [Labor Saved ($)] [Action Type & Entity]"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+        custom_name: '# of Actions'
+      - name: Day(Datetime (UTC))
+        custom_name: Date
+      - name: Type
+      - name: Environment
+      - name: Total Labor Saved (Hours)
+        custom_name: Labor Saved (Hours)
+      - name: Formatted Action Type
+      - name: Entity Type
+      - name: Total Labor Saved ($)
+        custom_name: Labor Saved ($)
+        format:
+          category: CURRENCY
+          currencyFormatConfig:
+            locale: USD
+            unit: AUTO
+            decimals: 2.0
+            toSeparateThousands: true
+          isCategoryEditable: true
+      - name: Action Type & Entity
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Formatted Action Type
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Action Type & Entity
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        - column_id: Total Labor Saved (Hours)
+          show_headline: false
+        - column_id: Total Labor Saved ($)
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - Formatted Action Type
+        - Entity Type
+        - Action Type & Entity
+        - Unique Number of Id
+        - Total Labor Saved (Hours)
+        - Total Labor Saved ($)
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: Formatted Action Type
+        - column_id: Entity Type
+        - column_id: Action Type & Entity
+        - column_id: Unique Number of Id
+        - column_id: Total Labor Saved (Hours)
+        - column_id: Total Labor Saved ($)
+        axis_configs:
+        - x:
+          - Action Type & Entity
+          - Day(Datetime (UTC))
+          "y":
+          - Unique Number of Id
+          - Total Labor Saved (Hours)
+          - Total Labor Saved ($)
+          color:
+          - Environment
+        - "y":
+          - Unique Number of Id
+          - Total Labor Saved (Hours)
+          - Total Labor Saved ($)
+        - x:
+          - Action Type & Entity
+          "y":
+          - Unique Number of Id
+          - Total Labor Saved (Hours)
+          - Total Labor Saved ($)
+        - "y":
+          - Unique Number of Id
+          - Total Labor Saved (Hours)
+          - Total Labor Saved ($)
+          color:
+          - Environment
+        - x:
+          - Action Type & Entity
+          "y":
+          - Unique Number of Id
+          - Total Labor Saved (Hours)
+          - Total Labor Saved ($)
+          color:
+          - Environment
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"chartSpecific\": {\"pivotState\": {},\"isHeatmapOverlayed\": true,\"pivotSummariesState\": {\"showColumnGrandTotals\": false}}},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {}},{\"columnId\": \"Description\",\"columnProperty\": {}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {}},{\"columnId\": \"Type\",\"columnProperty\": {}},{\"columnId\": \"Environment\",\"columnProperty\": {}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {}},{\"columnId\": \"Formatted Action Type\",\"columnProperty\": {}},{\"columnId\": \"Entity Type\",\"columnProperty\": {}},{\"columnId\": \"Total Labor Saved (Hours)\",\"columnProperty\": {}},{\"columnId\": \"Total Labor Saved ($)\",\"columnProperty\": {}},{\"columnId\": \"Action Type & Entity\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"ffb16567-78ab-4017-b1f7-14796b60ba43\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"isOpposite\": false}},{\"id\": \"5178a287-ee54-4407-8b85-fe29a7a7b44b\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Labor Saved (Hours)\"],\"isOpposite\": true}},{\"id\": \"9b5a4209-b981-453d-8d62-2b65fb9f83e5\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Total Labor Saved ($)\"],\"isOpposite\": true}},{\"id\": \"724fbc64-550d-4c50-b154-230f949bfaa7\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Action Type & Entity\",\"Day(Datetime (UTC))\"]}}]}"
+      display_mode: CHART_MODE
+      parameters:
+      - id: 0f3b72c4-a0d3-4c3e-900e-622d5d1a05c7
+        name: Labor Cost/Hour
+        data_type: INT64
+        default_value: "30"
+    viz_guid: 
+  - id: Viz_5
+    answer:
+      name: Risks Avoided Breakdown
+      description: by Action Type + Entity Type
+      tables:
+      - id: Actions
+        name: Actions
+      formulas:
+      - id: Formatted Action Description 2
+        name: Formatted Action Description 2
+        expr: "if ( [Type] = 'resize' ) then if ( [Category] = 'performance_assurance' ) then ( concat ( [Resizeinfo Commodity] , \" congestion\" ) ) else if ( [Category] = 'efficiency_improvement' ) then ( concat ( [Resizeinfo Commodity] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [Type] = 'move' and [Category] = 'compliance' ) then ( [Category] ) else if ( [Type] = 'move' and contains ( [Explanation] , 'efficiency' ) ) then 'efficiency improvement' else [Explanation] "
+        was_auto_generated: false
+      search_query: "[Datetime (UTC)] [Datetime (UTC)].detailed [Description] unique count [Id] [Datetime (UTC)] [Datetime (UTC)].daily [Type] [State].succeeded [Environment] sort by unique count [Id] descending [Formatted Action Description 2] [Formatted Action Description 2] [Datetime (UTC)] = 'last 20160 minutes' [Entity Type]"
+      answer_columns:
+      - name: Datetime (UTC)
+      - name: Description
+      - name: Unique Number of Id
+      - name: Day(Datetime (UTC))
+      - name: Type
+      - name: Environment
+      - name: Formatted Action Description 2
+      - name: Entity Type
+      table:
+        table_columns:
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Description
+          show_headline: false
+        - column_id: Day(Datetime (UTC))
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Formatted Action Description 2
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Datetime (UTC)
+        - Description
+        - Day(Datetime (UTC))
+        - Type
+        - Environment
+        - Formatted Action Description 2
+        - Entity Type
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\"}"
+      chart:
+        type: STACKED_BAR
+        chart_columns:
+        - column_id: Datetime (UTC)
+        - column_id: Description
+        - column_id: Day(Datetime (UTC))
+        - column_id: Type
+        - column_id: Environment
+        - column_id: Formatted Action Description 2
+        - column_id: Entity Type
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Type
+          - Entity Type
+          "y":
+          - Unique Number of Id
+          color:
+          - Formatted Action Description 2
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": false,\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"isStackedAsPercent\": true,\"stackedAsPercentFormat\": {\"category\": \"PERCENTAGE\",\"percentageFormatConfig\": {\"decimals\": 0.0},\"isCategoryEditable\": false},\"pivotSummariesState\": {}},\"showStackedLabels\": true,\"allLabels\": true,\"legendPosition\": \"RIGHT_LEGEND\"},\"columnProperties\": [{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Day(Datetime (UTC))\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Formatted Action Description 2\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}}],\"axisProperties\": [{\"id\": \"cd74dd16-9f2e-4ce8-9bf4-07b20b85f4a1\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Entity Type\",\"Type\"],\"name\": \"Action Type + Entity Type\"}},{\"id\": \"7c604738-4339-4122-b1cd-533b2e9e28e1\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"name\": \"% Risks Avoided\",\"isOpposite\": false}}],\"systemSeriesColors\": [{\"serieName\": \"cloud, activate\",\"color\": \"#56D3A8\"},{\"serieName\": \"cloud, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"cloud, delete\",\"color\": \"#FCD977\"},{\"serieName\": \"hybrid, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, deactivate\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, move\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, provision\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, virtual_machine, activate\",\"color\": \"#B094F8\"},{\"serieName\": \"cloud, virtual_machine, deactivate\",\"color\": \"#8C62F5\"},{\"serieName\": \"cloud, virtual_volume, delete\",\"color\": \"#56D3A8\"},{\"serieName\": \"hybrid, virtual_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, container_pod, move\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, virtual_machine, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, virtual_machine, move\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, virtual_machine, provision\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, virtual_machine, resize\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, workload_controller, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud\",\"color\": \"#48D1E0\"},{\"serieName\": \"hybrid\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, virtual_machine\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, container_pod\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, virtual_machine\",\"color\": \"#FCD977\"},{\"serieName\": \"deactivate, virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"activate, virtual_machine\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, workload_controller\",\"color\": \"#48D1E0\"},{\"serieName\": \"delete, virtual_volume\",\"color\": \"#71A1F4\"},{\"serieName\": \"provision, virtual_machine\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, efficiency improvement\",\"color\": \"#B094F8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#8C62F5\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"resize, vcpu underutilized\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, vmem underutilized\",\"color\": \"#FCD977\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"deactivate, improve infrastructure efficiency\",\"color\": \"#82DFE9\"},{\"serieName\": \"activate, add more resource to satisfy the increased demand\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, vmem_request underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"delete, increase savings\",\"color\": \"#71A1F4\"},{\"serieName\": \"provision, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"efficiency improvement\",\"color\": \"#B094F8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#8C62F5\"},{\"serieName\": \"vcpu underutilized\",\"color\": \"#06BF7F\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"vmem underutilized\",\"color\": \"#FCC838\"},{\"serieName\": \"improve infrastructure efficiency\",\"color\": \"#82DFE9\"},{\"serieName\": \"add more resource to satisfy the increased demand\",\"color\": \"#48D1E0\"},{\"serieName\": \"vmem_request underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"increase savings\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"address high utilization of clustercommodity\",\"color\": \"#56D3A8\"},{\"serieName\": \"mem congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"activate, address high utilization of clustercommodity\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vcpu_request underutilized\",\"color\": \"#369FAA\"},{\"serieName\": \"scale, underutilized vcpu, net throughput\",\"color\": \"#71A1F4\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#FF8142\"},{\"serieName\": \"underutilized vcpu, net throughput\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu_request underutilized\",\"color\": \"#2359B6\"}]}"
+      display_mode: CHART_MODE
+    viz_guid: 
+  - id: Viz_6
+    answer:
+      name: Action Details
+      tables:
+      - id: Actions
+        name: Actions
+      formulas:
+      - id: Formatted Action Description 2
+        name: Formatted Action Description 2
+        expr: "if ( [Type] = 'resize' ) then if ( [Category] = 'performance_assurance' ) then ( concat ( [Resizeinfo Commodity] , \" congestion\" ) ) else if ( [Category] = 'efficiency_improvement' ) then ( concat ( [Resizeinfo Commodity] , \" underutilized\" ) ) else ( \"check action format\" ) else if ( [Type] = 'move' and [Category] = 'compliance' ) then ( [Category] ) else if ( [Type] = 'move' and contains ( [Explanation] , 'efficiency' ) ) then 'efficiency improvement' else [Explanation] "
+        was_auto_generated: false
+      search_query: "[Description] unique count [Id] [Type] [State].succeeded [Environment] [Formatted Action Description 2] [Entity Type] [Datetime (UTC)] = 'last 20160 minutes' [Datetime (UTC)] [Datetime (UTC)].detailed [Entity Name] sort by [Datetime (UTC)] [Datetime (UTC)].detailed descending [Id] [Explanation]"
+      answer_columns:
+      - name: Description
+      - name: Unique Number of Id
+      - name: Type
+      - name: Environment
+      - name: Formatted Action Description 2
+        custom_name: Reason
+      - name: Entity Type
+      - name: Datetime (UTC)
+      - name: Entity Name
+      - name: Id
+      - name: Explanation
+      table:
+        table_columns:
+        - column_id: Description
+          show_headline: false
+        - column_id: Type
+          show_headline: false
+        - column_id: Environment
+          show_headline: false
+        - column_id: Formatted Action Description 2
+          show_headline: false
+        - column_id: Entity Type
+          show_headline: false
+        - column_id: Datetime (UTC)
+          show_headline: false
+        - column_id: Entity Name
+          show_headline: false
+        - column_id: Id
+          show_headline: false
+        - column_id: Explanation
+          show_headline: false
+        - column_id: Unique Number of Id
+          show_headline: false
+        ordered_column_ids:
+        - Description
+        - Type
+        - Environment
+        - Formatted Action Description 2
+        - Entity Type
+        - Datetime (UTC)
+        - Entity Name
+        - Id
+        - Explanation
+        - Unique Number of Id
+        client_state: ""
+        client_state_v2: "{\"tableVizPropVersion\": \"V1\",\"widthState\": [{\"columnId\": \"Datetime (UTC)\",\"width\": 185.94168090820312},{\"columnId\": \"Description\",\"width\": 196.0}],\"orderedColumnIds\": [\"Datetime (UTC)\",\"Environment\",\"Type\",\"Entity Type\",\"Entity Name\",\"Description\",\"Explanation\",\"Formatted Action Description 2\",\"Id\",\"Unique Number of Id\"]}"
+      chart:
+        type: PIVOT_TABLE
+        chart_columns:
+        - column_id: Description
+        - column_id: Type
+        - column_id: Environment
+        - column_id: Formatted Action Description 2
+        - column_id: Entity Type
+        - column_id: Datetime (UTC)
+        - column_id: Entity Name
+        - column_id: Id
+        - column_id: Explanation
+        - column_id: Unique Number of Id
+        axis_configs:
+        - x:
+          - Type
+          - Entity Type
+          "y":
+          - Unique Number of Id
+          color:
+          - Formatted Action Description 2
+        - "y":
+          - Unique Number of Id
+        - x:
+          - Type
+          "y":
+          - Unique Number of Id
+        - "y":
+          - Unique Number of Id
+          color:
+          - Formatted Action Description 2
+        - x:
+          - Type
+          "y":
+          - Unique Number of Id
+          color:
+          - Formatted Action Description 2
+        client_state: ""
+        client_state_v2: "{\"version\": \"V4DOT2\",\"chartProperties\": {\"gridLines\": {\"xGridlineEnabled\": false,\"yGridlineEnabled\": true},\"responsiveLayoutPreference\": \"AUTO_ON\",\"chartSpecific\": {\"pivotState\": {\"fields\": [{\"dataField\": \"Formatted Action Description 2\",\"sortBy\": \"value\",\"sortBySummaryField\": \"Unique Number of Id\",\"sortOrder\": \"desc\",\"expanded\": false,\"area\": \"column\"},{\"dataField\": \"Type\",\"sortBy\": \"value\",\"sortBySummaryField\": \"Unique Number of Id\",\"sortOrder\": \"desc\",\"expanded\": false,\"area\": \"row\"},{\"dataField\": \"Entity Type\",\"sortBy\": \"value\",\"sortBySummaryField\": \"Unique Number of Id\",\"sortOrder\": \"desc\",\"expanded\": false,\"area\": \"row\"}]},\"isStackedAsPercent\": true,\"stackedAsPercentFormat\": {\"category\": \"PERCENTAGE\",\"percentageFormatConfig\": {\"decimals\": 0.0},\"isCategoryEditable\": false},\"pivotSummariesState\": {}},\"showStackedLabels\": true,\"allLabels\": true},\"columnProperties\": [{\"columnId\": \"Description\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Environment\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Unique Number of Id\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Formatted Action Description 2\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Entity Type\",\"columnProperty\": {\"dataLabels\": true}},{\"columnId\": \"Datetime (UTC)\",\"columnProperty\": {}},{\"columnId\": \"Entity Name\",\"columnProperty\": {}},{\"columnId\": \"Id\",\"columnProperty\": {}},{\"columnId\": \"Explanation\",\"columnProperty\": {}}],\"axisProperties\": [{\"id\": \"0df50ad0-2ae2-4646-b4cb-0cf979ac0ec0\",\"properties\": {\"axisType\": \"Y\",\"linkedColumns\": [\"Unique Number of Id\"],\"isOpposite\": false}},{\"id\": \"fa9ea9b8-2c97-4fe8-a69c-b3263abb9388\",\"properties\": {\"axisType\": \"X\",\"linkedColumns\": [\"Type\",\"Entity Type\"]}}],\"systemSeriesColors\": [{\"serieName\": \"cloud, activate\",\"color\": \"#56D3A8\"},{\"serieName\": \"cloud, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"cloud, delete\",\"color\": \"#FCD977\"},{\"serieName\": \"hybrid, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, deactivate\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, move\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, provision\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"cloud, virtual_machine, activate\",\"color\": \"#B094F8\"},{\"serieName\": \"cloud, virtual_machine, deactivate\",\"color\": \"#8C62F5\"},{\"serieName\": \"cloud, virtual_volume, delete\",\"color\": \"#56D3A8\"},{\"serieName\": \"hybrid, virtual_machine, deactivate\",\"color\": \"#06BF7F\"},{\"serieName\": \"on_prem, container_pod, move\",\"color\": \"#FCD977\"},{\"serieName\": \"on_prem, virtual_machine, deactivate\",\"color\": \"#FCC838\"},{\"serieName\": \"on_prem, virtual_machine, move\",\"color\": \"#82DFE9\"},{\"serieName\": \"on_prem, virtual_machine, provision\",\"color\": \"#48D1E0\"},{\"serieName\": \"on_prem, virtual_machine, resize\",\"color\": \"#71A1F4\"},{\"serieName\": \"on_prem, workload_controller, resize\",\"color\": \"#2E75F0\"},{\"serieName\": \"on_prem\",\"color\": \"#FCC838\"},{\"serieName\": \"cloud\",\"color\": \"#48D1E0\"},{\"serieName\": \"hybrid\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, virtual_machine\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, container_pod\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, virtual_machine\",\"color\": \"#FCD977\"},{\"serieName\": \"deactivate, virtual_machine\",\"color\": \"#FCC838\"},{\"serieName\": \"activate, virtual_machine\",\"color\": \"#82DFE9\"},{\"serieName\": \"resize, workload_controller\",\"color\": \"#48D1E0\"},{\"serieName\": \"delete, virtual_volume\",\"color\": \"#71A1F4\"},{\"serieName\": \"provision, virtual_machine\",\"color\": \"#2E75F0\"},{\"serieName\": \"move, efficiency improvement\",\"color\": \"#B094F8\"},{\"serieName\": \"move, improve overall performance\",\"color\": \"#8C62F5\"},{\"serieName\": \"resize, vmem congestion\",\"color\": \"#56D3A8\"},{\"serieName\": \"resize, vcpu underutilized\",\"color\": \"#06BF7F\"},{\"serieName\": \"resize, vmem underutilized\",\"color\": \"#FCD977\"},{\"serieName\": \"resize, vcpu congestion\",\"color\": \"#FCC838\"},{\"serieName\": \"deactivate, improve infrastructure efficiency\",\"color\": \"#82DFE9\"},{\"serieName\": \"activate, add more resource to satisfy the increased demand\",\"color\": \"#48D1E0\"},{\"serieName\": \"resize, vmem_request underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"delete, increase savings\",\"color\": \"#71A1F4\"},{\"serieName\": \"provision, vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"efficiency improvement\",\"color\": \"#B094F8\"},{\"serieName\": \"improve overall performance\",\"color\": \"#8C62F5\"},{\"serieName\": \"vcpu underutilized\",\"color\": \"#06BF7F\"},{\"serieName\": \"vcpu congestion\",\"color\": \"#FCD977\"},{\"serieName\": \"vmem underutilized\",\"color\": \"#FCC838\"},{\"serieName\": \"improve infrastructure efficiency\",\"color\": \"#82DFE9\"},{\"serieName\": \"add more resource to satisfy the increased demand\",\"color\": \"#48D1E0\"},{\"serieName\": \"vmem_request underutilized\",\"color\": \"#2359B6\"},{\"serieName\": \"increase savings\",\"color\": \"#71A1F4\"},{\"serieName\": \"vmem congestion\",\"color\": \"#2E75F0\"},{\"serieName\": \"address high utilization of clustercommodity\",\"color\": \"#56D3A8\"},{\"serieName\": \"mem congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"activate, address high utilization of clustercommodity\",\"color\": \"#56D3A8\"},{\"serieName\": \"move, mem congestion\",\"color\": \"#71A1F4\"},{\"serieName\": \"resize, vcpu_request underutilized\",\"color\": \"#369FAA\"},{\"serieName\": \"scale, underutilized vcpu, net throughput\",\"color\": \"#71A1F4\"},{\"serieName\": \"Unique Number of Id\",\"color\": \"#FF8142\"},{\"serieName\": \"underutilized vcpu, net throughput\",\"color\": \"#2359B6\"},{\"serieName\": \"vcpu_request underutilized\",\"color\": \"#2359B6\"}]}"
+      display_mode: TABLE_MODE
+    viz_guid: 
+  filters:
+  - column:
+    - Datetime (UTC)
+    is_mandatory: false
+    date_filter:
+      type: LAST_N_PERIOD
+      number: 20160
+      oper: =
+      date_period: MINUTE
+    display_name: ""
+  - column:
+    - Environment
+    is_mandatory: false
+    is_single_value: false
+    display_name: ""
+  - column:
+    - Type
+    is_mandatory: false
+    is_single_value: false
+    display_name: Action Type
+  - column:
+    - Entity Type
+    is_mandatory: false
+    is_single_value: false
+    display_name: ""
+  - column:
+    - Mode
+    is_mandatory: false
+    is_single_value: false
+    display_name: ""
+  - column:
+    - Entity Name
+    is_mandatory: false
+    is_single_value: false
+    display_name: ""
+  layout:
+    tiles:
+    - visualization_id: Viz_2
+      x: 8
+      "y": 0
+      height: 6
+      width: 4
+    - visualization_id: Viz_5
+      x: 6
+      "y": 12
+      height: 6
+      width: 6
+    - visualization_id: Viz_4
+      x: 0
+      "y": 12
+      height: 6
+      width: 6
+    - visualization_id: Viz_3
+      x: 0
+      "y": 6
+      height: 6
+      width: 12
+    - visualization_id: Viz_1
+      x: 0
+      "y": 0
+      height: 6
+      width: 8
+    - visualization_id: Viz_6
+      x: 0
+      "y": 18
+      height: 8
+      width: 12
